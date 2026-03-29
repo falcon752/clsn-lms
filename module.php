@@ -236,7 +236,7 @@ include './includes/header-dash.php';
 
             <!-- Resources Panel -->
             <?php if (!empty($pdfs)): ?>
-            <div class="tab-panel p-6" id="tab-resources" style="display:none">
+            <div class="tab-panel p-6" id="tab-resources">
                 <h3 class="font-semibold text-gray-700 mb-4">Downloadable Resources</h3>
                 <div class="grid sm:grid-cols-2 gap-3">
                     <?php foreach ($pdfs as $pdf): ?>
@@ -256,7 +256,7 @@ include './includes/header-dash.php';
             <?php endif; ?>
 
             <!-- Q&A Panel -->
-            <div class="tab-panel p-6" id="tab-qa" style="display:none">
+            <div class="tab-panel p-6" id="tab-qa">
                 <div id="qa-list" class="space-y-4 mb-8">
                     <?php if (empty($qaList)): ?>
                     <p class="text-center text-gray-400 py-6 italic" id="qa-empty">Be the first to ask a question!</p>
@@ -307,7 +307,7 @@ include './includes/header-dash.php';
 
             <!-- Quiz Panel -->
             <?php if ($quiz): ?>
-            <div class="tab-panel p-6" id="tab-quiz" style="display:none">
+            <div class="tab-panel p-6" id="tab-quiz">
                 <?php if ($quizPassed): ?>
                 <div class="text-center py-8">
                     <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
@@ -325,11 +325,6 @@ include './includes/header-dash.php';
                         <i class="fas fa-award"></i> Get Your Certificate
                     </a>
                     <?php endif; ?>
-                </div>
-                <?php elseif (empty($moduleProgress['video_watched']) && !empty($module['video_url'])): ?>
-                <div class="text-center py-8 text-gray-400">
-                    <i class="fas fa-lock text-4xl mb-3 block opacity-30"></i>
-                    <p class="font-semibold">Watch the video first to unlock the quiz.</p>
                 </div>
                 <?php else: ?>
                 <div class="flex items-start justify-between gap-4 mb-6">

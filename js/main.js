@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             this.classList.add('active');
-            var panel = container.querySelector('#' + target);
+            var panel = container.querySelector('#tab-' + target) || container.querySelector('#' + target);
             if (panel) panel.classList.add('active');
         });
     });
