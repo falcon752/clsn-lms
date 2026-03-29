@@ -1,0 +1,263 @@
+/* =============================================
+   CLSN LMS — Custom CSS
+   Matches clsn-main brand: candlelight + navy
+   ============================================= */
+
+/* ── Progress Bar ───────────────────────────── */
+.progress-bar-wrap {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+}
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FFA726, #FB8C00);
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+/* ── Module Sidebar ─────────────────────────── */
+.module-sidebar {
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+.module-sidebar::-webkit-scrollbar { width: 4px; }
+.module-sidebar::-webkit-scrollbar-thumb { background: #FFB74D; border-radius: 2px; }
+
+.module-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: #374151;
+}
+.module-nav-item:hover    { background: #FFF3E0; color: #E65100; }
+.module-nav-item.active   { background: linear-gradient(135deg, #FFF3E0, #FFE0B2); color: #E65100; font-weight: 600; }
+.module-nav-item.locked   { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.module-nav-item.completed .mod-icon { color: #16a34a; }
+
+/* ── Tabs ───────────────────────────────────── */
+.tab-btn {
+    padding: 10px 20px;
+    border-bottom: 3px solid transparent;
+    font-weight: 600;
+    color: #6b7280;
+    transition: all 0.2s;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.tab-btn:hover  { color: #FB8C00; }
+.tab-btn.active { border-bottom-color: #FFA726; color: #FB8C00; }
+
+.tab-panel      { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Video Container ────────────────────────── */
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #000;
+}
+.video-wrapper iframe,
+.video-wrapper video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+    border-radius: 16px;
+}
+
+/* ── Quiz ───────────────────────────────────── */
+.quiz-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: white;
+}
+.quiz-option:hover { border-color: #FFA726; background: #FFF9F0; }
+.quiz-option input[type="radio"] { display: none; }
+.quiz-option input[type="radio"]:checked + .option-indicator {
+    background: #FFA726;
+    border-color: #FFA726;
+}
+.quiz-option input[type="radio"]:checked + .option-indicator::after {
+    display: block;
+}
+.quiz-option:has(input:checked) { border-color: #FFA726; background: #FFF3E0; }
+.option-indicator {
+    width: 22px; height: 22px;
+    border: 2px solid #d1d5db;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    margin-top: 2px;
+}
+.option-indicator::after {
+    content: '';
+    display: none;
+    width: 10px; height: 10px;
+    background: white;
+    border-radius: 50%;
+}
+.quiz-option.correct-ans  { border-color: #16a34a !important; background: #f0fdf4 !important; }
+.quiz-option.wrong-ans    { border-color: #dc2626 !important; background: #fef2f2 !important; }
+
+/* ── Certificate ────────────────────────────── */
+.certificate-frame {
+    background: white;
+    border: 2px solid #FFB74D;
+    border-radius: 24px;
+    padding: 60px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    max-width: 860px;
+    margin: 0 auto;
+    box-shadow: 0 20px 60px rgba(255, 167, 38, 0.15);
+}
+.certificate-frame::before,
+.certificate-frame::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    opacity: 0.06;
+}
+.certificate-frame::before { background: #FFA726; top: -60px; left: -60px; }
+.certificate-frame::after  { background: #1A237E; bottom: -60px; right: -60px; }
+.certificate-border {
+    position: absolute;
+    inset: 12px;
+    border: 1.5px solid #FFE0B2;
+    border-radius: 16px;
+    pointer-events: none;
+}
+
+/* ── Notes Content ──────────────────────────── */
+.notes-content h2  { font-size: 1.5rem; font-weight: 700; color: #1A237E; margin: 1.5rem 0 0.75rem; font-family: 'Playfair Display', serif; }
+.notes-content h3  { font-size: 1.2rem; font-weight: 700; color: #283593; margin: 1.25rem 0 0.5rem; }
+.notes-content h4  { font-size: 1rem;   font-weight: 700; color: #374151; margin: 1rem 0 0.4rem; }
+.notes-content p   { color: #4b5563; line-height: 1.8; margin-bottom: 1rem; }
+.notes-content ul,
+.notes-content ol  { margin: 0.75rem 0 1rem 1.5rem; color: #4b5563; line-height: 1.8; }
+.notes-content li  { margin-bottom: 0.4rem; }
+.notes-content strong { color: #1A237E; }
+
+/* ── Form Inputs ────────────────────────────── */
+.lms-input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: white;
+    color: #111827;
+}
+.lms-input:focus {
+    outline: none;
+    border-color: #FFA726;
+    box-shadow: 0 0 0 4px rgba(255, 167, 38, 0.1);
+}
+.lms-input::placeholder { color: #9ca3af; }
+
+/* ── Buttons ─────────────────────────────────── */
+.btn-lms-primary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #FFA726, #FB8C00);
+    color: white;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(255, 167, 38, 0.3);
+    cursor: pointer;
+    border: none;
+}
+.btn-lms-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(255, 167, 38, 0.45);
+}
+.btn-lms-secondary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 28px;
+    background: white;
+    color: #1A237E;
+    border: 2px solid #1A237E;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.btn-lms-secondary:hover { background: #1A237E; color: white; }
+
+/* ── Card Hover ──────────────────────────────── */
+.lms-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 20px;
+}
+.lms-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.10);
+}
+
+/* ── Course Thumbnail Placeholder ────────────── */
+.course-thumb-ph {
+    background: linear-gradient(135deg, #1A237E 0%, #283593 50%, #3949AB 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 3rem;
+}
+
+/* ── Alert / Toast ───────────────────────────── */
+.lms-alert { padding: 14px 18px; border-radius: 14px; margin-bottom: 1rem; font-size: 0.9rem; }
+.lms-alert-success { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+.lms-alert-error   { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+.lms-alert-info    { background: #eff6ff; border: 1px solid #93c5fd; color: #1e40af; }
+
+/* ── PDF download card ───────────────────────── */
+.pdf-card {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+}
+.pdf-card:hover { border-color: #FFA726; background: #FFF9F0; }
+
+/* ── Q&A ─────────────────────────────────────── */
+.qa-item { border-left: 3px solid #FFA726; padding-left: 1rem; }
+.qa-answer { border-left: 3px solid #1A237E; padding-left: 1rem; background: #f0f4ff; border-radius: 0 8px 8px 0; padding: 12px 16px; }
+
+/* ── Print: Certificate ──────────────────────── */
+@media print {
+    body > *:not(.cert-print-area)   { display: none !important; }
+    .cert-print-area                  { display: block !important; }
+    .no-print                         { display: none !important; }
+    .certificate-frame                { box-shadow: none; border: 2px solid #FFB74D; }
+    @page                             { size: landscape; margin: 1cm; }
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 1024px) {
+    #dash-sidebar { position: fixed; top: 0; left: 0; height: 100vh; }
+}

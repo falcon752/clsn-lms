@@ -1,0 +1,12 @@
+# Block direct execution of PHP files in uploads directory
+<FilesMatch "\.php$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Allow only safe file types
+Options -ExecCGI
+AddHandler default-handler .html .htm .css .js .jpg .jpeg .png .gif .webp .mp4 .webm .pdf
+
+# Prevent directory listing
+Options -Indexes
