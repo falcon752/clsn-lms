@@ -4,15 +4,84 @@ include_once '../includes/auth.php';
 
 requireAdmin();
 
-$moduleId = (int)($_GET['module_id'] ?? 0);
-if (!$moduleId) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+$moduleId   = (int)($_GET['module_id'] ?? 0);
+$isOverview = !$moduleId;
 
-$stmt = $conn->prepare("SELECT m.*, c.id AS course_id, c.title AS course_title FROM lms_modules m JOIN lms_courses c ON c.id=m.course_id WHERE m.id=?");
-$stmt->bind_param('i', $moduleId);
-$stmt->execute();
-$module = $stmt->get_result()->fetch_assoc();
-$stmt->close();
-if (!$module) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+// ── Overview mode: list all modules grouped by course ─────────────────────
+if ($isOverview) {
+    $allCourses = $conn->query("SELECT * FROM lms_courses ORDER BY id ASC")->fetch_all(MYSQLI_ASSOC);
+    $allMods = $conn->query("
+        SELECT m.id, m.module_number, m.title AS module_title, m.course_id, m.is_active,
+               q.id AS quiz_id, q.pass_percentage, q.max_attempts,
+               (SELECT COUNT(*) FROM lms_quiz_questions qq WHERE qq.quiz_id = q.id) AS question_count
+        FROM lms_modules m
+        LEFT JOIN lms_quizzes q ON q.module_id = m.id
+        ORDER BY m.course_id ASC, m.sort_order ASC
+    ")->fetch_all(MYSQLI_ASSOC);
+    $modsByCourse = [];
+    foreach ($allMods as $m) { $modsByCourse[$m['course_id']][] = $m; }
+    $adminPageTitle = 'Quiz Builder';
+    include './includes/header.php';
+    ?>
+
+    <div class="flex items-center justify-between mb-6">
+        <p class="text-gray-500 text-sm">Select a module to build or edit its quiz.</p>
+    </div>
+
+    <div class="space-y-6">
+        <?php foreach ($allCourses as $c): ?>
+        <?php $mods = $modsByCourse[$c['id']] ?? []; ?>
+        <div class="lms-card overflow-hidden">
+            <!-- Course Header -->
+            <div class="flex items-center gap-3 px-5 py-4 bg-navy-900 text-white">
+                <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-graduation-cap text-candlelight-400 text-sm"></i>
+                </div>
+                <div>
+                    <div class="font-display font-bold text-sm leading-tight"><?= htmlspecialchars($c['title']) ?></div>
+                    <div class="text-xs text-gray-400 mt-0.5"><?= count($mods) ?> module<?= count($mods) !== 1 ? 's' : '' ?></div>
+                </div>
+            </div>
+            <!-- Modules + Quiz status -->
+            <?php if (empty($mods)): ?>
+            <div class="px-5 py-6 text-center text-gray-400 text-sm">No modules yet for this course.</div>
+            <?php else: ?>
+            <div class="divide-y divide-gray-100">
+                <?php foreach ($mods as $m): ?>
+                <div class="flex items-center gap-4 px-5 py-3.5">
+                    <div class="w-8 h-8 rounded-lg <?= $m['is_active'] ? 'bg-candlelight-100' : 'bg-gray-100' ?> flex items-center justify-center flex-shrink-0">
+                        <span class="font-bold text-xs <?= $m['is_active'] ? 'text-candlelight-700' : 'text-gray-400' ?>"><?= $m['module_number'] ?></span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <span class="font-semibold text-gray-800 text-sm"><?= htmlspecialchars($m['module_title']) ?></span>
+                        <div class="flex flex-wrap items-center gap-3 mt-0.5 text-xs">
+                            <?php if ($m['quiz_id']): ?>
+                            <span class="text-green-600 font-semibold"><i class="fas fa-check-circle mr-1"></i><?= $m['question_count'] ?> question<?= $m['question_count'] !== 1 ? 's' : '' ?> &middot; Pass <?= $m['pass_percentage'] ?>%</span>
+                            <?php else: ?>
+                            <span class="text-gray-400"><i class="fas fa-minus-circle mr-1"></i>No quiz yet</span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <a href="/clsn-lms/admin/quiz-builder.php?module_id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 <?= $m['quiz_id'] ? 'bg-candlelight-100 text-candlelight-700 hover:bg-candlelight-200' : 'bg-navy-100 text-navy-700 hover:bg-navy-200' ?> rounded-xl text-xs font-semibold transition-colors flex-shrink-0">
+                        <i class="fas <?= $m['quiz_id'] ? 'fa-pencil-alt' : 'fa-plus-circle' ?>"></i>
+                        <?= $m['quiz_id'] ? 'Edit Quiz' : 'Create Quiz' ?>
+                    </a>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+        </div>
+        <?php endforeach; ?>
+        <?php if (empty($allCourses)): ?>
+        <div class="lms-card p-12 text-center text-gray-400">No courses found.</div>
+        <?php endif; ?>
+    </div>
+
+    <?php include './includes/footer.php'; ?>
+    <?php exit; ?>
+<?php } // end overview ?>
+
+
 
 // Get or create quiz
 $quiz = $conn->prepare("SELECT * FROM lms_quizzes WHERE module_id=?");
@@ -111,7 +180,7 @@ include './includes/header.php';
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <a href="/clsn-lms/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="hover:text-candlelight-600 transition-colors"><?= htmlspecialchars($module['course_title']) ?></a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <a href="/clsn-lms/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="hover:text-candlelight-600 transition-colors">Modules</a>
+    <a href="/clsn-lms/admin/quiz-builder.php" class="hover:text-candlelight-600 transition-colors">Quiz Builder</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <span class="text-gray-800 font-medium">Module <?= $module['module_number'] ?> Quiz</span>
 </nav>
