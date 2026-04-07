@@ -32,6 +32,7 @@ if ($enrolled) {
 }
 
 $welcome      = isset($_GET['enrolled']) && $_GET['enrolled'] === '1';
+$courseReset  = isset($_GET['reset'])    && $_GET['reset']    === '1';
 $pageTitle    = htmlspecialchars($course['title']) . ' | Candlelight LMS';
 include './includes/header-public.php';
 ?>
@@ -41,6 +42,18 @@ include './includes/header-public.php';
     <i class="fas fa-check-circle"></i> Successfully enrolled! Let's start learning.
 </div>
 <script>setTimeout(() => { document.getElementById('enrolled-toast')?.remove(); }, 4000);</script>
+<?php endif; ?>
+
+<?php if ($courseReset): ?>
+<div class="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-red-600 text-white px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-semibold max-w-md" id="reset-toast">
+    <i class="fas fa-rotate-left text-lg"></i>
+    <div>
+        <div class="font-bold">Course Reset</div>
+        <div class="font-normal opacity-90">You've used all attempts including the grace attempt. Your progress has been reset — please restart from Module 1.</div>
+    </div>
+    <button onclick="this.parentElement.remove()" class="ml-auto opacity-70 hover:opacity-100"><i class="fas fa-times"></i></button>
+</div>
+<script>setTimeout(() => { document.getElementById('reset-toast')?.remove(); }, 10000);</script>
 <?php endif; ?>
 
 <!-- Hero Banner -->
@@ -163,16 +176,56 @@ include './includes/header-public.php';
 </section>
 
 <!-- Course Content -->
-<section class="bg-white py-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+<section class="bg-white py-16 lg:py-0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:h-full">
         <div class="grid lg:grid-cols-3 gap-12">
             <!-- Module List -->
-            <div class="lg:col-span-2">
+            <div class="lg:col-span-2 lg:h-[calc(100vh-96px)] lg:overflow-y-auto lg:py-16 lg:pr-3 course-col-scroll">
                 <?php if (!empty($course['description'])): ?>
                 <div class="mb-10">
                     <h2 class="font-display text-2xl font-bold text-navy-900 mb-4">About This Course</h2>
                     <div class="text-gray-600 leading-relaxed"><?= $course['description'] ?></div>
                 </div>
+                <?php endif; ?>
+
+                <?php
+                // Course preview video
+                $previewVidId = '';
+                if (!empty($course['youtube_url'])) {
+                    preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $course['youtube_url'], $pvM);
+                    $previewVidId = $pvM[1] ?? '';
+                }
+                ?>
+                <?php if ($previewVidId): ?>
+                <div class="mb-10">
+                    <h2 class="font-display text-2xl font-bold text-navy-900 mb-4">Course Preview</h2>
+                    <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-black group cursor-pointer" id="preview-wrap" onclick="playPreview('<?= htmlspecialchars($previewVidId) ?>')">
+                        <!-- Thumbnail -->
+                        <img src="https://img.youtube.com/vi/<?= htmlspecialchars($previewVidId) ?>/maxresdefault.jpg"
+                             onerror="this.src='https://img.youtube.com/vi/<?= htmlspecialchars($previewVidId) ?>/hqdefault.jpg'"
+                             alt="Course preview thumbnail"
+                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" id="preview-thumb">
+                        <!-- Overlay -->
+                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center" id="preview-overlay">
+                            <div class="w-20 h-20 rounded-full bg-candlelight-500 flex items-center justify-center shadow-2xl transition-transform duration-200 group-hover:scale-110">
+                                <i class="fas fa-play text-white text-2xl ml-1"></i>
+                            </div>
+                        </div>
+                        <!-- Label -->
+                        <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full" id="preview-label">
+                            <i class="fas fa-play-circle mr-1 text-candlelight-400"></i> Watch Preview
+                        </div>
+                        <!-- iframe injected here on click -->
+                    </div>
+                </div>
+                <script>
+                function playPreview(id) {
+                    var wrap = document.getElementById('preview-wrap');
+                    wrap.onclick = null;
+                    wrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen class="absolute inset-0 w-full h-full border-0"></iframe>';
+                    wrap.style.cursor = 'default';
+                }
+                </script>
                 <?php endif; ?>
 
                 <div>
@@ -229,8 +282,8 @@ include './includes/header-public.php';
             </div>
 
             <!-- Sidebar -->
-            <div class="lg:col-span-1">
-                <div class="sticky top-24 space-y-4">
+            <div class="lg:col-span-1 lg:h-[calc(100vh-96px)] lg:overflow-y-auto lg:py-16 course-col-scroll">
+                <div class="space-y-4">
                     <!-- What's Included -->
                     <div class="lms-card p-6">
                         <h3 class="font-display font-bold text-navy-900 mb-4">What's Included</h3>

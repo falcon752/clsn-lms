@@ -2,7 +2,7 @@
 include_once './includes/db.php';
 include_once './includes/auth.php';
 
-requireLogin();
+requireStudent();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: /clsn-lms/courses.php');

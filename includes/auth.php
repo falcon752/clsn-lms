@@ -44,6 +44,14 @@ function requireAdmin(): void {
     }
 }
 
+function requireStudent(): void {
+    requireLogin();
+    if (isAdmin()) {
+        header('Location: /clsn-lms/admin/');
+        exit;
+    }
+}
+
 function loginUser(array $user): void {
     session_regenerate_id(true);
     $_SESSION['lms_user_id']    = $user['id'];

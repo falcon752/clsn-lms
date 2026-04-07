@@ -3,7 +3,7 @@ include_once './includes/db.php';
 include_once './includes/auth.php';
 include_once './includes/functions.php';
 
-requireLogin();
+requireStudent();
 
 $userId = currentUserId();
 $user   = currentUser();

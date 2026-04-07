@@ -3,7 +3,7 @@ include_once './includes/db.php';
 include_once './includes/auth.php';
 include_once './includes/functions.php';
 
-requireLogin();
+requireStudent();
 
 $userId = currentUserId();
 $user   = currentUser();
@@ -61,56 +61,62 @@ include './includes/header-dash.php';
     <p class="text-sm text-gray-400 text-center mb-4">Preview below: click "Save as PDF" and then "Save as PDF" in the print dialog.</p>
 </div>
 
-<div class="cert-print-area max-w-4xl mx-auto">
-    <div class="certificate-frame">
-        <!-- Decorative blobs -->
-        <div class="cert-blob cert-blob-1"></div>
-        <div class="cert-blob cert-blob-2"></div>
+<div class="cert-print-area max-w-5xl mx-auto">
+    <div class="cert-paper">
+        <div class="cert-body-panel">
 
-        <!-- Header -->
-        <div class="cert-header">
-            <div class="cert-logo-area">
-                <div class="cert-logo-circle">
-                    <i class="fas fa-graduation-cap text-white text-3xl"></i>
+            <!-- Corner ornaments -->
+            <div class="cert-corner cert-corner-tl"></div>
+            <div class="cert-corner cert-corner-tr"></div>
+            <div class="cert-corner cert-corner-bl"></div>
+            <div class="cert-corner cert-corner-br"></div>
+
+            <!-- Header: Logo + Org name -->
+            <div class="mb-1">
+                <img src="/clsn-lms/images/logo-candlelight.svg" class="cert-logo-img" alt="Candlelight Foundation">
+                <div class="cert-org-label">Candlelight Foundation</div>
+            </div>
+
+            <!-- Ornamental title band -->
+            <div class="cert-title-band">
+                <div class="cb-line"></div>
+                <div class="cb-diamond"></div>
+                <span class="cert-title-text">Certificate of Completion</span>
+                <div class="cb-diamond"></div>
+                <div class="cb-line cb-line-r"></div>
+            </div>
+
+            <!-- Body -->
+            <div>
+                <p class="cert-presents-label">This is to certify that</p>
+                <h2 class="cert-name-text"><?= htmlspecialchars($certView['first_name'] . ' ' . $certView['last_name']) ?></h2>
+                <div class="cert-name-rule"></div>
+                <p class="cert-completed-label">Has Successfully Completed the Course</p>
+                <h3 class="cert-course-text"><?= htmlspecialchars($certView['course_title']) ?></h3>
+                <p class="cert-date-label">Issued: <?= formatDate($certView['issued_at']) ?></p>
+            </div>
+
+            <!-- Footer: Sig | Seal | Sig -->
+            <div class="cert-footer-row">
+                <div class="cert-sig">
+                    <div class="cert-sig-line"></div>
+                    <p class="cert-sig-name">Candlelight Foundation</p>
+                    <p class="cert-sig-role">Director of Education</p>
+                </div>
+                <div class="cert-seal-col">
+                    <div class="cert-seal-ring">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="cert-seal-uid"><?= htmlspecialchars($certView['certificate_uid']) ?></div>
+                    <div class="cert-website-badge">candlelightspecialneeds.org</div>
+                </div>
+                <div class="cert-sig">
+                    <div class="cert-sig-line"></div>
+                    <p class="cert-sig-name">Training Coordinator</p>
+                    <p class="cert-sig-role">Candlelight LMS</p>
                 </div>
             </div>
-            <div class="cert-org-name">Candlelight Foundation</div>
-            <div class="cert-sub-title">Certificate of Completion</div>
-        </div>
 
-        <!-- Divider -->
-        <div class="cert-divider"></div>
-
-        <!-- Body -->
-        <div class="cert-body text-center">
-            <p class="cert-presents">This is to certify that</p>
-            <h2 class="cert-name"><?= htmlspecialchars($certView['first_name'] . ' ' . $certView['last_name']) ?></h2>
-            <p class="cert-completion-text">has successfully completed the course</p>
-            <h3 class="cert-course-title"><?= htmlspecialchars($certView['course_title']) ?></h3>
-            <p class="cert-issued-date">Issued on <?= formatDate($certView['issued_at']) ?></p>
-        </div>
-
-        <!-- Divider -->
-        <div class="cert-divider"></div>
-
-        <!-- Footer -->
-        <div class="cert-footer">
-            <div class="cert-sig-block">
-                <div class="cert-sig-line"></div>
-                <p class="cert-sig-name">Candlelight Foundation</p>
-                <p class="cert-sig-role">Director of Education</p>
-            </div>
-            <div class="cert-id-block">
-                <div class="cert-seal"><i class="fas fa-award"></i></div>
-                <p class="cert-uid-label">Certificate ID</p>
-                <p class="cert-uid"><?= htmlspecialchars($certView['certificate_uid']) ?></p>
-                <p class="cert-uid-label" style="margin-top:4px;">candlelightspecialneeds.org</p>
-            </div>
-            <div class="cert-sig-block">
-                <div class="cert-sig-line"></div>
-                <p class="cert-sig-name">Training Coordinator</p>
-                <p class="cert-sig-role">Candlelight LMS</p>
-            </div>
         </div>
     </div>
 </div>

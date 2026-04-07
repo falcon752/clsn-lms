@@ -209,6 +209,54 @@ function hasPassed(mysqli $conn, int $userId, int $quizId): bool {
     return $found;
 }
 
+/**
+ * Returns the timestamp of the most recent failed attempt, or null if none.
+ */
+function getLastFailedAttemptTime(mysqli $conn, int $userId, int $quizId): ?string {
+    $s = $conn->prepare("SELECT attempted_at FROM lms_quiz_attempts WHERE user_id = ? AND quiz_id = ? AND passed = 0 ORDER BY attempted_at DESC LIMIT 1");
+    $s->bind_param('ii', $userId, $quizId);
+    $s->execute();
+    $row = $s->get_result()->fetch_assoc();
+    $s->close();
+    return $row ? $row['attempted_at'] : null;
+}
+
+/**
+ * Resets all progress for a user in a course so they must restart from scratch.
+ * Clears: module progress, quiz attempts (all modules in course), enrollment
+ * completion date, and any certificate issued.
+ */
+function resetCourseProgress(mysqli $conn, int $userId, int $courseId): void {
+    // Module progress
+    $s = $conn->prepare("DELETE FROM lms_module_progress WHERE user_id = ? AND course_id = ?");
+    $s->bind_param('ii', $userId, $courseId);
+    $s->execute();
+    $s->close();
+
+    // Quiz attempts for every quiz belonging to this course
+    $s = $conn->prepare("
+        DELETE qa FROM lms_quiz_attempts qa
+        JOIN lms_quizzes qz ON qz.id = qa.quiz_id
+        JOIN lms_modules m  ON m.id  = qz.module_id
+        WHERE qa.user_id = ? AND m.course_id = ?
+    ");
+    $s->bind_param('ii', $userId, $courseId);
+    $s->execute();
+    $s->close();
+
+    // Reset enrollment completion date
+    $s = $conn->prepare("UPDATE lms_enrollments SET completed_at = NULL WHERE user_id = ? AND course_id = ?");
+    $s->bind_param('ii', $userId, $courseId);
+    $s->execute();
+    $s->close();
+
+    // Remove certificate
+    $s = $conn->prepare("DELETE FROM lms_certificates WHERE user_id = ? AND course_id = ?");
+    $s->bind_param('ii', $userId, $courseId);
+    $s->execute();
+    $s->close();
+}
+
 // ─── Certificate Helpers ───────────────────────────────────────────────────────
 
 function getCertificate(mysqli $conn, int $userId, int $courseId): ?array {

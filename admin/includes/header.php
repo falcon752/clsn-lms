@@ -87,13 +87,6 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
                 <span class="text-sm"><?= $s['label'] ?></span>
             </a>
             <?php endforeach; ?>
-
-            <div class="border-t border-white/10 pt-4 mt-4">
-                <a href="/clsn-lms/dashboard.php" class="admin-nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/10 text-gray-400">
-                    <i class="fas fa-external-link-alt w-5 text-center text-gray-400"></i>
-                    <span class="text-sm">Back to LMS</span>
-                </a>
-            </div>
         </nav>
 
         <div class="px-4 py-4 border-t border-white/10">

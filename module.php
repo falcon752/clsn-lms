@@ -3,7 +3,7 @@ include_once './includes/db.php';
 include_once './includes/auth.php';
 include_once './includes/functions.php';
 
-requireLogin();
+requireStudent();
 
 $moduleId = (int)($_GET['id'] ?? 0);
 $module   = $moduleId ? getModule($conn, $moduleId) : null;
@@ -155,10 +155,38 @@ include './includes/header-dash.php';
                 <?php endif; ?>
             </div>
             <div class="relative bg-black">
-                <?php if ($embedUrl && in_array($module['video_type'], ['youtube','vimeo'])): ?>
+                <?php if ($embedUrl && $module['video_type'] === 'youtube'): ?>
+                <?php
+                    preg_match('#/embed/([a-zA-Z0-9_-]{11})#', $embedUrl, $ytmM);
+                    $modVidId = $ytmM[1] ?? '';
+                ?>
+                <div class="relative aspect-video group cursor-pointer" id="mod-vid-wrap" onclick="playModVideo('<?= htmlspecialchars($modVidId) ?>', '<?= htmlspecialchars(addslashes($module['title'])) ?>')">
+                    <img src="https://img.youtube.com/vi/<?= htmlspecialchars($modVidId) ?>/maxresdefault.jpg"
+                         onerror="this.src='https://img.youtube.com/vi/<?= htmlspecialchars($modVidId) ?>/hqdefault.jpg'"
+                         alt="<?= htmlspecialchars($module['title']) ?>"
+                         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <div class="w-20 h-20 rounded-full bg-candlelight-500 flex items-center justify-center shadow-2xl transition-transform duration-200 group-hover:scale-110">
+                            <i class="fas fa-play text-white text-2xl ml-1"></i>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                        <i class="fas fa-play-circle mr-1 text-candlelight-400"></i> Play Video
+                    </div>
+                </div>
+                <script>
+                function playModVideo(id, title) {
+                    var wrap = document.getElementById('mod-vid-wrap');
+                    wrap.onclick = null;
+                    wrap.style.cursor = 'default';
+                    wrap.className = 'video-wrapper';
+                    wrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1" title="' + title + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full"></iframe>';
+                }
+                </script>
+                <?php elseif ($embedUrl && $module['video_type'] === 'vimeo'): ?>
                 <div class="video-wrapper">
                     <iframe src="<?= htmlspecialchars($embedUrl) ?>" title="<?= htmlspecialchars($module['title']) ?>"
-                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full"></iframe>
+                        frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen class="w-full"></iframe>
                 </div>
                 <?php elseif ($module['video_type'] === 'file' && !empty($module['video_url'])): ?>
                 <div class="video-wrapper">

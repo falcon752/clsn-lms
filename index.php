@@ -161,11 +161,24 @@ include './includes/header-public.php';
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php foreach ($courses as $course): ?>
             <div class="lms-card bg-white border border-gray-100 shadow-md overflow-hidden">
-                <div class="h-48 overflow-hidden <?= $course['thumbnail'] ? '' : 'course-thumb-ph' ?>">
-                    <?php if ($course['thumbnail']): ?>
-                    <img src="/clsn-lms/<?= htmlspecialchars($course['thumbnail']) ?>" alt="<?= htmlspecialchars($course['title']) ?>" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                <?php
+                $iThumb = '';
+                if (!empty($course['thumbnail']) && file_exists(__DIR__ . '/uploads/thumbnails/' . basename($course['thumbnail']))) {
+                    $iThumb = '/clsn-lms/uploads/thumbnails/' . htmlspecialchars(basename($course['thumbnail']));
+                } elseif (!empty($course['youtube_url'])) {
+                    preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $course['youtube_url'], $iYtm);
+                    if (!empty($iYtm[1])) {
+                        $iThumb = 'https://img.youtube.com/vi/' . htmlspecialchars($iYtm[1]) . '/hqdefault.jpg';
+                    }
+                }
+                ?>
+                <div class="h-48 overflow-hidden <?= $iThumb ? '' : 'course-thumb-ph' ?>">
+                    <?php if ($iThumb): ?>
+                    <img src="<?= $iThumb ?>" alt="<?= htmlspecialchars($course['title']) ?>" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                     <?php else: ?>
-                    <i class="fas fa-graduation-cap text-5xl"></i>
+                    <div class="w-full h-full bg-gradient-to-br from-navy-800 to-navy-600 flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-candlelight-400 text-5xl"></i>
+                    </div>
                     <?php endif; ?>
                 </div>
                 <div class="p-6">

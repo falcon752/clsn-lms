@@ -47,8 +47,23 @@ include './includes/header.php';
 <div class="space-y-4">
     <?php foreach ($courses as $c): ?>
     <div class="lms-card p-5 flex items-center gap-5">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-navy-700 to-navy-900 flex items-center justify-center flex-shrink-0">
+        <?php
+        $aThumb = '';
+        if (!empty($c['thumbnail']) && file_exists(__DIR__ . '/../uploads/thumbnails/' . basename($c['thumbnail']))) {
+            $aThumb = '/clsn-lms/uploads/thumbnails/' . htmlspecialchars(basename($c['thumbnail']));
+        } elseif (!empty($c['youtube_url'])) {
+            preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $c['youtube_url'], $aYtm);
+            if (!empty($aYtm[1])) {
+                $aThumb = 'https://img.youtube.com/vi/' . htmlspecialchars($aYtm[1]) . '/hqdefault.jpg';
+            }
+        }
+        ?>
+        <div class="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-gradient-to-br from-navy-700 to-navy-900 flex items-center justify-center">
+            <?php if ($aThumb): ?>
+            <img src="<?= $aThumb ?>" alt="<?= htmlspecialchars($c['title']) ?>" class="w-full h-full object-cover">
+            <?php else: ?>
             <i class="fas fa-graduation-cap text-candlelight-400 text-lg"></i>
+            <?php endif; ?>
         </div>
         <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2 mb-0.5">

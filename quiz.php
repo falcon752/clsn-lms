@@ -3,7 +3,7 @@ include_once './includes/db.php';
 include_once './includes/auth.php';
 include_once './includes/functions.php';
 
-requireLogin();
+requireStudent();
 
 $moduleId = (int)($_GET['module_id'] ?? 0);
 if (!$moduleId) { header('Location: /clsn-lms/dashboard.php'); exit; }
@@ -23,17 +23,39 @@ $allModules = getCourseModules($conn, $courseId);
 $quiz       = getQuizByModule($conn, $moduleId);
 if (!$quiz) { header("Location: /clsn-lms/module.php?id={$moduleId}"); exit; }
 
-$quizAttempts = getQuizAttemptCount($conn, $userId, $quiz['id']);
+$quizAttempts  = getQuizAttemptCount($conn, $userId, $quiz['id']);
 $alreadyPassed = hasPassed($conn, $userId, $quiz['id']);
 
-// Check attempt limit
-$attemptsLeft = max(0, $quiz['max_attempts'] - $quizAttempts);
-$canAttempt   = $attemptsLeft > 0 && !$alreadyPassed;
+// ── Grace-attempt logic ───────────────────────────────────────────────────────
+// Once all regular attempts are used and the user still hasn't passed,
+// grant ONE extra attempt that unlocks 48 hours after the last failed try.
+$maxRegular      = (int)$quiz['max_attempts'];
+$regularExhausted = !$alreadyPassed && $quizAttempts >= $maxRegular;
+$graceUnlocked   = false;
+$graceSecondsLeft = 0;
+$lastFailedAt    = null;
+
+if ($regularExhausted) {
+    $lastFailedAt = getLastFailedAttemptTime($conn, $userId, $quiz['id']);
+    if ($lastFailedAt) {
+        $unlockAt         = strtotime($lastFailedAt) + (48 * 3600);
+        $graceSecondsLeft = max(0, $unlockAt - time());
+        $graceUnlocked    = $graceSecondsLeft === 0;
+    }
+}
+
+// Total effective attempts = regular + (1 grace if exhausted)
+$effectiveMax = $regularExhausted ? $maxRegular + 1 : $maxRegular;
+$attemptsLeft = max(0, $effectiveMax - $quizAttempts);
+$canAttempt   = !$alreadyPassed && ($attemptsLeft > 0) && (!$regularExhausted || $graceUnlocked);
 
 $questions = getQuizQuestions($conn, $quiz['id']);
 
 // ── Handle Quiz Submission ────────────────────────────────────────────────────
 $result = null;
+// Capture before submission so we know if this was the grace attempt
+$wasGraceAttempt = $regularExhausted && $graceUnlocked;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     if (!isset($_POST['csrf_token']) || !verifyCsrf($_POST['csrf_token'])) {
         $error = 'Security check failed. Please try again.';
@@ -85,13 +107,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
             if ($courseProgress['percent'] >= 100) {
                 issueCertificate($conn, $userId, $courseId);
             }
+        } elseif ($wasGraceAttempt && !$passed) {
+            // Grace attempt also failed — wipe all progress so the user restarts the course
+            resetCourseProgress($conn, $userId, $courseId);
+            header('Location: /clsn-lms/course.php?slug=' . urlencode($module['course_slug']) . '&reset=1');
+            exit;
         }
 
         // Reload attempts
-        $quizAttempts  = getQuizAttemptCount($conn, $userId, $quiz['id']);
-        $alreadyPassed = $passed;
-        $attemptsLeft  = max(0, $quiz['max_attempts'] - $quizAttempts);
-        $canAttempt    = $attemptsLeft > 0 && !$passed;
+        $quizAttempts     = getQuizAttemptCount($conn, $userId, $quiz['id']);
+        $alreadyPassed    = $passed;
+        $regularExhausted = !$alreadyPassed && $quizAttempts >= $maxRegular;
+        $graceUnlocked    = false;
+        $graceSecondsLeft = 0;
+        if ($regularExhausted) {
+            $lastFailedAt = getLastFailedAttemptTime($conn, $userId, $quiz['id']);
+            if ($lastFailedAt) {
+                $unlockAt         = strtotime($lastFailedAt) + (48 * 3600);
+                $graceSecondsLeft = max(0, $unlockAt - time());
+                $graceUnlocked    = $graceSecondsLeft === 0;
+            }
+        }
+        $effectiveMax = $regularExhausted ? $maxRegular + 1 : $maxRegular;
+        $attemptsLeft = max(0, $effectiveMax - $quizAttempts);
+        $canAttempt   = !$alreadyPassed && ($attemptsLeft > 0) && (!$regularExhausted || $graceUnlocked);
 
         $result = [
             'correct'    => $correct,
@@ -138,7 +177,17 @@ include './includes/header-dash.php';
                 <div class="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-500">
                     <span><i class="fas fa-question-circle text-candlelight-500 mr-1"></i><?= count($questions) ?> questions</span>
                     <span><i class="fas fa-percentage text-candlelight-500 mr-1"></i>Pass: <?= $quiz['pass_percentage'] ?>%</span>
-                    <span><i class="fas fa-redo text-candlelight-500 mr-1"></i><?= $attemptsLeft ?> attempt<?= $attemptsLeft !== 1 ? 's' : '' ?> remaining</span>
+                    <?php if (!$alreadyPassed): ?>
+                    <span><i class="fas fa-redo text-candlelight-500 mr-1"></i>
+                        <?php if ($regularExhausted && !$graceUnlocked && $graceSecondsLeft > 0): ?>
+                            Grace attempt available in <?= gmdate('H\h i\m', $graceSecondsLeft) ?>
+                        <?php elseif ($regularExhausted && $graceUnlocked): ?>
+                            1 grace attempt available
+                        <?php else: ?>
+                            <?= $attemptsLeft ?> attempt<?= $attemptsLeft !== 1 ? 's' : '' ?> remaining
+                        <?php endif; ?>
+                    </span>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -197,7 +246,13 @@ include './includes/header-dash.php';
         <?php else: ?>
         <div class="lms-alert lms-alert-error mt-4 text-left">
             <i class="fas fa-exclamation-circle mr-2"></i>
-            You've used all available attempts. Please contact us to reset your quiz.
+            <?php if ($regularExhausted && !$graceUnlocked && $graceSecondsLeft > 0): ?>
+                You've used all <?= $maxRegular ?> attempts. Your <strong>grace attempt</strong> unlocks in <strong><?= gmdate('H\h i\m', $graceSecondsLeft) ?></strong>. Come back then!
+            <?php elseif ($regularExhausted && $graceUnlocked): ?>
+                Your grace attempt is ready — <a href="/clsn-lms/quiz.php?module_id=<?= $moduleId ?>" class="underline font-semibold">try again now</a>.
+            <?php else: ?>
+                You've used all available attempts. Please contact us to reset your quiz.
+            <?php endif; ?>
         </div>
         <?php endif; ?>
     </div>
@@ -249,12 +304,47 @@ include './includes/header-dash.php';
 
     <?php elseif (!$canAttempt && !$alreadyPassed): ?>
     <div class="lms-card p-12 text-center">
+        <?php if ($regularExhausted && !$graceUnlocked && $graceSecondsLeft > 0): ?>
+        <i class="fas fa-hourglass-half text-candlelight-400 text-4xl mb-4 block"></i>
+        <h3 class="font-display text-xl font-bold text-gray-800 mb-2">Grace Attempt Locked</h3>
+        <p class="text-gray-500 mb-2">You've used all <?= $maxRegular ?> regular attempts.</p>
+        <p class="text-gray-600 font-semibold mb-6">Your <span class="text-candlelight-600">bonus grace attempt</span> unlocks in:</p>
+        <div class="inline-block bg-candlelight-50 border border-candlelight-200 rounded-2xl px-8 py-4 mb-6">
+            <span class="font-mono text-3xl font-bold text-candlelight-700" id="grace-countdown"><?= gmdate('H:i:s', $graceSecondsLeft) ?></span>
+        </div>
+        <script>
+        (function() {
+            var s = <?= $graceSecondsLeft ?>;
+            var el = document.getElementById('grace-countdown');
+            function pad(n) { return String(n).padStart(2,'0'); }
+            var t = setInterval(function() {
+                if (s <= 0) { clearInterval(t); location.reload(); return; }
+                s--;
+                var h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+                el.textContent = pad(h)+':'+pad(m)+':'+pad(sec);
+            }, 1000);
+        })();
+        </script>
+        <p class="text-xs text-gray-400 mb-6">Review the module notes in the meantime to prepare.</p>
+        <?php elseif ($regularExhausted && $graceUnlocked): ?>
+        <i class="fas fa-unlock text-green-500 text-4xl mb-4 block"></i>
+        <h3 class="font-display text-xl font-bold text-gray-800 mb-2">Grace Attempt Ready!</h3>
+        <p class="text-gray-500 mb-6">Your bonus attempt is now available. Good luck!</p>
+        <?php else: ?>
         <i class="fas fa-ban text-red-400 text-4xl mb-4 block"></i>
         <h3 class="font-display text-xl font-bold text-gray-800 mb-2">No Attempts Remaining</h3>
-        <p class="text-gray-500 mb-4">You've used all <?= $quiz['max_attempts'] ?> attempts for this quiz.</p>
-        <a href="/clsn-lms/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary inline-flex">
-            <i class="fas fa-arrow-left"></i> Back to Module
-        </a>
+        <p class="text-gray-500 mb-4">You've used all <?= $maxRegular ?> attempts for this quiz.</p>
+        <?php endif; ?>
+        <div class="flex gap-3 justify-center flex-wrap">
+            <?php if ($regularExhausted && $graceUnlocked): ?>
+            <a href="/clsn-lms/quiz.php?module_id=<?= $moduleId ?>" class="btn-lms-primary inline-flex">
+                <i class="fas fa-redo"></i> Take Grace Attempt
+            </a>
+            <?php endif; ?>
+            <a href="/clsn-lms/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary inline-flex">
+                <i class="fas fa-book"></i> Review Module Notes
+            </a>
+        </div>
     </div>
 
     <?php elseif ($alreadyPassed): ?>
@@ -291,7 +381,11 @@ include './includes/header-dash.php';
         <?php if ($quizAttempts > 0): ?>
         <div class="lms-alert lms-alert-error mb-4">
             <i class="fas fa-info-circle mr-2"></i>
-            Previous attempt(s) not passed. <?= $attemptsLeft ?> attempt<?= $attemptsLeft !== 1 ? 's' : '' ?> remaining.
+            <?php if ($regularExhausted && $graceUnlocked): ?>
+                This is your <strong>grace attempt</strong>. Make it count — review the module notes before submitting!
+            <?php else: ?>
+                Previous attempt(s) not passed. <?= $attemptsLeft ?> attempt<?= $attemptsLeft !== 1 ? 's' : '' ?> remaining.
+            <?php endif; ?>
         </div>
         <?php endif; ?>
 
