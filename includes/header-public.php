@@ -16,7 +16,7 @@ $ogDescription   = $ogDescription   ?? $pageDescription;
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
     <meta name="description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>">
     <meta name="robots" content="index, follow">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/clsn-lms/images/favicon.ico">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,7 +74,7 @@ $ogDescription   = $ogDescription   ?? $pageDescription;
 
             <!-- Logo -->
             <a href="/clsn-lms/index.php" class="flex items-center space-x-3">
-                <img src="/images/logo-candlelight.svg" alt="Candlelight LMS" class="w-10 h-10 object-contain">
+                <img src="/clsn-lms/images/logo-candlelight.svg" alt="Candlelight LMS" class="w-10 h-10 object-contain">
                 <div>
                     <div class="font-display font-bold text-lg text-navy-800 leading-tight">Candlelight</div>
                     <div class="text-xs text-candlelight-600 font-semibold tracking-wide">Learning Portal</div>
@@ -116,7 +116,7 @@ $ogDescription   = $ogDescription   ?? $pageDescription;
 <div id="mobile-menu" class="hidden fixed inset-0 bg-navy-900 flex-col z-[2147483647]">
     <div class="flex items-center justify-between px-6 py-5 border-b border-white/10">
         <div class="flex items-center gap-3">
-            <img src="/images/logo-white.svg" alt="Candlelight LMS" class="w-9 h-9 object-contain">
+            <img src="/clsn-lms/images/logo-white.svg" alt="Candlelight LMS" class="w-9 h-9 object-contain">
             <div>
                 <div class="font-display font-bold text-white">Candlelight LMS</div>
                 <div class="text-xs text-candlelight-400">Learning Portal</div>

@@ -8,7 +8,7 @@
             <!-- Brand -->
             <div>
                 <div class="flex items-center gap-3 mb-5">
-                    <img src="/images/logo-white.svg" alt="Candlelight" class="w-12 h-12 object-contain">
+                    <img src="/clsn-lms/images/logo-white.svg" alt="Candlelight" class="w-12 h-12 object-contain">
                     <div>
                         <div class="font-display font-bold text-lg">Candlelight LMS</div>
                         <div class="text-xs text-gray-400">Learning Portal</div>

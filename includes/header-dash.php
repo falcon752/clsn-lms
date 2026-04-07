@@ -19,7 +19,7 @@ $dashPageTitle = $dashPageTitle ?? 'Dashboard';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/clsn-lms/images/favicon.ico">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -63,7 +63,7 @@ $dashPageTitle = $dashPageTitle ?? 'Dashboard';
         <!-- Brand -->
         <div class="px-6 py-5 border-b border-white/10 flex items-center justify-between">
             <a href="/clsn-lms/index.php" class="flex items-center gap-3">
-                <img src="/images/logo-white.svg" alt="Logo" class="w-9 h-9 object-contain">
+                <img src="/clsn-lms/images/logo-white.svg" alt="Logo" class="w-9 h-9 object-contain">
                 <div>
                     <div class="font-display font-bold text-base leading-tight">Candlelight</div>
                     <div class="text-xs text-candlelight-400">Learning Portal</div>
