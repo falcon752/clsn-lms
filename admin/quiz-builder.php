@@ -27,6 +27,18 @@ $err = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['csrf_token']) || !verifyCsrf($_POST['csrf_token'])) {
         $err = 'Security check failed.';
+    } elseif (isset($_POST['create_quiz'])) {
+        $quizTitle = 'Module ' . $module['module_number'] . ' Quiz';
+        $stmt = $conn->prepare("INSERT INTO lms_quizzes (module_id, title, pass_percentage, max_attempts) VALUES (?, ?, 70, 3)");
+        $stmt->bind_param('is', $moduleId, $quizTitle);
+        if ($stmt->execute()) {
+            $stmt->close();
+            header("Location: /clsn-lms/admin/quiz-builder.php?module_id={$moduleId}&created=1");
+            exit;
+        } else {
+            $err = 'Could not create quiz: ' . $conn->error;
+            $stmt->close();
+        }
     } elseif (isset($_POST['save_quiz_settings']) && $quiz) {
         $pass = max(1, min(100, (int)($_POST['pass_percentage'] ?? 70)));
         $max  = max(1, (int)($_POST['max_attempts'] ?? 3));
@@ -70,6 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+if (isset($_GET['created'])) $msg = 'Quiz created! Now add your questions below.';
+
 // Reload questions
 $questions = [];
 if ($quiz) {
@@ -93,19 +107,32 @@ include './includes/header.php';
 ?>
 
 <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6 flex-wrap">
+    <a href="/clsn-lms/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
+    <i class="fas fa-chevron-right text-xs text-gray-300"></i>
+    <a href="/clsn-lms/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="hover:text-candlelight-600 transition-colors"><?= htmlspecialchars($module['course_title']) ?></a>
+    <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <a href="/clsn-lms/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="hover:text-candlelight-600 transition-colors">Modules</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <span class="text-gray-800">Module <?= $module['module_number'] ?> Quiz</span>
+    <span class="text-gray-800 font-medium">Module <?= $module['module_number'] ?> Quiz</span>
 </nav>
 
 <?php if ($msg): ?><div class="lms-alert lms-alert-success mb-5"><i class="fas fa-check-circle mr-2"></i><?= htmlspecialchars($msg) ?></div><?php endif; ?>
 <?php if ($err): ?><div class="lms-alert lms-alert-error mb-5"><i class="fas fa-exclamation-circle mr-2"></i><?= htmlspecialchars($err) ?></div><?php endif; ?>
 
 <?php if (!$quiz): ?>
-<div class="lms-card p-12 text-center max-w-lg">
-    <i class="fas fa-question-circle text-gray-300 text-5xl mb-4 block"></i>
-    <p class="text-gray-400 mb-4">No quiz exists for this module yet.</p>
-    <p class="text-sm text-gray-400">Quizzes are created via the database setup. Check that setup.php was run correctly.</p>
+<div class="lms-card p-10 text-center max-w-md">
+    <div class="w-16 h-16 rounded-2xl bg-candlelight-50 flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-question-circle text-candlelight-500 text-3xl"></i>
+    </div>
+    <h3 class="font-display font-bold text-navy-900 text-lg mb-2">No Quiz Yet</h3>
+    <p class="text-gray-500 text-sm mb-6">This module doesn't have a quiz. Create one to let students test their knowledge after completing the lesson.</p>
+    <form method="POST">
+        <?= csrfField() ?>
+        <input type="hidden" name="create_quiz" value="1">
+        <button type="submit" class="btn-lms-primary">
+            <i class="fas fa-plus-circle"></i> Create Quiz for this Module
+        </button>
+    </form>
 </div>
 <?php else: ?>
 

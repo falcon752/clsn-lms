@@ -58,7 +58,7 @@ $modulesForFilter = $conn->query(
 
 $unanswered = array_filter($qaList, fn($q) => !$q['is_answered']);
 
-$adminPageTitle = 'Q&amp;A Manager';
+$adminPageTitle = 'Q&A Manager';
 include './includes/header.php';
 ?>
 
