@@ -195,7 +195,7 @@ include './includes/header-dash.php';
             <?php else: ?>
             <div class="p-4 bg-green-50 border-t border-green-200">
                 <p class="text-sm text-green-700 flex items-center gap-2">
-                    <i class="fas fa-check-circle"></i> Video watched — you can now take the quiz.
+                    <i class="fas fa-check-circle"></i> Video watched. You can now take the quiz.
                 </p>
             </div>
             <?php endif; ?>

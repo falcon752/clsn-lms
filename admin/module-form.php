@@ -4,15 +4,48 @@ include_once '../includes/auth.php';
 
 requireAdmin();
 
-$moduleId = (int)($_GET['id'] ?? 0);
-if (!$moduleId) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+$isNew    = isset($_GET['new']) && (int)($_GET['course_id'] ?? 0) > 0;
+$moduleId = $isNew ? 0 : (int)($_GET['id'] ?? 0);
+$module   = null;
 
-$stmt = $conn->prepare("SELECT m.*, c.title AS course_title, c.id AS course_id FROM lms_modules m JOIN lms_courses c ON c.id=m.course_id WHERE m.id=?");
-$stmt->bind_param('i', $moduleId);
-$stmt->execute();
-$module = $stmt->get_result()->fetch_assoc();
-$stmt->close();
-if (!$module) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+if ($isNew) {
+    $courseId = (int)$_GET['course_id'];
+    $cStmt = $conn->prepare("SELECT * FROM lms_courses WHERE id = ?");
+    $cStmt->bind_param('i', $courseId);
+    $cStmt->execute();
+    $courseRow = $cStmt->get_result()->fetch_assoc();
+    $cStmt->close();
+    if (!$courseRow) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+
+    // Next module number
+    $r = $conn->prepare("SELECT COALESCE(MAX(module_number),0)+1 AS next_num FROM lms_modules WHERE course_id=?");
+    $r->bind_param('i', $courseId);
+    $r->execute();
+    $nextNum = (int)$r->get_result()->fetch_assoc()['next_num'];
+    $r->close();
+
+    $module = [
+        'id'               => 0,
+        'course_id'        => $courseId,
+        'course_title'     => $courseRow['title'],
+        'module_number'    => $nextNum,
+        'title'            => '',
+        'description'      => '',
+        'video_type'       => 'youtube',
+        'video_url'        => '',
+        'notes'            => '',
+        'duration_minutes' => 30,
+        'is_active'        => 1,
+    ];
+} else {
+    if (!$moduleId) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+    $stmt = $conn->prepare("SELECT m.*, c.title AS course_title, c.id AS course_id FROM lms_modules m JOIN lms_courses c ON c.id=m.course_id WHERE m.id=?");
+    $stmt->bind_param('i', $moduleId);
+    $stmt->execute();
+    $module = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+    if (!$module) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+}
 
 $msg = '';
 $err = '';
@@ -31,23 +64,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_module'])) {
 
         if (empty($title)) { $err = 'Module title is required.'; }
         else {
-            $stmt = $conn->prepare("UPDATE lms_modules SET title=?,description=?,video_type=?,video_url=?,notes=?,duration_minutes=?,is_active=? WHERE id=?");
-            $stmt->bind_param('sssssiis', $title, $desc, $videoType, $videoUrl, $notes, $duration, $isActive, $moduleId);
-            $stmt->execute();
-            $stmt->close();
-            $module['title']       = $title;
-            $module['description'] = $desc;
-            $module['video_type']  = $videoType;
-            $module['video_url']   = $videoUrl;
-            $module['notes']       = $notes;
-            $module['duration_minutes'] = $duration;
-            $module['is_active']   = $isActive;
-            $msg = 'Module updated successfully!';
+            if ($isNew) {
+                $sortOrder = $module['module_number'];
+                $stmt = $conn->prepare("INSERT INTO lms_modules (course_id,module_number,title,description,video_type,video_url,notes,duration_minutes,is_active,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?)");
+                $stmt->bind_param('iisssssiis', $module['course_id'], $module['module_number'], $title, $desc, $videoType, $videoUrl, $notes, $duration, $isActive, $sortOrder);
+                if ($stmt->execute()) {
+                    $newModId = $conn->insert_id;
+                    // Update total_modules count
+                    $conn->query("UPDATE lms_courses SET total_modules=(SELECT COUNT(*) FROM lms_modules WHERE course_id={$module['course_id']}) WHERE id={$module['course_id']}");
+                    $stmt->close();
+                    header('Location: /clsn-lms/admin/modules.php?course_id=' . $module['course_id'] . '&added=1');
+                    exit;
+                } else {
+                    $err = 'Database error: ' . $conn->error;
+                    $stmt->close();
+                }
+            } else {
+                $stmt = $conn->prepare("UPDATE lms_modules SET title=?,description=?,video_type=?,video_url=?,notes=?,duration_minutes=?,is_active=? WHERE id=?");
+                $stmt->bind_param('sssssiis', $title, $desc, $videoType, $videoUrl, $notes, $duration, $isActive, $moduleId);
+                $stmt->execute();
+                $stmt->close();
+                $module['title']       = $title;
+                $module['description'] = $desc;
+                $module['video_type']  = $videoType;
+                $module['video_url']   = $videoUrl;
+                $module['notes']       = $notes;
+                $module['duration_minutes'] = $duration;
+                $module['is_active']   = $isActive;
+                $msg = 'Module updated successfully!';
+            }
         }
     }
 }
 
-$adminPageTitle = 'Edit Module';
+$adminPageTitle = $isNew ? 'Add Module' : 'Edit Module';
 include './includes/header.php';
 ?>
 
@@ -56,7 +106,7 @@ include './includes/header.php';
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <a href="/clsn-lms/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="hover:text-candlelight-600 transition-colors">Modules</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <span class="text-gray-800">Module <?= $module['module_number'] ?></span>
+    <span class="text-gray-800"><?= $isNew ? 'New Module' : 'Module ' . $module['module_number'] ?></span>
 </nav>
 
 <div class="max-w-3xl">
@@ -100,7 +150,7 @@ include './includes/header.php';
                 <p class="text-xs text-gray-400 mt-1">Paste a YouTube or Vimeo URL. For self-hosted, add the filename (e.g., module1.mp4).</p>
             </div>
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Module Notes (HTML supported)</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Module Notes</label>
                 <textarea name="notes" rows="12" class="lms-input font-mono text-xs resize-y"><?= htmlspecialchars($module['notes'] ?? '') ?></textarea>
                 <p class="text-xs text-gray-400 mt-1">You can use HTML tags (&lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;em&gt;, etc.)</p>
             </div>
@@ -112,13 +162,15 @@ include './includes/header.php';
         </div>
 
         <div class="flex items-center gap-3">
-            <button type="submit" class="btn-lms-primary"><i class="fas fa-save"></i> Save Changes</button>
+            <button type="submit" class="btn-lms-primary"><i class="fas fa-save"></i> <?= $isNew ? 'Create Module' : 'Save Changes' ?></button>
             <a href="/clsn-lms/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="btn-lms-secondary">
                 <i class="fas fa-arrow-left"></i> Back to Modules
             </a>
+            <?php if (!$isNew): ?>
             <a href="/clsn-lms/admin/quiz-builder.php?module_id=<?= $moduleId ?>" class="btn-lms-secondary">
                 <i class="fas fa-pencil-alt"></i> Edit Quiz
             </a>
+            <?php endif; ?>
         </div>
     </form>
 </div>

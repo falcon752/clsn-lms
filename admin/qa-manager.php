@@ -73,7 +73,7 @@ include './includes/header.php';
             <option value="">All Modules</option>
             <?php foreach ($modulesForFilter as $m): ?>
             <option value="<?= $m['id'] ?>" <?= $filterModule===$m['id']?'selected':'' ?>>
-                <?= htmlspecialchars($m['course_title']) ?> — Mod <?= $m['module_number'] ?>: <?= htmlspecialchars(substr($m['title'],0,30)) ?>
+                <?= htmlspecialchars($m['course_title']) ?> (Mod <?= $m['module_number'] ?>): <?= htmlspecialchars(substr($m['title'],0,30)) ?>
             </option>
             <?php endforeach; ?>
         </select>
@@ -98,7 +98,7 @@ include './includes/header.php';
             <div class="flex items-center gap-2 text-xs text-gray-500">
                 <span class="font-semibold text-gray-700"><?= htmlspecialchars($qa['student_name']) ?></span>
                 <span>&middot;</span>
-                <span><?= htmlspecialchars($qa['course_title']) ?> — Mod <?= $qa['module_number'] ?></span>
+                <span><?= htmlspecialchars($qa['course_title']) ?> (Mod <?= $qa['module_number'] ?>)</span>
                 <span>&middot;</span>
                 <span><?= date('M j, Y g:ia', strtotime($qa['created_at'])) ?></span>
             </div>

@@ -12,7 +12,7 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($adminPageTitle) ?> — CLSN LMS Admin</title>
+    <title><?= htmlspecialchars($adminPageTitle) ?> | CLSN LMS Admin</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,13 +70,13 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
             $sections = [
                 ['href'=>'/clsn-lms/admin/index.php',        'icon'=>'fa-tachometer-alt','label'=>'Dashboard',      'match'=>'index.php'],
                 ['href'=>'/clsn-lms/admin/users.php',         'icon'=>'fa-users',          'label'=>'Users',          'match'=>'users.php'],
-                ['href'=>'/clsn-lms/admin/courses.php',       'icon'=>'fa-graduation-cap', 'label'=>'Courses',        'match'=>'courses.php'],
-                ['href'=>'/clsn-lms/admin/modules.php',       'icon'=>'fa-layer-group',    'label'=>'Modules',        'match'=>'modules.php'],
+                ['href'=>'/clsn-lms/admin/courses.php',       'icon'=>'fa-graduation-cap', 'label'=>'Courses',        'match'=>'courses.php|course-form.php'],
+                ['href'=>'/clsn-lms/admin/modules.php',       'icon'=>'fa-layer-group',    'label'=>'Modules',        'match'=>'modules.php|module-form.php'],
                 ['href'=>'/clsn-lms/admin/quiz-builder.php',  'icon'=>'fa-question-circle','label'=>'Quiz Builder',   'match'=>'quiz-builder.php'],
                 ['href'=>'/clsn-lms/admin/qa-manager.php',    'icon'=>'fa-comments',       'label'=>'Q&A Manager',    'match'=>'qa-manager.php'],
             ];
             foreach ($sections as $s):
-                $active = ($cp === $s['match']);
+                $active = in_array($cp, explode('|', $s['match']));
             ?>
             <a href="<?= $s['href'] ?>" class="admin-nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/10 <?= $active ? 'active' : 'text-gray-300' ?>">
                 <i class="fas <?= $s['icon'] ?> w-5 text-center <?= $active ? 'text-candlelight-500' : 'text-gray-400' ?>"></i>

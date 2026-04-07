@@ -15,7 +15,7 @@ foreach ($courses as &$course) {
 }
 unset($course);
 
-$pageTitle = 'Courses — Candlelight LMS';
+$pageTitle = 'Courses | Candlelight LMS';
 include './includes/header-public.php';
 ?>
 
@@ -23,7 +23,7 @@ include './includes/header-public.php';
     <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
         <span class="inline-block px-4 py-1.5 bg-candlelight-500/20 text-candlelight-300 rounded-full text-sm font-semibold mb-4 border border-candlelight-500/30">Our Courses</span>
         <h1 class="font-display text-4xl md:text-5xl font-bold mb-4">Learn. Grow. Make an Impact.</h1>
-        <p class="text-gray-300 text-lg max-w-2xl mx-auto">Evidence-based courses crafted by Candlelight Foundation specialists — designed for parents, caregivers, educators, and healthcare professionals.</p>
+        <p class="text-gray-300 text-lg max-w-2xl mx-auto">Evidence-based courses crafted by Candlelight Foundation specialists, designed for parents, caregivers, educators, and healthcare professionals.</p>
     </div>
 </section>
 
@@ -130,7 +130,7 @@ include './includes/header-public.php';
         <h2 class="font-display text-3xl font-bold mb-3">Ready to begin your journey?</h2>
         <p class="text-gray-300 mb-8">Create a free account and get instant access to all courses.</p>
         <a href="/clsn-lms/register.php" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-candlelight-500/30 hover:-translate-y-1">
-            <i class="fas fa-rocket"></i> Get Started — It's Free
+            <i class="fas fa-rocket"></i> Get Started (It's Free)
         </a>
     </div>
 </section>

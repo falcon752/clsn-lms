@@ -72,7 +72,7 @@ include './includes/header-public.php';
                         </div>
                         <div>
                             <div class="font-bold text-navy-900">Understanding Autism</div>
-                            <div class="text-sm text-gray-500">Flagship Course — 8 Modules</div>
+                            <div class="text-sm text-gray-500">Flagship Course &middot; 8 Modules</div>
                         </div>
                         <span class="ml-auto px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">FREE</span>
                     </div>

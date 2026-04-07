@@ -1,6 +1,6 @@
 <?php
 /**
- * CLSN LMS — First-Run Setup Script
+ * CLSN LMS : First-Run Setup Script
  * Run this once to create tables, seed data, and an admin account.
  * DELETE THIS FILE after setup is complete.
  */
@@ -29,9 +29,9 @@ $conn->set_charset('utf8mb4');
 
 // Step 2: Create database
 if ($conn->query("CREATE DATABASE IF NOT EXISTS `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")) {
-    $done[] = "✅ Database <strong>$dbName</strong> created / verified.";
+    $done[] = '<i class="fas fa-check-circle text-green-600 mr-1"></i> Database <strong>' . $dbName . '</strong> created / verified.';
 } else {
-    $errors[] = "❌ Could not create database: " . $conn->error;
+    $errors[] = '<i class="fas fa-times-circle text-red-600 mr-1"></i> Could not create database: ' . $conn->error;
 }
 
 $conn->select_db($dbName);
@@ -48,13 +48,13 @@ if (file_exists($schemaFile)) {
     foreach ($statements as $stmt) {
         if (!empty($stmt)) {
             if (!$conn->query($stmt)) {
-                $errors[] = "❌ SQL Error: " . $conn->error . "<br><code>" . htmlspecialchars(substr($stmt, 0, 120)) . "...</code>";
+                $errors[] = '<i class="fas fa-times-circle text-red-600 mr-1"></i> SQL Error: ' . $conn->error . '<br><code>' . htmlspecialchars(substr($stmt, 0, 120)) . '...</code>';
             }
         }
     }
-    $done[] = "✅ All database tables created / verified.";
+    $done[] = '<i class="fas fa-check-circle text-green-600 mr-1"></i> All database tables created / verified.';
 } else {
-    $errors[] = "❌ Schema file not found at database/schema.sql";
+    $errors[] = '<i class="fas fa-times-circle text-red-600 mr-1"></i> Schema file not found at database/schema.sql';
 }
 
 // Step 4: Seed autism course data
@@ -64,7 +64,7 @@ $row    = $result->fetch_assoc();
 if ((int)$row['cnt'] === 0) {
     seedAutismCourse($conn, $done, $errors);
 } else {
-    $done[] = "ℹ️ Course data already exists — skipping seed.";
+    $done[] = '<i class="fas fa-info-circle text-blue-500 mr-1"></i> Course data already exists, skipping seed.';
 }
 
 // Step 5: Create admin user
@@ -77,13 +77,13 @@ if ($check->num_rows === 0) {
     $ins  = $conn->prepare("INSERT INTO lms_users (first_name, last_name, email, password, role) VALUES (?,?,?,?,'admin')");
     $ins->bind_param('ssss', $adminFirst, $adminLast, $adminEmail, $hash);
     if ($ins->execute()) {
-        $done[] = "✅ Admin account created: <strong>$adminEmail</strong> / <strong>$adminPass</strong>";
+        $done[] = '<i class="fas fa-check-circle text-green-600 mr-1"></i> Admin account created: <strong>' . $adminEmail . '</strong> / <strong>' . $adminPass . '</strong>';
     } else {
-        $errors[] = "❌ Could not create admin: " . $ins->error;
+        $errors[] = '<i class="fas fa-times-circle text-red-600 mr-1"></i> Could not create admin: ' . $ins->error;
     }
     $ins->close();
 } else {
-    $done[] = "ℹ️ Admin user already exists — skipping.";
+    $done[] = '<i class="fas fa-info-circle text-blue-500 mr-1"></i> Admin user already exists, skipping.';
 }
 $check->close();
 $conn->close();
@@ -100,7 +100,7 @@ function seedAutismCourse(mysqli $conn, array &$done, array &$errors): void {
     $stmt->execute();
     $courseId = $conn->insert_id;
     $stmt->close();
-    $done[] = "✅ Autism course inserted (ID: $courseId).";
+    $done[] = '<i class="fas fa-check-circle text-green-600 mr-1"></i> Autism course inserted (ID: ' . $courseId . ').';
 
     // Module data: [module_number, title, description, notes, duration_minutes]
     $modules = [
@@ -110,19 +110,19 @@ function seedAutismCourse(mysqli $conn, array &$done, array &$errors): void {
          45],
         [2, 'Early Signs and Diagnosis of Autism',
          'Learn to identify early warning signs and understand the diagnostic process for autism.',
-         '<h2>Recognizing Early Signs of Autism</h2><p>Early identification of autism is crucial for accessing interventions that can significantly improve outcomes. Many signs can be observed before a child\'s second birthday.</p><h3>Red Flags by Age</h3><h4>By 12 Months:</h4><ul><li>No babbling or pointing</li><li>No back-and-forth gestures (waving, reaching)</li><li>Does not respond to name</li></ul><h4>By 18 Months:</h4><ul><li>No single words spoken</li><li>Loss of previously acquired language</li></ul><h4>By 24 Months:</h4><ul><li>No two-word spontaneous phrases</li><li>Unusual toy play patterns</li></ul><h3>The Diagnostic Process</h3><ol><li><strong>Developmental Screening</strong> — M-CHAT during routine check-ups</li><li><strong>Comprehensive Evaluation</strong> — multidisciplinary team assessment</li><li><strong>Diagnostic Tools</strong> — ADOS-2, ADI-R, CARS</li></ol><h3>Why Early Diagnosis Matters</h3><p>Research consistently shows that early intervention (especially before age 5) leads to significantly better outcomes in communication, social skills, and adaptive behavior.</p>',
+         '<h2>Recognizing Early Signs of Autism</h2><p>Early identification of autism is crucial for accessing interventions that can significantly improve outcomes. Many signs can be observed before a child\'s second birthday.</p><h3>Red Flags by Age</h3><h4>By 12 Months:</h4><ul><li>No babbling or pointing</li><li>No back-and-forth gestures (waving, reaching)</li><li>Does not respond to name</li></ul><h4>By 18 Months:</h4><ul><li>No single words spoken</li><li>Loss of previously acquired language</li></ul><h4>By 24 Months:</h4><ul><li>No two-word spontaneous phrases</li><li>Unusual toy play patterns</li></ul><h3>The Diagnostic Process</h3><ol><li><strong>Developmental Screening</strong> : M-CHAT during routine check-ups</li><li><strong>Comprehensive Evaluation</strong> : multidisciplinary team assessment</li><li><strong>Diagnostic Tools</strong> : ADOS-2, ADI-R, CARS</li></ol><h3>Why Early Diagnosis Matters</h3><p>Research consistently shows that early intervention (especially before age 5) leads to significantly better outcomes in communication, social skills, and adaptive behavior.</p>',
          50],
         [3, 'Communication Strategies for Children with Autism',
          'Explore evidence-based communication strategies including AAC, PECS, and verbal prompting.',
-         '<h2>Communication in Autism</h2><p>Communication challenges are a core characteristic of autism, ranging from complete absence of verbal speech to subtle conversational difficulties.</p><h3>Types of Communication Challenges</h3><ul><li><strong>Verbal:</strong> Delayed speech, echolalia, scripted speech</li><li><strong>Non-verbal:</strong> Difficulty with gestures, facial expressions, and eye contact</li><li><strong>Pragmatic:</strong> Challenges with social use of language (turn-taking, topic maintenance)</li></ul><h3>AAC — Augmentative and Alternative Communication</h3><p>AAC encompasses all methods that supplement or replace speech:</p><ul><li><strong>Low-tech:</strong> Picture exchange, communication boards, sign language</li><li><strong>High-tech:</strong> Speech generating devices (SGDs), Proloquo2Go app</li></ul><h3>PECS — Picture Exchange Communication System</h3><p>PECS teaches communication using pictures across 6 progressive phases, from exchanging a single picture to complex commenting.</p><h3>Key Communication Strategies</h3><ul><li>Use simple, direct language</li><li>Allow processing time before expecting a response</li><li>Pair verbal instructions with visual supports</li><li>Acknowledge all communication attempts</li><li>Create communication-rich environments</li></ul>',
+         '<h2>Communication in Autism</h2><p>Communication challenges are a core characteristic of autism, ranging from complete absence of verbal speech to subtle conversational difficulties.</p><h3>Types of Communication Challenges</h3><ul><li><strong>Verbal:</strong> Delayed speech, echolalia, scripted speech</li><li><strong>Non-verbal:</strong> Difficulty with gestures, facial expressions, and eye contact</li><li><strong>Pragmatic:</strong> Challenges with social use of language (turn-taking, topic maintenance)</li></ul><h3>AAC : Augmentative and Alternative Communication</h3><p>AAC encompasses all methods that supplement or replace speech:</p><ul><li><strong>Low-tech:</strong> Picture exchange, communication boards, sign language</li><li><strong>High-tech:</strong> Speech generating devices (SGDs), Proloquo2Go app</li></ul><h3>PECS : Picture Exchange Communication System</h3><p>PECS teaches communication using pictures across 6 progressive phases, from exchanging a single picture to complex commenting.</p><h3>Key Communication Strategies</h3><ul><li>Use simple, direct language</li><li>Allow processing time before expecting a response</li><li>Pair verbal instructions with visual supports</li><li>Acknowledge all communication attempts</li><li>Create communication-rich environments</li></ul>',
          55],
         [4, 'Applied Behavior Analysis (ABA) and Behavioral Interventions',
          'Understand the science behind ABA therapy and how it is applied to support children with autism.',
-         '<h2>What is Applied Behavior Analysis (ABA)?</h2><p>ABA is a scientific approach to understanding behavior and how it is affected by the environment. It is the most evidence-based intervention for autism, endorsed by the American Academy of Pediatrics.</p><h3>The ABC Model</h3><ul><li><strong>Antecedent</strong> — What happens BEFORE the behavior</li><li><strong>Behavior</strong> — The action itself</li><li><strong>Consequence</strong> — What happens AFTER the behavior</li></ul><h3>Core ABA Techniques</h3><h4>Discrete Trial Training (DTT)</h4><p>Structured, repetitive teaching sessions breaking skills into small components. Highly effective for early learners.</p><h4>Natural Environment Teaching (NET)</h4><p>Learning within natural daily routines, improving generalization of skills.</p><h4>Positive Reinforcement</h4><p>Providing meaningful rewards immediately following desired behaviors to increase their frequency.</p><h4>Prompting and Fading</h4><p>Providing assistance to help perform a behavior, then gradually reducing it.</p><h3>Modern ABA — Person-Centered Approach</h3><p>Contemporary ABA prioritizes assent-based therapy, naturalistic teaching, quality of life outcomes, and caregiver involvement.</p>',
+         '<h2>What is Applied Behavior Analysis (ABA)?</h2><p>ABA is a scientific approach to understanding behavior and how it is affected by the environment. It is the most evidence-based intervention for autism, endorsed by the American Academy of Pediatrics.</p><h3>The ABC Model</h3><ul><li><strong>Antecedent</strong> : What happens BEFORE the behavior</li><li><strong>Behavior</strong> : The action itself</li><li><strong>Consequence</strong> : What happens AFTER the behavior</li></ul><h3>Core ABA Techniques</h3><h4>Discrete Trial Training (DTT)</h4><p>Structured, repetitive teaching sessions breaking skills into small components. Highly effective for early learners.</p><h4>Natural Environment Teaching (NET)</h4><p>Learning within natural daily routines, improving generalization of skills.</p><h4>Positive Reinforcement</h4><p>Providing meaningful rewards immediately following desired behaviors to increase their frequency.</p><h4>Prompting and Fading</h4><p>Providing assistance to help perform a behavior, then gradually reducing it.</p><h3>Modern ABA : Person-Centered Approach</h3><p>Contemporary ABA prioritizes assent-based therapy, naturalistic teaching, quality of life outcomes, and caregiver involvement.</p>',
          60],
         [5, 'Sensory Processing and Sensory Integration',
          'Understand sensory processing differences in autism and learn strategies to support sensory regulation.',
-         '<h2>Sensory Processing in Autism</h2><p>Up to 90% of individuals with autism experience sensory processing differences that can significantly impact daily functioning, behavior, and learning.</p><h3>The 8 Sensory Systems</h3><ol><li><strong>Visual</strong> — Sight</li><li><strong>Auditory</strong> — Sound</li><li><strong>Tactile</strong> — Touch</li><li><strong>Olfactory</strong> — Smell</li><li><strong>Gustatory</strong> — Taste</li><li><strong>Vestibular</strong> — Balance and movement</li><li><strong>Proprioceptive</strong> — Body position and pressure</li><li><strong>Interoceptive</strong> — Internal body signals</li></ol><h3>Hyper vs. Hyposensitivity</h3><ul><li><strong>Hypersensitivity:</strong> Over-responsive to sensory input (covering ears, avoiding textures)</li><li><strong>Hyposensitivity:</strong> Under-responsive, seeks intense sensory experiences (spinning, chewing)</li></ul><h3>Sensory-Supportive Strategies</h3><ul><li>Use noise-canceling headphones in noisy environments</li><li>Provide a quiet sensory retreat space</li><li>Use visual schedules to reduce anxiety</li><li>Offer sensory diet activities (proprioceptive input, calming strategies)</li></ul><h3>Sensory Integration Therapy</h3><p>Developed by occupational therapist Jean Ayres, SI therapy uses structured, playful activities to help the brain process sensory information more efficiently.</p>',
+         '<h2>Sensory Processing in Autism</h2><p>Up to 90% of individuals with autism experience sensory processing differences that can significantly impact daily functioning, behavior, and learning.</p><h3>The 8 Sensory Systems</h3><ol><li><strong>Visual</strong> : Sight</li><li><strong>Auditory</strong> : Sound</li><li><strong>Tactile</strong> : Touch</li><li><strong>Olfactory</strong> : Smell</li><li><strong>Gustatory</strong> : Taste</li><li><strong>Vestibular</strong> : Balance and movement</li><li><strong>Proprioceptive</strong> : Body position and pressure</li><li><strong>Interoceptive</strong> : Internal body signals</li></ol><h3>Hyper vs. Hyposensitivity</h3><ul><li><strong>Hypersensitivity:</strong> Over-responsive to sensory input (covering ears, avoiding textures)</li><li><strong>Hyposensitivity:</strong> Under-responsive, seeks intense sensory experiences (spinning, chewing)</li></ul><h3>Sensory-Supportive Strategies</h3><ul><li>Use noise-canceling headphones in noisy environments</li><li>Provide a quiet sensory retreat space</li><li>Use visual schedules to reduce anxiety</li><li>Offer sensory diet activities (proprioceptive input, calming strategies)</li></ul><h3>Sensory Integration Therapy</h3><p>Developed by occupational therapist Jean Ayres, SI therapy uses structured, playful activities to help the brain process sensory information more efficiently.</p>',
          50],
         [6, 'Social Skills Development',
          'Practical strategies and programs for developing social skills in children with autism.',
@@ -130,7 +130,7 @@ function seedAutismCourse(mysqli $conn, array &$done, array &$errors): void {
          55],
         [7, 'Supporting Families and Caregivers',
          'Understand the challenges families face and how to build effective support systems.',
-         '<h2>The Family Journey with Autism</h2><p>A diagnosis of autism affects the entire family. Parents, siblings, and extended family all need support, understanding, and practical tools.</p><h3>The Emotional Journey</h3><p>Many families experience a grief cycle following diagnosis: shock, guilt, anger, bargaining, depression, and eventually acceptance and advocacy. These are normal responses — there is no "right" way to feel.</p><h3>Impact on Siblings</h3><ul><li>Feelings of being overlooked</li><li>Social challenges explaining autism to peers</li><li>Development of empathy and resilience</li></ul><h3>Caregiver Training Strategies</h3><ul><li><strong>NDBI</strong> — Naturalistic Developmental Behavioral Intervention</li><li><strong>Hanen — More Than Words</strong> program for parents of young children</li><li><strong>Parent-Implemented Intervention (PII)</strong></li></ul><h3>Building Your Support Network</h3><ul><li>Connect with parent support groups</li><li>Seek respite care services</li><li>Advocate within your child\'s school system</li><li>Practice self-care — you cannot pour from an empty cup</li></ul>',
+         '<h2>The Family Journey with Autism</h2><p>A diagnosis of autism affects the entire family. Parents, siblings, and extended family all need support, understanding, and practical tools.</p><h3>The Emotional Journey</h3><p>Many families experience a grief cycle following diagnosis: shock, guilt, anger, bargaining, depression, and eventually acceptance and advocacy. These are normal responses : there is no "right" way to feel.</p><h3>Impact on Siblings</h3><ul><li>Feelings of being overlooked</li><li>Social challenges explaining autism to peers</li><li>Development of empathy and resilience</li></ul><h3>Caregiver Training Strategies</h3><ul><li><strong>NDBI</strong> : Naturalistic Developmental Behavioral Intervention</li><li><strong>Hanen : More Than Words</strong> program for parents of young children</li><li><strong>Parent-Implemented Intervention (PII)</strong></li></ul><h3>Building Your Support Network</h3><ul><li>Connect with parent support groups</li><li>Seek respite care services</li><li>Advocate within your child\'s school system</li><li>Practice self-care : you cannot pour from an empty cup</li></ul>',
          60],
         [8, 'Transition to Adulthood and Future Planning',
          'Prepare families for the transition from childhood services to adult life for individuals with autism.',
@@ -146,19 +146,19 @@ function seedAutismCourse(mysqli $conn, array &$done, array &$errors): void {
         $moduleIds[$m[0]] = $conn->insert_id;
     }
     $modStmt->close();
-    $done[] = "✅ 8 modules inserted.";
+    $done[] = '<i class="fas fa-check-circle text-green-600 mr-1"></i> 8 modules inserted.';
 
-    // Insert PDFs (placeholders — admin uploads real files)
+    // Insert PDFs (placeholders : admin uploads real files)
     $pdfStmt = $conn->prepare("INSERT INTO lms_module_pdfs (module_id, title, file_path, file_size) VALUES (?,?,?,?)");
     $pdfTitles = [
-        1 => ['Week 1 Workbook — Introduction to ASD', 'uploads/pdfs/week1-workbook.pdf', '2.4 MB'],
-        2 => ['Week 2 Workbook — Early Signs & Diagnosis', 'uploads/pdfs/week2-workbook.pdf', '1.8 MB'],
-        3 => ['Week 3 Workbook — Communication Strategies', 'uploads/pdfs/week3-workbook.pdf', '3.1 MB'],
-        4 => ['Week 4 Workbook — ABA Therapy Guide', 'uploads/pdfs/week4-workbook.pdf', '2.7 MB'],
-        5 => ['Week 5 Workbook — Sensory Processing', 'uploads/pdfs/week5-workbook.pdf', '2.2 MB'],
-        6 => ['Week 6 Workbook — Social Skills Activities', 'uploads/pdfs/week6-workbook.pdf', '3.5 MB'],
-        7 => ['Week 7 Workbook — Family Support Guide', 'uploads/pdfs/week7-workbook.pdf', '2.0 MB'],
-        8 => ['Week 8 Workbook — Transition Planning', 'uploads/pdfs/week8-workbook.pdf', '4.1 MB'],
+        1 => ['Week 1 Workbook : Introduction to ASD', 'uploads/pdfs/week1-workbook.pdf', '2.4 MB'],
+        2 => ['Week 2 Workbook : Early Signs & Diagnosis', 'uploads/pdfs/week2-workbook.pdf', '1.8 MB'],
+        3 => ['Week 3 Workbook : Communication Strategies', 'uploads/pdfs/week3-workbook.pdf', '3.1 MB'],
+        4 => ['Week 4 Workbook : ABA Therapy Guide', 'uploads/pdfs/week4-workbook.pdf', '2.7 MB'],
+        5 => ['Week 5 Workbook : Sensory Processing', 'uploads/pdfs/week5-workbook.pdf', '2.2 MB'],
+        6 => ['Week 6 Workbook : Social Skills Activities', 'uploads/pdfs/week6-workbook.pdf', '3.5 MB'],
+        7 => ['Week 7 Workbook : Family Support Guide', 'uploads/pdfs/week7-workbook.pdf', '2.0 MB'],
+        8 => ['Week 8 Workbook : Transition Planning', 'uploads/pdfs/week8-workbook.pdf', '4.1 MB'],
     ];
     foreach ($pdfTitles as $modNum => $pdf) {
         $mid = $moduleIds[$modNum];
@@ -166,7 +166,7 @@ function seedAutismCourse(mysqli $conn, array &$done, array &$errors): void {
         $pdfStmt->execute();
     }
     $pdfStmt->close();
-    $done[] = "✅ PDF resource records inserted.";
+    $done[] = '<i class="fas fa-check-circle text-green-600 mr-1"></i> PDF resource records inserted.';
 
     // Insert Quizzes + Questions + Options
     $quizData = getQuizData();
@@ -197,7 +197,7 @@ function seedAutismCourse(mysqli $conn, array &$done, array &$errors): void {
     $quizStmt->close();
     $qStmt->close();
     $oStmt->close();
-    $done[] = "✅ Quizzes, questions, and answer options inserted.";
+    $done[] = '<i class="fas fa-check-circle text-green-600 mr-1"></i> Quizzes, questions, and answer options inserted.';
 }
 
 function getQuizData(): array {
@@ -301,6 +301,7 @@ function getQuizData(): array {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CLSN LMS Setup</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
@@ -316,7 +317,7 @@ function getQuizData(): array {
 
     <?php if (!empty($errors)): ?>
     <div class="bg-red-50 border border-red-200 rounded-2xl p-6 mb-6">
-        <h3 class="text-red-700 font-bold mb-3">❌ Errors Encountered</h3>
+        <h3 class="text-red-700 font-bold mb-3"><i class="fas fa-times-circle mr-1"></i> Errors Encountered</h3>
         <ul class="space-y-2 text-red-600 text-sm">
             <?php foreach ($errors as $e): ?>
             <li><?= $e ?></li>
@@ -336,7 +337,7 @@ function getQuizData(): array {
 
     <?php if (empty($errors)): ?>
     <div class="bg-orange-50 border border-orange-200 rounded-2xl p-6 mb-8">
-        <h3 class="text-orange-700 font-bold mb-2">⚠️ Security Notice</h3>
+        <h3 class="text-orange-700 font-bold mb-2"><i class="fas fa-exclamation-triangle mr-1"></i> Security Notice</h3>
         <p class="text-sm text-orange-700">Setup complete. <strong>Delete this file</strong> (setup.php) from your server immediately.</p>
         <p class="text-sm text-orange-700 mt-2">Admin Login: <strong><?= htmlspecialchars($adminEmail) ?></strong> / <strong><?= htmlspecialchars($adminPass) ?></strong></p>
     </div>

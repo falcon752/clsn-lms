@@ -11,7 +11,7 @@ $dashPageTitle = $dashPageTitle ?? 'Dashboard';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($dashPageTitle) ?> — Candlelight LMS</title>
+    <title><?= htmlspecialchars($dashPageTitle) ?> | Candlelight LMS</title>
     <meta name="robots" content="noindex, nofollow">
 
     <!-- Fonts -->

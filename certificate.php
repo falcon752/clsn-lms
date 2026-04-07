@@ -58,7 +58,7 @@ include './includes/header-dash.php';
             <i class="fas fa-download"></i> Save as PDF
         </button>
     </div>
-    <p class="text-sm text-gray-400 text-center mb-4">Preview below — click "Save as PDF" and then "Save as PDF" in the print dialog.</p>
+    <p class="text-sm text-gray-400 text-center mb-4">Preview below: click "Save as PDF" and then "Save as PDF" in the print dialog.</p>
 </div>
 
 <div class="cert-print-area max-w-4xl mx-auto">

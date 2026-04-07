@@ -32,7 +32,7 @@ if ($enrolled) {
 }
 
 $welcome      = isset($_GET['enrolled']) && $_GET['enrolled'] === '1';
-$pageTitle    = htmlspecialchars($course['title']) . ' — Candlelight LMS';
+$pageTitle    = htmlspecialchars($course['title']) . ' | Candlelight LMS';
 include './includes/header-public.php';
 ?>
 
@@ -99,12 +99,12 @@ include './includes/header-public.php';
                         <?= csrfField() ?>
                         <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
                         <button type="submit" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-candlelight-500/40 hover:-translate-y-0.5">
-                            <i class="fas fa-rocket"></i> Enroll Now — Free
+                            <i class="fas fa-rocket"></i> Enroll Now (Free)
                         </button>
                     </form>
                     <?php else: ?>
                     <a href="/clsn-lms/register.php" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg">
-                        <i class="fas fa-rocket"></i> Get Started — Free
+                        <i class="fas fa-rocket"></i> Get Started (Free)
                     </a>
                     <a href="/clsn-lms/login.php" class="inline-flex items-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl transition-all border border-white/20">
                         <i class="fas fa-sign-in-alt"></i> Sign In

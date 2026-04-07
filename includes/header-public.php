@@ -4,7 +4,7 @@ if (!isset($conn))     include_once __DIR__ . '/db.php';
 if (!function_exists('isLoggedIn')) include_once __DIR__ . '/auth.php';
 
 $pageTitle       = $pageTitle       ?? 'Candlelight LMS | Learn. Grow. Shine.';
-$pageDescription = $pageDescription ?? 'Candlelight Foundation Learning Management System — online courses for autism education, therapy training, and family support.';
+$pageDescription = $pageDescription ?? 'Candlelight Foundation Learning Management System: online courses for autism education, therapy training, and family support.';
 $ogTitle         = $ogTitle         ?? $pageTitle;
 $ogDescription   = $ogDescription   ?? $pageDescription;
 ?>

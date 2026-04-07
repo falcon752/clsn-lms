@@ -88,7 +88,7 @@ if ($quiz) {
     }
 }
 
-$adminPageTitle = 'Quiz Builder — ' . $module['title'];
+$adminPageTitle = 'Quiz Builder: ' . $module['title'];
 include './includes/header.php';
 ?>
 

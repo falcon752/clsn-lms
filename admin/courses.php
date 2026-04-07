@@ -4,6 +4,25 @@ include_once '../includes/auth.php';
 
 requireAdmin();
 
+$msg = '';
+$err = '';
+
+// Handle delete
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_course'])) {
+    if (!isset($_POST['csrf_token']) || !verifyCsrf($_POST['csrf_token'])) {
+        $err = 'Security check failed.';
+    } else {
+        $delId = (int)($_POST['course_id'] ?? 0);
+        if ($delId) {
+            $stmt = $conn->prepare("DELETE FROM lms_courses WHERE id = ?");
+            $stmt->bind_param('i', $delId);
+            $stmt->execute();
+            $stmt->close();
+            $msg = 'Course deleted successfully.';
+        }
+    }
+}
+
 $courses = $conn->query("
     SELECT c.*,
            (SELECT COUNT(*) FROM lms_enrollments e WHERE e.course_id = c.id) AS enrollment_count
@@ -15,8 +34,14 @@ $adminPageTitle = 'Courses';
 include './includes/header.php';
 ?>
 
+<?php if ($msg): ?><div class="lms-alert lms-alert-success mb-5"><i class="fas fa-check-circle mr-2"></i><?= htmlspecialchars($msg) ?></div><?php endif; ?>
+<?php if ($err): ?><div class="lms-alert lms-alert-error mb-5"><i class="fas fa-exclamation-circle mr-2"></i><?= htmlspecialchars($err) ?></div><?php endif; ?>
+
 <div class="flex items-center justify-between mb-6">
     <p class="text-gray-500 text-sm"><?= count($courses) ?> course<?= count($courses) !== 1 ? 's' : '' ?> total</p>
+    <a href="/clsn-lms/admin/course-form.php" class="btn-lms-primary text-sm">
+        <i class="fas fa-plus"></i> New Course
+    </a>
 </div>
 
 <div class="space-y-4">
@@ -50,9 +75,19 @@ include './includes/header.php';
             <a href="/clsn-lms/admin/modules.php?course_id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-4 py-2 bg-navy-100 text-navy-700 rounded-xl text-xs font-semibold hover:bg-navy-200 transition-colors">
                 <i class="fas fa-layer-group"></i> Modules
             </a>
+            <a href="/clsn-lms/admin/course-form.php?id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-4 py-2 bg-candlelight-100 text-candlelight-700 rounded-xl text-xs font-semibold hover:bg-candlelight-200 transition-colors">
+                <i class="fas fa-edit"></i> Edit
+            </a>
             <a href="/clsn-lms/course.php?slug=<?= urlencode($c['slug']) ?>" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2 bg-gray-100 text-gray-600 rounded-xl text-xs font-semibold hover:bg-gray-200 transition-colors">
                 <i class="fas fa-eye"></i> Preview
             </a>
+            <form method="POST" onsubmit="return confirm('Delete this course and ALL its modules? This cannot be undone.')">
+                <?= csrfField() ?>
+                <input type="hidden" name="course_id" value="<?= $c['id'] ?>">
+                <button type="submit" name="delete_course" class="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-semibold hover:bg-red-100 transition-colors">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </form>
         </div>
     </div>
     <?php endforeach; ?>

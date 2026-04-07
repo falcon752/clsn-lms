@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = 'Create Account — Candlelight LMS';
+$pageTitle = 'Create Account | Candlelight LMS';
 include './includes/header-public.php';
 ?>
 
@@ -141,7 +141,7 @@ include './includes/header-public.php';
             <!-- Free badge -->
             <div class="mt-6 p-4 bg-candlelight-50 rounded-xl flex items-center gap-3">
                 <i class="fas fa-gift text-candlelight-600 text-lg flex-shrink-0"></i>
-                <p class="text-sm text-candlelight-800">You'll be <strong>automatically enrolled</strong> in our flagship Autism Awareness course — completely free!</p>
+                <p class="text-sm text-candlelight-800">You'll be <strong>automatically enrolled</strong> in our flagship Autism Awareness course, completely free!</p>
             </div>
 
             <p class="text-center text-gray-500 text-sm mt-6">

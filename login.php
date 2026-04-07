@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = 'Login — Candlelight LMS';
+$pageTitle = 'Login | Candlelight LMS';
 include './includes/header-public.php';
 ?>
 
