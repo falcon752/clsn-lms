@@ -17,6 +17,8 @@ $course = [
     'level'             => 'Beginner',
     'is_free'           => 1,
     'is_active'         => 1,
+    'thumbnail'         => '',
+    'youtube_url'       => '',
 ];
 
 if ($isEdit) {
@@ -45,6 +47,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $level       = $_POST['level']                  ?? 'Beginner';
         $isFree      = isset($_POST['is_free'])   ? 1 : 0;
         $isActive    = isset($_POST['is_active']) ? 1 : 0;
+        $youtubeUrl  = trim($_POST['youtube_url'] ?? '');
+        // Strip non-http junk from YouTube URL
+        if ($youtubeUrl && !preg_match('#^https?://#', $youtubeUrl)) $youtubeUrl = '';
+
+        // Handle thumbnail upload
+        $thumbnailFile = $isEdit ? $course['thumbnail'] : '';
+        if (!empty($_FILES['thumbnail']['tmp_name'])) {
+            $allowed = ['image/jpeg','image/png','image/webp','image/gif'];
+            $ftype   = mime_content_type($_FILES['thumbnail']['tmp_name']);
+            if (!in_array($ftype, $allowed)) {
+                $err = 'Thumbnail must be a JPG, PNG, WEBP or GIF image.';
+            } elseif ($_FILES['thumbnail']['size'] > 2 * 1024 * 1024) {
+                $err = 'Thumbnail must be under 2 MB.';
+            } else {
+                $ext  = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
+                $name = 'course-' . time() . '-' . bin2hex(random_bytes(4)) . '.' . strtolower($ext);
+                $dest = __DIR__ . '/../uploads/thumbnails/' . $name;
+                if (move_uploaded_file($_FILES['thumbnail']['tmp_name'], $dest)) {
+                    // Delete old thumbnail
+                    if ($isEdit && !empty($course['thumbnail'])) {
+                        $old = __DIR__ . '/../uploads/thumbnails/' . basename($course['thumbnail']);
+                        if (file_exists($old)) @unlink($old);
+                    }
+                    $thumbnailFile = $name;
+                } else {
+                    $err = 'Could not save thumbnail. Check folder permissions.';
+                }
+            }
+        }
 
         // Auto-generate slug if empty
         if (empty($slug) && !empty($title)) {
@@ -67,14 +98,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $chk->close();
                 if (!$err) {
-                    $stmt = $conn->prepare("UPDATE lms_courses SET title=?,slug=?,short_description=?,description=?,instructor=?,duration=?,level=?,is_free=?,is_active=? WHERE id=?");
-                    $stmt->bind_param('sssssssiis', $title, $slug, $shortDesc, $description, $instructor, $duration, $level, $isFree, $isActive, $courseId);
+                    $stmt = $conn->prepare("UPDATE lms_courses SET title=?,slug=?,short_description=?,description=?,instructor=?,duration=?,level=?,is_free=?,is_active=?,thumbnail=?,youtube_url=? WHERE id=?");
+                    $stmt->bind_param('sssssssiissi', $title, $slug, $shortDesc, $description, $instructor, $duration, $level, $isFree, $isActive, $thumbnailFile, $youtubeUrl, $courseId);
                     if ($stmt->execute()) {
                         $msg = 'Course updated successfully!';
                         $course = array_merge($course, compact('title','slug','shortDesc','description','instructor','duration','level','isFree','isActive'));
                         $course['short_description'] = $shortDesc;
-                        $course['is_free']   = $isFree;
-                        $course['is_active'] = $isActive;
+                        $course['is_free']     = $isFree;
+                        $course['is_active']   = $isActive;
+                        $course['thumbnail']   = $thumbnailFile;
+                        $course['youtube_url'] = $youtubeUrl;
                     } else {
                         $err = 'Database error: ' . $conn->error;
                     }
@@ -91,8 +124,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $chk->close();
                 if (!$err) {
-                    $stmt = $conn->prepare("INSERT INTO lms_courses (title,slug,short_description,description,instructor,duration,level,is_free,is_active) VALUES (?,?,?,?,?,?,?,?,?)");
-                    $stmt->bind_param('sssssssii', $title, $slug, $shortDesc, $description, $instructor, $duration, $level, $isFree, $isActive);
+                    $stmt = $conn->prepare("INSERT INTO lms_courses (title,slug,short_description,description,instructor,duration,level,is_free,is_active,thumbnail,youtube_url) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+                    $stmt->bind_param('sssssssiiss', $title, $slug, $shortDesc, $description, $instructor, $duration, $level, $isFree, $isActive, $thumbnailFile, $youtubeUrl);
                     if ($stmt->execute()) {
                         $newId = $conn->insert_id;
                         $stmt->close();
@@ -117,6 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $course['level']             = $level;
             $course['is_free']           = $isFree;
             $course['is_active']         = $isActive;
+            $course['youtube_url']       = $youtubeUrl;
         }
     }
 }
@@ -135,7 +169,7 @@ include './includes/header.php';
     <?php if ($msg): ?><div class="lms-alert lms-alert-success mb-5"><i class="fas fa-check-circle mr-2"></i><?= htmlspecialchars($msg) ?></div><?php endif; ?>
     <?php if ($err): ?><div class="lms-alert lms-alert-error mb-5"><i class="fas fa-exclamation-circle mr-2"></i><?= htmlspecialchars($err) ?></div><?php endif; ?>
 
-    <form method="POST" class="space-y-5">
+    <form method="POST" enctype="multipart/form-data" class="space-y-5">
         <?= csrfField() ?>
 
         <div class="lms-card p-6 space-y-5">
@@ -198,6 +232,47 @@ include './includes/header.php';
                 </select>
             </div>
 
+            <!-- Thumbnail -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Course Thumbnail <span class="text-gray-400 font-normal text-xs">(JPG/PNG/WEBP, max 2 MB)</span></label>
+                <?php if (!empty($course['thumbnail'])): ?>
+                <div class="mb-3 flex items-start gap-4">
+                    <img src="/clsn-lms/uploads/thumbnails/<?= htmlspecialchars(basename($course['thumbnail'])) ?>"
+                         alt="Current thumbnail" class="w-32 h-20 object-cover rounded-xl border border-gray-200">
+                    <p class="text-xs text-gray-500 mt-2">Current thumbnail. Upload a new file to replace it.</p>
+                </div>
+                <?php endif; ?>
+                <input type="file" name="thumbnail" accept="image/jpeg,image/png,image/webp,image/gif"
+                       class="lms-input py-2 text-sm" id="thumb-input">
+                <div id="thumb-preview-wrap" class="mt-2 hidden">
+                    <img id="thumb-preview" src="" alt="Preview" class="w-32 h-20 object-cover rounded-xl border border-gray-200">
+                </div>
+            </div>
+
+            <!-- YouTube URL -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    YouTube Video URL <span class="text-gray-400 font-normal text-xs">(optional — auto-fills card thumbnail if no image uploaded)</span>
+                </label>
+                <input type="url" name="youtube_url" class="lms-input text-sm"
+                       value="<?= htmlspecialchars($course['youtube_url'] ?? '') ?>"
+                       placeholder="https://www.youtube.com/watch?v=...">
+                <?php
+                $ytId = '';
+                if (!empty($course['youtube_url'])) {
+                    preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $course['youtube_url'], $m);
+                    $ytId = $m[1] ?? '';
+                }
+                ?>
+                <?php if ($ytId): ?>
+                <div class="mt-2 flex items-center gap-3">
+                    <img src="https://img.youtube.com/vi/<?= htmlspecialchars($ytId) ?>/hqdefault.jpg"
+                         alt="YouTube thumbnail" class="w-32 h-20 object-cover rounded-xl border border-gray-200">
+                    <p class="text-xs text-gray-500">Auto-fetched YouTube thumbnail preview.</p>
+                </div>
+                <?php endif; ?>
+            </div>
+
             <div class="flex flex-col gap-3">
                 <div class="flex items-center gap-3">
                     <input type="checkbox" id="is_free" name="is_free" class="w-4 h-4 accent-candlelight-500"
@@ -249,6 +324,18 @@ titleInput.addEventListener('input', () => {
 slugInput.addEventListener('input', () => {
     slugManual = true;
     slugPreview.textContent = slugInput.value || 'your-slug';
+});
+
+// Live thumbnail preview
+document.getElementById('thumb-input').addEventListener('change', function () {
+    const wrap = document.getElementById('thumb-preview-wrap');
+    const img  = document.getElementById('thumb-preview');
+    if (this.files && this.files[0]) {
+        img.src = URL.createObjectURL(this.files[0]);
+        wrap.classList.remove('hidden');
+    } else {
+        wrap.classList.add('hidden');
+    }
 });
 </script>
 

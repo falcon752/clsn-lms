@@ -83,7 +83,7 @@ function enrollUser(mysqli $conn, int $userId, int $courseId): bool {
 
 function getUserEnrollments(mysqli $conn, int $userId): array {
     $s = $conn->prepare("
-        SELECT e.*, c.title, c.slug, c.thumbnail, c.total_modules, c.duration
+        SELECT e.*, c.title, c.slug, c.thumbnail, c.youtube_url, c.total_modules, c.duration
         FROM lms_enrollments e
         JOIN lms_courses c ON c.id = e.course_id
         WHERE e.user_id = ? AND c.is_active = 1

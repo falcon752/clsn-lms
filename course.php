@@ -116,7 +116,28 @@ include './includes/header-public.php';
 
             <!-- Stats card -->
             <div class="lg:flex justify-end hidden">
-                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 w-full max-w-sm">
+                <div class="bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden border border-white/20 w-full max-w-sm">
+                    <?php
+                    $heroThumbSrc = '';
+                    if (!empty($course['thumbnail']) && file_exists(__DIR__ . '/uploads/thumbnails/' . basename($course['thumbnail']))) {
+                        $heroThumbSrc = '/clsn-lms/uploads/thumbnails/' . htmlspecialchars(basename($course['thumbnail']));
+                    } elseif (!empty($course['youtube_url'])) {
+                        preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $course['youtube_url'], $hYtm);
+                        if (!empty($hYtm[1])) {
+                            $heroThumbSrc = 'https://img.youtube.com/vi/' . htmlspecialchars($hYtm[1]) . '/hqdefault.jpg';
+                        }
+                    }
+                    ?>
+                    <?php if ($heroThumbSrc): ?>
+                    <div class="aspect-video w-full overflow-hidden">
+                        <img src="<?= $heroThumbSrc ?>" alt="<?= htmlspecialchars($course['title']) ?>" class="w-full h-full object-cover">
+                    </div>
+                    <?php else: ?>
+                    <div class="aspect-video w-full bg-gradient-to-br from-navy-700 to-navy-600 flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-candlelight-400 text-5xl"></i>
+                    </div>
+                    <?php endif; ?>
+                    <div class="p-8">
                     <h3 class="font-display font-bold text-xl mb-6">What You'll Learn</h3>
                     <ul class="space-y-3">
                         <?php foreach (array_slice($modules, 0, 5) as $mod): ?>
@@ -134,7 +155,8 @@ include './includes/header-public.php';
                         <div><div class="text-2xl font-bold text-candlelight-400"><?= count($modules) ?></div><div class="text-xs text-gray-400">Quizzes</div></div>
                         <div><div class="text-2xl font-bold text-candlelight-400">1</div><div class="text-xs text-gray-400">Certificate</div></div>
                     </div>
-                </div>
+                    </div><!-- /p-8 -->
+                </div><!-- /stats-card -->
             </div>
         </div>
     </div>

@@ -54,8 +54,19 @@ if (isLoggedIn()) {
     <article class="lms-card group flex flex-col">
         <!-- Thumbnail -->
         <div class="relative overflow-hidden rounded-t-2xl course-thumb-ph aspect-video bg-gradient-to-br from-navy-800 to-navy-600 flex items-center justify-center">
-            <?php if (!empty($course['thumbnail']) && file_exists(__DIR__ . '/uploads/thumbnails/' . basename($course['thumbnail']))): ?>
-                <img src="/clsn-lms/uploads/thumbnails/<?= htmlspecialchars(basename($course['thumbnail'])) ?>" alt="<?= htmlspecialchars($course['title']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <?php
+            $thumbSrc = '';
+            if (!empty($course['thumbnail']) && file_exists(__DIR__ . '/uploads/thumbnails/' . basename($course['thumbnail']))) {
+                $thumbSrc = '/clsn-lms/uploads/thumbnails/' . htmlspecialchars(basename($course['thumbnail']));
+            } elseif (!empty($course['youtube_url'])) {
+                preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $course['youtube_url'], $ytm);
+                if (!empty($ytm[1])) {
+                    $thumbSrc = 'https://img.youtube.com/vi/' . htmlspecialchars($ytm[1]) . '/hqdefault.jpg';
+                }
+            }
+            ?>
+            <?php if ($thumbSrc): ?>
+                <img src="<?= $thumbSrc ?>" alt="<?= htmlspecialchars($course['title']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             <?php else: ?>
                 <div class="text-center text-white/70 p-6">
                     <i class="fas fa-graduation-cap text-4xl mb-3 text-candlelight-400 block"></i>

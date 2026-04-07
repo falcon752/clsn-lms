@@ -97,12 +97,30 @@ include './includes/header-dash.php';
     <?php else: ?>
     <div class="grid md:grid-cols-2 gap-6">
         <?php foreach ($enrollments as $enrollment): ?>
-        <?php $p = $enrollment['progress']; ?>
-        <div class="lms-card p-6 flex flex-col">
+        <?php
+        $p = $enrollment['progress'];
+        $dThumbSrc = '';
+        if (!empty($enrollment['thumbnail']) && file_exists(__DIR__ . '/uploads/thumbnails/' . basename($enrollment['thumbnail']))) {
+            $dThumbSrc = '/clsn-lms/uploads/thumbnails/' . htmlspecialchars(basename($enrollment['thumbnail']));
+        } elseif (!empty($enrollment['youtube_url'])) {
+            preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $enrollment['youtube_url'], $dYtm);
+            if (!empty($dYtm[1])) {
+                $dThumbSrc = 'https://img.youtube.com/vi/' . htmlspecialchars($dYtm[1]) . '/hqdefault.jpg';
+            }
+        }
+        ?>
+        <div class="lms-card overflow-hidden flex flex-col">
+            <?php if ($dThumbSrc): ?>
+            <div class="aspect-video w-full overflow-hidden">
+                <img src="<?= $dThumbSrc ?>" alt="<?= htmlspecialchars($enrollment['title']) ?>" class="w-full h-full object-cover">
+            </div>
+            <?php else: ?>
+            <div class="aspect-video w-full bg-gradient-to-br from-navy-800 to-navy-600 flex items-center justify-center">
+                <i class="fas fa-graduation-cap text-candlelight-400 text-3xl"></i>
+            </div>
+            <?php endif; ?>
+            <div class="p-6 flex flex-col flex-1">
             <div class="flex items-start gap-4 mb-4">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-navy-700 to-navy-900 flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-graduation-cap text-candlelight-400 text-xl"></i>
-                </div>
                 <div class="flex-1 min-w-0">
                     <h3 class="font-display font-bold text-navy-900 text-base leading-snug line-clamp-2"><?= htmlspecialchars($enrollment['title']) ?></h3>
                     <p class="text-xs text-gray-500 mt-1">Enrolled <?= formatDate($enrollment['enrolled_at']) ?></p>
@@ -134,7 +152,8 @@ include './includes/header-dash.php';
                     <i class="fas fa-list"></i>
                 </a>
             </div>
-        </div>
+            </div><!-- /p-6 -->
+        </div><!-- /lms-card -->
         <?php endforeach; ?>
     </div>
     <?php endif; ?>
