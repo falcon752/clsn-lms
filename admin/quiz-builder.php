@@ -79,9 +79,20 @@ if ($isOverview) {
 
     <?php include './includes/footer.php'; ?>
     <?php exit; ?>
-<?php } // end overview ?>
+<?php } // end overview
 
-
+// Per-module mode: fetch module + parent course
+$mq = $conn->prepare("
+    SELECT m.*, c.title AS course_title
+    FROM lms_modules m
+    JOIN lms_courses c ON c.id = m.course_id
+    WHERE m.id = ?
+");
+$mq->bind_param('i', $moduleId);
+$mq->execute();
+$module = $mq->get_result()->fetch_assoc();
+$mq->close();
+if (!$module) { header('Location: /clsn-lms/admin/quiz-builder.php'); exit; }
 
 // Get or create quiz
 $quiz = $conn->prepare("SELECT * FROM lms_quizzes WHERE module_id=?");

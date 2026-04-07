@@ -14,6 +14,7 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($adminPageTitle) ?> | CLSN LMS Admin</title>
     <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/x-icon" href="/clsn-lms/images/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -55,10 +56,13 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
     <!-- Sidebar -->
     <aside id="admin-sidebar" class="fixed lg:static inset-y-0 left-0 w-64 bg-navy-900 text-white flex flex-col z-50 lg:z-auto">
         <div class="px-6 py-5 border-b border-white/10 flex items-center justify-between">
-            <div>
-                <div class="font-display font-bold text-base leading-tight">Candlelight LMS</div>
-                <div class="text-xs text-candlelight-400 font-semibold tracking-wide mt-0.5">Admin Panel</div>
-            </div>
+            <a href="/clsn-lms/admin/index.php" class="flex items-center gap-3">
+                <img src="/clsn-lms/images/logo-white.svg" alt="Logo" class="w-9 h-9 object-contain">
+                <div>
+                    <div class="font-display font-bold text-base leading-tight">Candlelight LMS</div>
+                    <div class="text-xs text-candlelight-400 font-semibold tracking-wide mt-0.5">Admin Panel</div>
+                </div>
+            </a>
             <button id="admin-sidebar-close" class="lg:hidden w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20">
                 <i class="fas fa-times text-sm"></i>
             </button>
@@ -117,6 +121,7 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
             <button id="admin-sidebar-toggle" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100">
                 <i class="fas fa-bars text-gray-600"></i>
             </button>
+            <img src="/clsn-lms/images/logo-candlelight.svg" alt="Logo" class="w-8 h-8 object-contain flex-shrink-0">
             <h1 class="font-display font-bold text-xl text-navy-900"><?= htmlspecialchars($adminPageTitle) ?></h1>
         </header>
 

@@ -127,6 +127,7 @@ $dashPageTitle = $dashPageTitle ?? 'Dashboard';
                 <button id="sidebar-toggle" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors">
                     <i class="fas fa-bars text-gray-600"></i>
                 </button>
+                <img src="/clsn-lms/images/logo-candlelight.svg" alt="Logo" class="w-8 h-8 object-contain flex-shrink-0">
                 <div>
                     <h1 class="font-display font-bold text-xl text-navy-900"><?= htmlspecialchars($dashPageTitle) ?></h1>
                 </div>
