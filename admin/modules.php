@@ -61,7 +61,9 @@ include './includes/header.php';
 <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
     <a href="/clsn-lms/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <span class="text-gray-800"><?= htmlspecialchars($course['title']) ?></span>
+    <a href="/clsn-lms/admin/courses.php" class="hover:text-candlelight-600 transition-colors"><?= htmlspecialchars($course['title']) ?></a>
+    <i class="fas fa-chevron-right text-xs text-gray-300"></i>
+    <span class="text-gray-800 font-medium">Modules</span>
 </nav>
 
 <?php if ($msg): ?><div class="lms-alert lms-alert-success mb-5"><i class="fas fa-check-circle mr-2"></i><?= htmlspecialchars($msg) ?></div><?php endif; ?>
@@ -106,12 +108,6 @@ include './includes/header.php';
                     <i class="fas fa-trash"></i>
                 </button>
             </form>
-        </div>
-                <i class="fas fa-edit"></i> Edit
-            </a>
-            <a href="/clsn-lms/admin/quiz-builder.php?module_id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-candlelight-100 text-candlelight-700 rounded-xl text-xs font-semibold hover:bg-candlelight-200 transition-colors">
-                <i class="fas fa-pencil-alt"></i> Quiz
-            </a>
         </div>
     </div>
     <?php endforeach; ?>

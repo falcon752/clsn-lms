@@ -104,9 +104,11 @@ include './includes/header.php';
 <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
     <a href="/clsn-lms/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
+    <a href="/clsn-lms/admin/courses.php" class="hover:text-candlelight-600 transition-colors"><?= htmlspecialchars($module['course_title']) ?></a>
+    <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <a href="/clsn-lms/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="hover:text-candlelight-600 transition-colors">Modules</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <span class="text-gray-800"><?= $isNew ? 'New Module' : 'Module ' . $module['module_number'] ?></span>
+    <span class="text-gray-800 font-medium"><?= $isNew ? 'New Module' : 'Edit Module ' . $module['module_number'] ?></span>
 </nav>
 
 <div class="max-w-3xl">
