@@ -46,45 +46,41 @@ include './includes/header.php';
 
 <div class="space-y-4">
     <?php foreach ($courses as $c): ?>
-    <div class="lms-card p-6 flex items-start gap-5">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-navy-700 to-navy-900 flex items-center justify-center flex-shrink-0">
-            <i class="fas fa-graduation-cap text-candlelight-400 text-xl"></i>
+    <div class="lms-card p-5 flex items-center gap-5">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-navy-700 to-navy-900 flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-graduation-cap text-candlelight-400 text-lg"></i>
         </div>
         <div class="flex-1 min-w-0">
-            <div class="flex items-start justify-between gap-4 flex-wrap">
-                <div>
-                    <h3 class="font-display font-bold text-navy-900 text-lg"><?= htmlspecialchars($c['title']) ?></h3>
-                    <p class="text-gray-500 text-sm mt-1 line-clamp-2"><?= htmlspecialchars($c['short_description']) ?></p>
-                </div>
-                <div class="flex items-center gap-2 flex-shrink-0">
-                    <?php if ($c['is_active']): ?>
-                    <span class="px-2.5 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">Active</span>
-                    <?php else: ?>
-                    <span class="px-2.5 py-1 bg-gray-100 text-gray-500 text-xs font-semibold rounded-full">Hidden</span>
-                    <?php endif; ?>
-                </div>
+            <div class="flex items-center gap-2 mb-0.5">
+                <h3 class="font-display font-bold text-navy-900 text-base truncate"><?= htmlspecialchars($c['title']) ?></h3>
+                <?php if ($c['is_active']): ?>
+                <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex-shrink-0">Active</span>
+                <?php else: ?>
+                <span class="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs font-semibold rounded-full flex-shrink-0">Hidden</span>
+                <?php endif; ?>
             </div>
-            <div class="flex flex-wrap items-center gap-4 mt-3 text-xs text-gray-500">
+            <p class="text-gray-400 text-xs line-clamp-1 mb-2"><?= htmlspecialchars($c['short_description']) ?></p>
+            <div class="flex flex-wrap items-center gap-3 text-xs text-gray-400">
                 <span><i class="fas fa-layer-group text-candlelight-500 mr-1"></i><?= (int)$c['total_modules'] ?> modules</span>
                 <span><i class="fas fa-users text-candlelight-500 mr-1"></i><?= $c['enrollment_count'] ?> enrolled</span>
                 <span><i class="fas fa-clock text-candlelight-500 mr-1"></i><?= htmlspecialchars($c['duration']) ?></span>
                 <span><i class="fas fa-signal text-candlelight-500 mr-1"></i><?= htmlspecialchars($c['level']) ?></span>
             </div>
         </div>
-        <div class="flex flex-col gap-2 flex-shrink-0">
-            <a href="/clsn-lms/admin/modules.php?course_id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-4 py-2 bg-navy-100 text-navy-700 rounded-xl text-xs font-semibold hover:bg-navy-200 transition-colors">
+        <div class="flex items-center gap-2 flex-shrink-0">
+            <a href="/clsn-lms/admin/modules.php?course_id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-navy-100 text-navy-700 rounded-xl text-xs font-semibold hover:bg-navy-200 transition-colors">
                 <i class="fas fa-layer-group"></i> Modules
             </a>
-            <a href="/clsn-lms/admin/course-form.php?id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-4 py-2 bg-candlelight-100 text-candlelight-700 rounded-xl text-xs font-semibold hover:bg-candlelight-200 transition-colors">
+            <a href="/clsn-lms/admin/course-form.php?id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-candlelight-100 text-candlelight-700 rounded-xl text-xs font-semibold hover:bg-candlelight-200 transition-colors">
                 <i class="fas fa-edit"></i> Edit
             </a>
-            <a href="/clsn-lms/course.php?slug=<?= urlencode($c['slug']) ?>" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2 bg-gray-100 text-gray-600 rounded-xl text-xs font-semibold hover:bg-gray-200 transition-colors">
+            <a href="/clsn-lms/course.php?slug=<?= urlencode($c['slug']) ?>" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gray-100 text-gray-600 rounded-xl text-xs font-semibold hover:bg-gray-200 transition-colors">
                 <i class="fas fa-eye"></i> Preview
             </a>
             <form method="POST" onsubmit="return confirm('Delete this course and ALL its modules? This cannot be undone.')">
                 <?= csrfField() ?>
                 <input type="hidden" name="course_id" value="<?= $c['id'] ?>">
-                <button type="submit" name="delete_course" class="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-semibold hover:bg-red-100 transition-colors">
+                <button type="submit" name="delete_course" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-semibold hover:bg-red-100 transition-colors">
                     <i class="fas fa-trash"></i> Delete
                 </button>
             </form>
