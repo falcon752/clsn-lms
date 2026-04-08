@@ -1,0 +1,26 @@
+# Environment / config
+includes/db.php
+.env
+.env.*
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.gz
+*.rar
+*.7z
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+error_log
+
+# Uploads (user content, don't track in git)
+uploads/
+
+# Node modules
+node_modules/
