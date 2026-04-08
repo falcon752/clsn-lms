@@ -36,7 +36,29 @@ if (!$cert || (int)$cert['user_id'] !== $userId) {
 <title>Generating Certificate…</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;700;800&family=Dancing+Script:wght@700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+@font-face {
+    font-family: 'ChunkFive';
+    src: url('/clsn-lms/fonts/ChunkFive-Regular.woff2') format('woff2'),
+         url('/clsn-lms/fonts/ChunkFive-Regular.woff')  format('woff'),
+         url('/clsn-lms/fonts/ChunkFive-Regular.ttf')   format('truetype');
+    font-weight: normal; font-style: normal; font-display: block;
+}
+@font-face {
+    font-family: 'Garet';
+    src: url('/clsn-lms/fonts/Garet-Heavy.woff2') format('woff2'),
+         url('/clsn-lms/fonts/Garet-Heavy.ttf')   format('truetype');
+    font-weight: 800; font-style: normal; font-display: block;
+}
+/* TODO: Place AmsterdamOne-Regular.ttf in /clsn-lms/fonts/ then uncomment:
+@font-face {
+    font-family: 'Amsterdam One';
+    src: url('/clsn-lms/fonts/AmsterdamOne-Regular.ttf') format('truetype');
+    font-weight: normal; font-style: normal; font-display: block;
+}
+*/
+</style>
 <style>
 /* ── Page chrome ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -48,7 +70,7 @@ html, body {
     justify-content: flex-start;
     min-height: 100vh;
     padding: 24px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 #status-bar {
     width: 1122px;
@@ -97,25 +119,25 @@ html, body {
 .cert-title-block{ width: 100%; text-align: center; }
 
 .cert-big-title {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'ChunkFive', Georgia, serif;
     font-size: 64px;
-    font-weight: 900;
+    font-weight: normal;
     letter-spacing: 0.04em;
     color: #1B6B7B;
     text-transform: uppercase;
     line-height: 1;
 }
 .cert-subtitle {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Garet', sans-serif;
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #C2185B;
     margin: 2px 0 6px;
 }
 .cert-presented-to {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Poppins', sans-serif;
     font-style: italic;
     font-size: 18px;
     color: #444;
@@ -141,9 +163,9 @@ html, body {
     margin: 0 auto 3px;
 }
 .cert-name-cursive {
-    font-family: 'Dancing Script', cursive;
+    font-family: 'Amsterdam One', 'Dancing Script', cursive;
     font-size: 72px;
-    font-weight: 700;
+    font-weight: normal;
     color: #1A237E;
     line-height: 1.1;
     display: block;
@@ -151,7 +173,7 @@ html, body {
 
 /* BODY */
 .cert-recognition {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Poppins', sans-serif;
     font-style: italic;
     font-size: 18px;
     color: #444;
@@ -159,7 +181,7 @@ html, body {
     margin: 4px 0 3px;
 }
 .cert-course-name {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 800;
     font-size: 26px;
     color: #C2185B;
@@ -168,7 +190,7 @@ html, body {
     line-height: 1.3;
 }
 .cert-program-desc {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Poppins', sans-serif;
     font-style: italic;
     font-size: 14px;
     color: #555;
@@ -178,7 +200,7 @@ html, body {
     margin: 0 auto 6px;
 }
 .cert-date-row {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 18px;
     color: #222;
@@ -224,14 +246,14 @@ html, body {
     margin: 0 auto 4px;
 }
 .cert-sig-name-text {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 16px;
     color: #222;
     text-align: center;
 }
 .cert-sig-role-text {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 13px;
     color: #555;
     text-align: center;

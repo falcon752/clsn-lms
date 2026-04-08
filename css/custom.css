@@ -119,7 +119,42 @@
 .quiz-option.wrong-ans    { border-color: #dc2626 !important; background: #fef2f2 !important; }
 
 /* ── Certificate ────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@900&display=swap');
+/* Self-hosted fonts for certificate */
+@font-face {
+    font-family: 'ChunkFive';
+    src: url('/clsn-lms/fonts/ChunkFive-Regular.woff2') format('woff2'),
+         url('/clsn-lms/fonts/ChunkFive-Regular.woff')  format('woff'),
+         url('/clsn-lms/fonts/ChunkFive-Regular.ttf')   format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Garet';
+    src: url('/clsn-lms/fonts/Garet-Heavy.woff2') format('woff2'),
+         url('/clsn-lms/fonts/Garet-Heavy.ttf')   format('truetype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Garet';
+    src: url('/clsn-lms/fonts/Garet-Book.woff2') format('woff2'),
+         url('/clsn-lms/fonts/Garet-Book.ttf')   format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+/* TODO: Download AmsterdamOne-Regular.ttf from dafont.com/amsterdam-one.font
+   and place it in /clsn-lms/fonts/, then uncomment:
+@font-face {
+    font-family: 'Amsterdam One';
+    src: url('/clsn-lms/fonts/AmsterdamOne-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+*/
 
 /* Outer wrapper — centers and constrains the scaled cert */
 .cert-print-area {
@@ -163,9 +198,9 @@
 }
 
 .cert-big-title {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'ChunkFive', Georgia, serif;
     font-size: 58px;
-    font-weight: 900;
+    font-weight: normal;
     letter-spacing: 0.04em;
     color: #1B6B7B;
     text-transform: uppercase;
@@ -174,9 +209,9 @@
 }
 
 .cert-subtitle {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Garet', sans-serif;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #C2185B;
@@ -184,7 +219,7 @@
 }
 
 .cert-presented-to {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Poppins', sans-serif;
     font-style: italic;
     font-size: 17px;
     color: #444;
@@ -215,9 +250,9 @@
     max-width: 72%;
 }
 .cert-name-cursive {
-    font-family: 'Dancing Script', cursive;
+    font-family: 'Amsterdam One', 'Dancing Script', cursive; /* replace Dancing Script once Amsterdam One TTF is added */
     font-size: 64px;
-    font-weight: 700;
+    font-weight: normal;
     color: #1A237E;
     line-height: 1.1;
     display: block;
@@ -225,7 +260,7 @@
 
 /* Recognition */
 .cert-recognition {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Poppins', sans-serif;
     font-style: italic;
     font-size: 17px;
     color: #444;
@@ -234,7 +269,7 @@
 
 /* Course title */
 .cert-course-name {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 800;
     font-size: 24px;
     color: #C2185B;
@@ -244,7 +279,7 @@
 
 /* Program description */
 .cert-program-desc {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Poppins', sans-serif;
     font-style: italic;
     font-size: 13.5px;
     color: #555;
@@ -256,7 +291,7 @@
 
 /* Date line */
 .cert-date-row {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 17px;
     color: #222;
@@ -308,7 +343,7 @@
     padding-right: 70px;
 }
 .cert-sig-name-text {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 15px;
     color: #222;
@@ -316,7 +351,7 @@
     text-align: center;
 }
 .cert-sig-role-text {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 13px;
     color: #555;
     margin: 0;
