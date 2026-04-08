@@ -1,4 +1,3 @@
-Options -Indexes
 RewriteEngine On
 
 # Redirect .php URLs to clean URLs (except direct POST requests)
