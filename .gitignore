@@ -19,8 +19,5 @@ Thumbs.db
 *.log
 error_log
 
-# Uploads (user content, don't track in git)
-uploads/
-
 # Node modules
 node_modules/
