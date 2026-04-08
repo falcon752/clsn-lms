@@ -100,16 +100,22 @@ include './includes/header-dash.php';
             <!-- FOOTER: Seal + Signature -->
             <div class="cert-footer-row">
                 <div class="cert-seal-wrap">
-                    <div class="cert-seal-fallback">
-                        <i class="fas fa-award"></i>
-                    </div>
+                    <img src="/clsn-lms/images/broache.png" alt="Certificate Seal">
                 </div>
 
-                <div class="cert-sig-block" style="padding-bottom:4px; text-align:center;">
-                    <p class="cert-sig-scribble">E. Ojinnaka</p>
-                    <div class="cert-sig-line-h"></div>
-                    <p class="cert-sig-name-text">Emmanuella Ojinnaka <span style="font-weight:400;font-size:0.9em;">BCCS, MEd.</span></p>
-                    <p class="cert-sig-role-text">Clinical Director</p>
+                <div class="cert-sig-block" style="padding-bottom:4px; gap: clamp(18px,4vw,48px);">
+                    <!-- Sig 1 -->
+                    <div style="text-align:center;">
+                        <div class="cert-sig-line-h" style="margin:0 auto 4px;"></div>
+                        <p class="cert-sig-name-text">Candlelight Foundation</p>
+                        <p class="cert-sig-role-text">Director of Education</p>
+                    </div>
+                    <!-- Sig 2 -->
+                    <div style="text-align:center;">
+                        <div class="cert-sig-line-h" style="margin:0 auto 4px;"></div>
+                        <p class="cert-sig-name-text">Training Coordinator</p>
+                        <p class="cert-sig-role-text">Candlelight LMS</p>
+                    </div>
                 </div>
             </div>
 
