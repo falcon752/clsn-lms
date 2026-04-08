@@ -1,9 +1,9 @@
 <?php
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');        // Update if your MySQL root has a password
-define('DB_NAME', 'clsn_lms');
-define('BASE_URL', '/clsn-lms'); // Change to your subdomain root e.g. '' or '/clsn-lms'
+define('DB_USER', 'u443801877_lms');
+define('DB_PASS', 'Ojinnaka@246');
+define('DB_NAME', 'u443801877_clsn_lms');
+define('BASE_URL', ''); // Subdomain root
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
