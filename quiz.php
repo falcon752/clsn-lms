@@ -6,22 +6,22 @@ include_once './includes/functions.php';
 requireStudent();
 
 $moduleId = (int)($_GET['module_id'] ?? 0);
-if (!$moduleId) { header('Location: /clsn-lms/dashboard.php'); exit; }
+if (!$moduleId) { header('Location: /dashboard.php'); exit; }
 
 $module = getModule($conn, $moduleId);
-if (!$module) { header('Location: /clsn-lms/dashboard.php'); exit; }
+if (!$module) { header('Location: /dashboard.php'); exit; }
 
 $userId   = currentUserId();
 $courseId = (int)$module['course_id'];
 
 if (!isEnrolled($conn, $userId, $courseId)) {
-    header("Location: /clsn-lms/course.php?slug={$module['course_slug']}");
+    header("Location: /course.php?slug={$module['course_slug']}");
     exit;
 }
 
 $allModules = getCourseModules($conn, $courseId);
 $quiz       = getQuizByModule($conn, $moduleId);
-if (!$quiz) { header("Location: /clsn-lms/module.php?id={$moduleId}"); exit; }
+if (!$quiz) { header("Location: /module.php?id={$moduleId}"); exit; }
 
 $quizAttempts  = getQuizAttemptCount($conn, $userId, $quiz['id']);
 $alreadyPassed = hasPassed($conn, $userId, $quiz['id']);
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     if (!isset($_POST['csrf_token']) || !verifyCsrf($_POST['csrf_token'])) {
         $error = 'Security check failed. Please try again.';
     } elseif (!$canAttempt) {
-        header('Location: /clsn-lms/quiz.php?module_id=' . $moduleId);
+        header('Location: /quiz.php?module_id=' . $moduleId);
         exit;
     } else {
         $correct = 0;
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
         } elseif ($wasGraceAttempt && !$passed) {
             // Grace attempt also failed — wipe all progress so the user restarts the course
             resetCourseProgress($conn, $userId, $courseId);
-            header('Location: /clsn-lms/course.php?slug=' . urlencode($module['course_slug']) . '&reset=1');
+            header('Location: /course.php?slug=' . urlencode($module['course_slug']) . '&reset=1');
             exit;
         }
 
@@ -157,9 +157,9 @@ include './includes/header-dash.php';
 
 <!-- Breadcrumb -->
 <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6 flex-wrap">
-    <a href="/clsn-lms/dashboard.php" class="hover:text-candlelight-600 transition-colors">Dashboard</a>
+    <a href="/dashboard.php" class="hover:text-candlelight-600 transition-colors">Dashboard</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <a href="/clsn-lms/module.php?id=<?= $moduleId ?>" class="hover:text-candlelight-600 transition-colors">Module <?= $module['module_number'] ?></a>
+    <a href="/module.php?id=<?= $moduleId ?>" class="hover:text-candlelight-600 transition-colors">Module <?= $module['module_number'] ?></a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <span class="text-gray-800 font-medium">Quiz</span>
 </nav>
@@ -222,24 +222,24 @@ include './includes/header-dash.php';
         <?php if ($result['passed']): ?>
         <div class="flex flex-wrap gap-3 justify-center">
             <?php if ($nextModule): ?>
-            <a href="/clsn-lms/module.php?id=<?= $nextModule['id'] ?>" class="btn-lms-primary">
+            <a href="/module.php?id=<?= $nextModule['id'] ?>" class="btn-lms-primary">
                 <i class="fas fa-arrow-right"></i> Next Module
             </a>
             <?php else: ?>
-            <a href="/clsn-lms/certificate.php" class="btn-lms-primary">
+            <a href="/certificate.php" class="btn-lms-primary">
                 <i class="fas fa-award"></i> Get Your Certificate
             </a>
             <?php endif; ?>
-            <a href="/clsn-lms/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary">
+            <a href="/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary">
                 <i class="fas fa-book"></i> Review Module
             </a>
         </div>
         <?php elseif ($canAttempt): ?>
         <div class="flex flex-wrap gap-3 justify-center">
-            <a href="/clsn-lms/quiz.php?module_id=<?= $moduleId ?>" class="btn-lms-primary">
+            <a href="/quiz.php?module_id=<?= $moduleId ?>" class="btn-lms-primary">
                 <i class="fas fa-redo"></i> Retake Quiz (<?= $attemptsLeft ?> left)
             </a>
-            <a href="/clsn-lms/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary">
+            <a href="/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary">
                 <i class="fas fa-book"></i> Review Notes
             </a>
         </div>
@@ -249,7 +249,7 @@ include './includes/header-dash.php';
             <?php if ($regularExhausted && !$graceUnlocked && $graceSecondsLeft > 0): ?>
                 You've used all <?= $maxRegular ?> attempts. Your <strong>grace attempt</strong> unlocks in <strong><?= gmdate('H\h i\m', $graceSecondsLeft) ?></strong>. Come back then!
             <?php elseif ($regularExhausted && $graceUnlocked): ?>
-                Your grace attempt is ready — <a href="/clsn-lms/quiz.php?module_id=<?= $moduleId ?>" class="underline font-semibold">try again now</a>.
+                Your grace attempt is ready — <a href="/quiz.php?module_id=<?= $moduleId ?>" class="underline font-semibold">try again now</a>.
             <?php else: ?>
                 You've used all available attempts. Please contact us to reset your quiz.
             <?php endif; ?>
@@ -337,11 +337,11 @@ include './includes/header-dash.php';
         <?php endif; ?>
         <div class="flex gap-3 justify-center flex-wrap">
             <?php if ($regularExhausted && $graceUnlocked): ?>
-            <a href="/clsn-lms/quiz.php?module_id=<?= $moduleId ?>" class="btn-lms-primary inline-flex">
+            <a href="/quiz.php?module_id=<?= $moduleId ?>" class="btn-lms-primary inline-flex">
                 <i class="fas fa-redo"></i> Take Grace Attempt
             </a>
             <?php endif; ?>
-            <a href="/clsn-lms/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary inline-flex">
+            <a href="/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary inline-flex">
                 <i class="fas fa-book"></i> Review Module Notes
             </a>
         </div>
@@ -354,15 +354,15 @@ include './includes/header-dash.php';
         <p class="text-gray-500 mb-4">You've already passed this quiz. Move on to the next module.</p>
         <div class="flex gap-3 justify-center flex-wrap">
             <?php if ($nextModule): ?>
-            <a href="/clsn-lms/module.php?id=<?= $nextModule['id'] ?>" class="btn-lms-primary">
+            <a href="/module.php?id=<?= $nextModule['id'] ?>" class="btn-lms-primary">
                 <i class="fas fa-arrow-right"></i> Next Module
             </a>
             <?php else: ?>
-            <a href="/clsn-lms/certificate.php" class="btn-lms-primary">
+            <a href="/certificate.php" class="btn-lms-primary">
                 <i class="fas fa-award"></i> Get Certificate
             </a>
             <?php endif; ?>
-            <a href="/clsn-lms/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary">
+            <a href="/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary">
                 <i class="fas fa-book"></i> Review Module
             </a>
         </div>
@@ -411,7 +411,7 @@ include './includes/header-dash.php';
         </div>
 
         <div class="flex items-center justify-between gap-4 mt-8">
-            <a href="/clsn-lms/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary">
+            <a href="/module.php?id=<?= $moduleId ?>" class="btn-lms-secondary">
                 <i class="fas fa-arrow-left"></i> Back to Module
             </a>
             <button type="submit" class="btn-lms-primary px-8">
@@ -424,4 +424,4 @@ include './includes/header-dash.php';
 </div><!-- /max-w -->
 
 <?php include './includes/footer-dash.php'; ?>
-<script src="/clsn-lms/js/main.js"></script>
+<script src="/js/main.js"></script>

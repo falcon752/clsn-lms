@@ -16,7 +16,7 @@ $ogDescription   = $ogDescription   ?? $pageDescription;
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
     <meta name="description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>">
     <meta name="robots" content="index, follow">
-    <link rel="icon" type="image/x-icon" href="/clsn-lms/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,7 +46,7 @@ $ogDescription   = $ogDescription   ?? $pageDescription;
     </script>
 
     <!-- Custom LMS CSS -->
-    <link rel="stylesheet" href="/clsn-lms/css/custom.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
     <style>
         html, body { overflow-x: hidden; }
@@ -73,8 +73,8 @@ $ogDescription   = $ogDescription   ?? $pageDescription;
         <div class="flex items-center justify-between bg-white/90 backdrop-blur-md rounded-2xl shadow-lg px-6 py-3">
 
             <!-- Logo -->
-            <a href="/clsn-lms/index.php" class="flex items-center space-x-3">
-                <img src="/clsn-lms/images/logo-candlelight.svg" alt="Candlelight LMS" class="w-10 h-10 object-contain">
+            <a href="/index.php" class="flex items-center space-x-3">
+                <img src="/images/logo-candlelight.svg" alt="Candlelight LMS" class="w-10 h-10 object-contain">
                 <div>
                     <div class="font-display font-bold text-lg text-navy-800 leading-tight">Candlelight</div>
                     <div class="text-xs text-candlelight-600 font-semibold tracking-wide">Learning Portal</div>
@@ -83,24 +83,24 @@ $ogDescription   = $ogDescription   ?? $pageDescription;
 
             <!-- Desktop Nav -->
             <div class="hidden lg:flex items-center space-x-8">
-                <a href="/clsn-lms/index.php" class="nav-link relative text-gray-700 hover:text-candlelight-600 transition-colors font-medium">Home</a>
-                <a href="/clsn-lms/courses.php" class="nav-link relative text-gray-700 hover:text-candlelight-600 transition-colors font-medium">Courses</a>
+                <a href="/index.php" class="nav-link relative text-gray-700 hover:text-candlelight-600 transition-colors font-medium">Home</a>
+                <a href="/courses.php" class="nav-link relative text-gray-700 hover:text-candlelight-600 transition-colors font-medium">Courses</a>
                 <a href="https://candlelightspecialneeds.org" target="_blank" class="nav-link relative text-gray-700 hover:text-candlelight-600 transition-colors font-medium">Main Site</a>
             </div>
 
             <!-- Desktop Right -->
             <div class="hidden lg:flex items-center gap-4">
                 <?php if (isLoggedIn()): $u = currentUser(); ?>
-                    <a href="/clsn-lms/dashboard.php" class="flex items-center gap-2 text-gray-700 hover:text-candlelight-600 transition-colors font-medium">
+                    <a href="/dashboard.php" class="flex items-center gap-2 text-gray-700 hover:text-candlelight-600 transition-colors font-medium">
                         <span class="w-8 h-8 rounded-full bg-candlelight-500 flex items-center justify-center text-white text-sm font-bold">
                             <?= strtoupper(substr($u['first_name'], 0, 1)) ?>
                         </span>
                         <span><?= htmlspecialchars($u['first_name']) ?></span>
                     </a>
-                    <a href="/clsn-lms/logout.php" class="px-5 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold hover:border-red-400 hover:text-red-500 transition-all duration-300 text-sm">Logout</a>
+                    <a href="/logout.php" class="px-5 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold hover:border-red-400 hover:text-red-500 transition-all duration-300 text-sm">Logout</a>
                 <?php else: ?>
-                    <a href="/clsn-lms/login.php" class="text-gray-700 hover:text-candlelight-600 transition-colors font-medium">Login</a>
-                    <a href="/clsn-lms/register.php" class="px-6 py-2.5 bg-gradient-to-r from-candlelight-500 to-candlelight-600 text-white rounded-full font-semibold shadow-lg hover:shadow-candlelight-500/40 hover:scale-105 transition-all duration-300 text-sm">Get Started</a>
+                    <a href="/login.php" class="text-gray-700 hover:text-candlelight-600 transition-colors font-medium">Login</a>
+                    <a href="/register.php" class="px-6 py-2.5 bg-gradient-to-r from-candlelight-500 to-candlelight-600 text-white rounded-full font-semibold shadow-lg hover:shadow-candlelight-500/40 hover:scale-105 transition-all duration-300 text-sm">Get Started</a>
                 <?php endif; ?>
             </div>
 
@@ -116,7 +116,7 @@ $ogDescription   = $ogDescription   ?? $pageDescription;
 <div id="mobile-menu" class="hidden fixed inset-0 bg-navy-900 flex-col z-[2147483647]">
     <div class="flex items-center justify-between px-6 py-5 border-b border-white/10">
         <div class="flex items-center gap-3">
-            <img src="/clsn-lms/images/logo-white.svg" alt="Candlelight LMS" class="w-9 h-9 object-contain">
+            <img src="/images/logo-white.svg" alt="Candlelight LMS" class="w-9 h-9 object-contain">
             <div>
                 <div class="font-display font-bold text-white">Candlelight LMS</div>
                 <div class="text-xs text-candlelight-400">Learning Portal</div>
@@ -127,15 +127,15 @@ $ogDescription   = $ogDescription   ?? $pageDescription;
         </button>
     </div>
     <div class="flex-1 overflow-y-auto px-6 py-8 space-y-2">
-        <a href="/clsn-lms/index.php"   class="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-xl transition-all"><i class="fas fa-home w-5 text-candlelight-400"></i>Home</a>
-        <a href="/clsn-lms/courses.php" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-xl transition-all"><i class="fas fa-graduation-cap w-5 text-candlelight-400"></i>Courses</a>
+        <a href="/index.php"   class="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-xl transition-all"><i class="fas fa-home w-5 text-candlelight-400"></i>Home</a>
+        <a href="/courses.php" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-xl transition-all"><i class="fas fa-graduation-cap w-5 text-candlelight-400"></i>Courses</a>
         <?php if (isLoggedIn()): ?>
-            <a href="/clsn-lms/dashboard.php" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-xl transition-all"><i class="fas fa-tachometer-alt w-5 text-candlelight-400"></i>Dashboard</a>
-            <a href="/clsn-lms/logout.php"    class="flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-white/10 rounded-xl transition-all"><i class="fas fa-sign-out-alt w-5"></i>Logout</a>
+            <a href="/dashboard.php" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-xl transition-all"><i class="fas fa-tachometer-alt w-5 text-candlelight-400"></i>Dashboard</a>
+            <a href="/logout.php"    class="flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-white/10 rounded-xl transition-all"><i class="fas fa-sign-out-alt w-5"></i>Logout</a>
         <?php else: ?>
             <div class="pt-4 space-y-3">
-                <a href="/clsn-lms/login.php"    class="block text-center px-6 py-3 border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white/10 transition">Login</a>
-                <a href="/clsn-lms/register.php" class="block text-center px-6 py-3 bg-candlelight-500 text-white rounded-full font-semibold hover:bg-candlelight-600 transition">Get Started</a>
+                <a href="/login.php"    class="block text-center px-6 py-3 border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white/10 transition">Login</a>
+                <a href="/register.php" class="block text-center px-6 py-3 bg-candlelight-500 text-white rounded-full font-semibold hover:bg-candlelight-600 transition">Get Started</a>
             </div>
         <?php endif; ?>
     </div>

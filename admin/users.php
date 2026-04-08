@@ -39,7 +39,7 @@ include './includes/header.php';
 <form method="GET" class="flex gap-3 mb-6 max-w-md">
     <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" class="lms-input flex-1 text-sm" placeholder="Search by name or email...">
     <button type="submit" class="btn-lms-primary text-sm px-5"><i class="fas fa-search"></i></button>
-    <?php if ($search): ?><a href="/clsn-lms/admin/users.php" class="btn-lms-secondary text-sm px-4"><i class="fas fa-times"></i></a><?php endif; ?>
+    <?php if ($search): ?><a href="/admin/users.php" class="btn-lms-secondary text-sm px-4"><i class="fas fa-times"></i></a><?php endif; ?>
 </form>
 
 <div class="lms-card overflow-hidden">
@@ -136,7 +136,7 @@ const CSRF = '<?= csrfToken() ?>';
 
 // ── AJAX helper ─────────────────────────────────────────────────
 async function manageUser(payload) {
-    const res = await fetch('/clsn-lms/ajax/manage-user.php', {
+    const res = await fetch('/ajax/manage-user.php', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: new URLSearchParams({...payload, csrf_token: CSRF})

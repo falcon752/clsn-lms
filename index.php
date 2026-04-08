@@ -3,7 +3,7 @@ include_once './includes/db.php';
 include_once './includes/auth.php';
 
 if (isLoggedIn()) {
-    header('Location: /clsn-lms/dashboard.php');
+    header('Location: /dashboard.php');
     exit;
 }
 
@@ -38,10 +38,10 @@ include './includes/header-public.php';
                 </p>
 
                 <div class="flex flex-wrap gap-4">
-                    <a href="/clsn-lms/courses.php" class="btn-lms-primary">
+                    <a href="/courses.php" class="btn-lms-primary">
                         <i class="fas fa-graduation-cap"></i> Browse Courses
                     </a>
-                    <a href="/clsn-lms/register.php" class="btn-lms-secondary">
+                    <a href="/register.php" class="btn-lms-secondary">
                         <i class="fas fa-user-plus"></i> Create Free Account
                     </a>
                 </div>
@@ -96,7 +96,7 @@ include './includes/header-public.php';
                         <div class="text-center text-sm text-gray-400 pt-1">+ 4 more modules</div>
                     </div>
 
-                    <a href="/clsn-lms/courses.php" class="block text-center px-6 py-3 bg-navy-900 text-white rounded-2xl font-semibold hover:bg-navy-800 transition-colors">
+                    <a href="/courses.php" class="block text-center px-6 py-3 bg-navy-900 text-white rounded-2xl font-semibold hover:bg-navy-800 transition-colors">
                         View Full Course →
                     </a>
                 </div>
@@ -156,7 +156,7 @@ include './includes/header-public.php';
                 <span class="inline-block px-5 py-2 bg-candlelight-100 text-candlelight-700 font-semibold rounded-full text-sm mb-4">Available Courses</span>
                 <h2 class="font-display text-4xl font-bold text-navy-900">Start Learning Today</h2>
             </div>
-            <a href="/clsn-lms/courses.php" class="text-candlelight-600 font-semibold hover:text-candlelight-700 transition-colors hidden md:block">View All →</a>
+            <a href="/courses.php" class="text-candlelight-600 font-semibold hover:text-candlelight-700 transition-colors hidden md:block">View All →</a>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php foreach ($courses as $course): ?>
@@ -164,7 +164,7 @@ include './includes/header-public.php';
                 <?php
                 $iThumb = '';
                 if (!empty($course['thumbnail']) && file_exists(__DIR__ . '/uploads/thumbnails/' . basename($course['thumbnail']))) {
-                    $iThumb = '/clsn-lms/uploads/thumbnails/' . htmlspecialchars(basename($course['thumbnail']));
+                    $iThumb = '/uploads/thumbnails/' . htmlspecialchars(basename($course['thumbnail']));
                 } elseif (!empty($course['youtube_url'])) {
                     preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $course['youtube_url'], $iYtm);
                     if (!empty($iYtm[1])) {
@@ -195,7 +195,7 @@ include './includes/header-public.php';
                         <span><i class="fas fa-clock mr-1 text-candlelight-500"></i><?= htmlspecialchars($course['duration']) ?></span>
                         <span><i class="fas fa-signal mr-1 text-candlelight-500"></i><?= htmlspecialchars($course['level']) ?></span>
                     </div>
-                    <a href="/clsn-lms/course.php?slug=<?= urlencode($course['slug']) ?>" class="block text-center px-5 py-3 bg-navy-900 text-white rounded-xl font-semibold hover:bg-navy-800 transition-colors text-sm">
+                    <a href="/course.php?slug=<?= urlencode($course['slug']) ?>" class="block text-center px-5 py-3 bg-navy-900 text-white rounded-xl font-semibold hover:bg-navy-800 transition-colors text-sm">
                         View Course →
                     </a>
                 </div>
@@ -218,10 +218,10 @@ include './includes/header-public.php';
         </h2>
         <p class="text-gray-300 text-lg mb-10 max-w-2xl mx-auto">Join hundreds of parents, caregivers, and educators who are transforming their understanding and support of children with special needs.</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/clsn-lms/register.php" class="px-8 py-4 bg-candlelight-500 text-white rounded-full font-bold text-lg hover:bg-candlelight-600 transition-all hover:scale-105 shadow-lg">
+            <a href="/register.php" class="px-8 py-4 bg-candlelight-500 text-white rounded-full font-bold text-lg hover:bg-candlelight-600 transition-all hover:scale-105 shadow-lg">
                 <i class="fas fa-user-plus mr-2"></i>Sign Up Free
             </a>
-            <a href="/clsn-lms/login.php" class="px-8 py-4 bg-white/10 backdrop-blur border-2 border-white/30 text-white rounded-full font-bold text-lg hover:bg-white/20 transition-all">
+            <a href="/login.php" class="px-8 py-4 bg-white/10 backdrop-blur border-2 border-white/30 text-white rounded-full font-bold text-lg hover:bg-white/20 transition-all">
                 Already have an account?
             </a>
         </div>
@@ -229,4 +229,4 @@ include './includes/header-public.php';
 </section>
 
 <?php include './includes/footer-public.php'; ?>
-<script src="/clsn-lms/js/main.js"></script>
+<script src="/js/main.js"></script>

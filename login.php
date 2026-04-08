@@ -2,7 +2,7 @@
 include_once './includes/db.php';
 include_once './includes/auth.php';
 
-if (isLoggedIn()) { header('Location: /clsn-lms/dashboard.php'); exit; }
+if (isLoggedIn()) { header('Location: /dashboard.php'); exit; }
 
 $error = '';
 $success = '';
@@ -32,10 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 loginUser($user);
                 $redirect = filter_var($_GET['redirect'] ?? '', FILTER_SANITIZE_URL);
-                if ($redirect && strpos($redirect, '/clsn-lms/') === 0) {
+                if ($redirect && strpos($redirect, '/') === 0) {
                     header("Location: $redirect");
                 } else {
-                    header('Location: /clsn-lms/dashboard.php');
+                    header('Location: /dashboard.php');
                 }
                 exit;
             }
@@ -97,7 +97,7 @@ include './includes/header-public.php';
 
             <p class="text-center text-gray-500 text-sm mt-6">
                 Don't have an account?
-                <a href="/clsn-lms/register.php" class="text-candlelight-600 font-semibold hover:text-candlelight-700 transition-colors">Create one free →</a>
+                <a href="/register.php" class="text-candlelight-600 font-semibold hover:text-candlelight-700 transition-colors">Create one free →</a>
             </p>
         </div>
 
@@ -116,4 +116,4 @@ document.getElementById('toggle-pass')?.addEventListener('click', function() {
     else                       { f.type = 'password'; i.className = 'fas fa-eye'; }
 });
 </script>
-<script src="/clsn-lms/js/main.js"></script>
+<script src="/js/main.js"></script>

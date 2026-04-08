@@ -27,7 +27,7 @@ if ($isEdit) {
     $stmt->execute();
     $fetched = $stmt->get_result()->fetch_assoc();
     $stmt->close();
-    if (!$fetched) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+    if (!$fetched) { header('Location: /admin/courses.php'); exit; }
     $course = $fetched;
 }
 
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($stmt->execute()) {
                         $newId = $conn->insert_id;
                         $stmt->close();
-                        header('Location: /clsn-lms/admin/modules.php?course_id=' . $newId . '&created=1');
+                        header('Location: /admin/modules.php?course_id=' . $newId . '&created=1');
                         exit;
                     } else {
                         $err = 'Database error: ' . $conn->error;
@@ -160,7 +160,7 @@ include './includes/header.php';
 ?>
 
 <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
-    <a href="/clsn-lms/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
+    <a href="/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <span class="text-gray-800"><?= $isEdit ? htmlspecialchars($course['title']) : 'New Course' ?></span>
 </nav>
@@ -190,7 +190,7 @@ include './includes/header.php';
                 <input type="text" name="slug" id="course-slug" required class="lms-input font-mono text-sm"
                     value="<?= htmlspecialchars($course['slug']) ?>"
                     placeholder="e.g. understanding-autism">
-                <p class="text-xs text-gray-400 mt-1">Used in the course URL: /clsn-lms/course.php?slug=<strong id="slug-preview"><?= htmlspecialchars($course['slug']) ?: 'your-slug' ?></strong></p>
+                <p class="text-xs text-gray-400 mt-1">Used in the course URL: /course.php?slug=<strong id="slug-preview"><?= htmlspecialchars($course['slug']) ?: 'your-slug' ?></strong></p>
             </div>
 
             <div>
@@ -237,7 +237,7 @@ include './includes/header.php';
                 <label class="block text-sm font-semibold text-gray-700 mb-2">Course Thumbnail <span class="text-gray-400 font-normal text-xs">(JPG/PNG/WEBP, max 2 MB)</span></label>
                 <?php if (!empty($course['thumbnail'])): ?>
                 <div class="mb-3 flex items-start gap-4">
-                    <img src="/clsn-lms/uploads/thumbnails/<?= htmlspecialchars(basename($course['thumbnail'])) ?>"
+                    <img src="/uploads/thumbnails/<?= htmlspecialchars(basename($course['thumbnail'])) ?>"
                          alt="Current thumbnail" class="w-32 h-20 object-cover rounded-xl border border-gray-200">
                     <p class="text-xs text-gray-500 mt-2">Current thumbnail. Upload a new file to replace it.</p>
                 </div>
@@ -292,11 +292,11 @@ include './includes/header.php';
                 <i class="fas fa-save"></i> <?= $isEdit ? 'Save Changes' : 'Create Course' ?>
             </button>
             <?php if ($isEdit): ?>
-            <a href="/clsn-lms/admin/modules.php?course_id=<?= $courseId ?>" class="btn-lms-secondary">
+            <a href="/admin/modules.php?course_id=<?= $courseId ?>" class="btn-lms-secondary">
                 <i class="fas fa-layer-group"></i> Manage Modules
             </a>
             <?php endif; ?>
-            <a href="/clsn-lms/admin/courses.php" class="btn-lms-secondary">
+            <a href="/admin/courses.php" class="btn-lms-secondary">
                 <i class="fas fa-arrow-left"></i> Back to Courses
             </a>
         </div>

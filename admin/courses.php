@@ -39,7 +39,7 @@ include './includes/header.php';
 
 <div class="flex items-center justify-between mb-6">
     <p class="text-gray-500 text-sm"><?= count($courses) ?> course<?= count($courses) !== 1 ? 's' : '' ?> total</p>
-    <a href="/clsn-lms/admin/course-form.php" class="btn-lms-primary text-sm">
+    <a href="/admin/course-form.php" class="btn-lms-primary text-sm">
         <i class="fas fa-plus"></i> New Course
     </a>
 </div>
@@ -50,7 +50,7 @@ include './includes/header.php';
         <?php
         $aThumb = '';
         if (!empty($c['thumbnail']) && file_exists(__DIR__ . '/../uploads/thumbnails/' . basename($c['thumbnail']))) {
-            $aThumb = '/clsn-lms/uploads/thumbnails/' . htmlspecialchars(basename($c['thumbnail']));
+            $aThumb = '/uploads/thumbnails/' . htmlspecialchars(basename($c['thumbnail']));
         } elseif (!empty($c['youtube_url'])) {
             preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $c['youtube_url'], $aYtm);
             if (!empty($aYtm[1])) {
@@ -83,13 +83,13 @@ include './includes/header.php';
             </div>
         </div>
         <div class="flex items-center gap-2 flex-shrink-0">
-            <a href="/clsn-lms/admin/modules.php?course_id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-navy-100 text-navy-700 rounded-xl text-xs font-semibold hover:bg-navy-200 transition-colors">
+            <a href="/admin/modules.php?course_id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-navy-100 text-navy-700 rounded-xl text-xs font-semibold hover:bg-navy-200 transition-colors">
                 <i class="fas fa-layer-group"></i> Modules
             </a>
-            <a href="/clsn-lms/admin/course-form.php?id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-candlelight-100 text-candlelight-700 rounded-xl text-xs font-semibold hover:bg-candlelight-200 transition-colors">
+            <a href="/admin/course-form.php?id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-candlelight-100 text-candlelight-700 rounded-xl text-xs font-semibold hover:bg-candlelight-200 transition-colors">
                 <i class="fas fa-edit"></i> Edit
             </a>
-            <a href="/clsn-lms/course.php?slug=<?= urlencode($c['slug']) ?>" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gray-100 text-gray-600 rounded-xl text-xs font-semibold hover:bg-gray-200 transition-colors">
+            <a href="/course.php?slug=<?= urlencode($c['slug']) ?>" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gray-100 text-gray-600 rounded-xl text-xs font-semibold hover:bg-gray-200 transition-colors">
                 <i class="fas fa-eye"></i> Preview
             </a>
             <form method="POST">

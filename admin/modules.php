@@ -14,7 +14,7 @@ if (!$isOverview) {
     $cq->execute();
     $course = $cq->get_result()->fetch_assoc();
     $cq->close();
-    if (!$course) { header('Location: /clsn-lms/admin/modules.php'); exit; }
+    if (!$course) { header('Location: /admin/modules.php'); exit; }
 }
 
 $msg = '';
@@ -104,7 +104,7 @@ include './includes/header.php';
                     <div class="text-xs text-gray-400 mt-0.5"><?= count($cms) ?> module<?= count($cms) !== 1 ? 's' : '' ?></div>
                 </div>
             </div>
-            <a href="/clsn-lms/admin/module-form.php?new=1&course_id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-candlelight-500 hover:bg-candlelight-600 text-white rounded-lg text-xs font-semibold transition-colors">
+            <a href="/admin/module-form.php?new=1&course_id=<?= $c['id'] ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-candlelight-500 hover:bg-candlelight-600 text-white rounded-lg text-xs font-semibold transition-colors">
                 <i class="fas fa-plus"></i> Add Module
             </a>
         </div>
@@ -129,10 +129,10 @@ include './includes/header.php';
                     </div>
                 </div>
                 <div class="flex items-center gap-2 flex-shrink-0">
-                    <a href="/clsn-lms/admin/module-form.php?id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-navy-100 text-navy-700 rounded-lg text-xs font-semibold hover:bg-navy-200 transition-colors">
+                    <a href="/admin/module-form.php?id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-navy-100 text-navy-700 rounded-lg text-xs font-semibold hover:bg-navy-200 transition-colors">
                         <i class="fas fa-edit"></i> Edit
                     </a>
-                    <a href="/clsn-lms/admin/quiz-builder.php?module_id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-candlelight-100 text-candlelight-700 rounded-lg text-xs font-semibold hover:bg-candlelight-200 transition-colors">
+                    <a href="/admin/quiz-builder.php?module_id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-candlelight-100 text-candlelight-700 rounded-lg text-xs font-semibold hover:bg-candlelight-200 transition-colors">
                         <i class="fas fa-pencil-alt"></i> Quiz
                     </a>
                 </div>
@@ -151,16 +151,16 @@ include './includes/header.php';
 
 <!-- ── Per-course view ────────────────────────────────────────────────── -->
 <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
-    <a href="/clsn-lms/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
+    <a href="/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <a href="/clsn-lms/admin/modules.php" class="hover:text-candlelight-600 transition-colors">Modules</a>
+    <a href="/admin/modules.php" class="hover:text-candlelight-600 transition-colors">Modules</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <span class="text-gray-800 font-medium"><?= htmlspecialchars($course['title']) ?></span>
 </nav>
 
 <div class="flex items-center justify-between mb-6">
     <p class="text-gray-500 text-sm"><?= count($modules) ?> modules in this course</p>
-    <a href="/clsn-lms/admin/module-form.php?new=1&course_id=<?= $courseId ?>" class="btn-lms-primary text-sm">
+    <a href="/admin/module-form.php?new=1&course_id=<?= $courseId ?>" class="btn-lms-primary text-sm">
         <i class="fas fa-plus"></i> Add Module
     </a>
 </div>
@@ -184,10 +184,10 @@ include './includes/header.php';
             <?php if (!$m['is_active']): ?>
             <span class="px-2.5 py-1 bg-gray-100 text-gray-500 text-xs font-semibold rounded-full">Hidden</span>
             <?php endif; ?>
-            <a href="/clsn-lms/admin/module-form.php?id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-navy-100 text-navy-700 rounded-xl text-xs font-semibold hover:bg-navy-200 transition-colors">
+            <a href="/admin/module-form.php?id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-navy-100 text-navy-700 rounded-xl text-xs font-semibold hover:bg-navy-200 transition-colors">
                 <i class="fas fa-edit"></i> Edit
             </a>
-            <a href="/clsn-lms/admin/quiz-builder.php?module_id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-candlelight-100 text-candlelight-700 rounded-xl text-xs font-semibold hover:bg-candlelight-200 transition-colors">
+            <a href="/admin/quiz-builder.php?module_id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-candlelight-100 text-candlelight-700 rounded-xl text-xs font-semibold hover:bg-candlelight-200 transition-colors">
                 <i class="fas fa-pencil-alt"></i> Quiz
             </a>
             <form method="POST">

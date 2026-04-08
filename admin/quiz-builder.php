@@ -62,7 +62,7 @@ if ($isOverview) {
                             <?php endif; ?>
                         </div>
                     </div>
-                    <a href="/clsn-lms/admin/quiz-builder.php?module_id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 <?= $m['quiz_id'] ? 'bg-candlelight-100 text-candlelight-700 hover:bg-candlelight-200' : 'bg-navy-100 text-navy-700 hover:bg-navy-200' ?> rounded-xl text-xs font-semibold transition-colors flex-shrink-0">
+                    <a href="/admin/quiz-builder.php?module_id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 <?= $m['quiz_id'] ? 'bg-candlelight-100 text-candlelight-700 hover:bg-candlelight-200' : 'bg-navy-100 text-navy-700 hover:bg-navy-200' ?> rounded-xl text-xs font-semibold transition-colors flex-shrink-0">
                         <i class="fas <?= $m['quiz_id'] ? 'fa-pencil-alt' : 'fa-plus-circle' ?>"></i>
                         <?= $m['quiz_id'] ? 'Edit Quiz' : 'Create Quiz' ?>
                     </a>
@@ -92,7 +92,7 @@ $mq->bind_param('i', $moduleId);
 $mq->execute();
 $module = $mq->get_result()->fetch_assoc();
 $mq->close();
-if (!$module) { header('Location: /clsn-lms/admin/quiz-builder.php'); exit; }
+if (!$module) { header('Location: /admin/quiz-builder.php'); exit; }
 
 // Get or create quiz
 $quiz = $conn->prepare("SELECT * FROM lms_quizzes WHERE module_id=?");
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param('is', $moduleId, $quizTitle);
         if ($stmt->execute()) {
             $stmt->close();
-            header("Location: /clsn-lms/admin/quiz-builder.php?module_id={$moduleId}&created=1");
+            header("Location: /admin/quiz-builder.php?module_id={$moduleId}&created=1");
             exit;
         } else {
             $err = 'Could not create quiz: ' . $conn->error;
@@ -187,11 +187,11 @@ include './includes/header.php';
 ?>
 
 <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6 flex-wrap">
-    <a href="/clsn-lms/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
+    <a href="/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <a href="/clsn-lms/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="hover:text-candlelight-600 transition-colors"><?= htmlspecialchars($module['course_title']) ?></a>
+    <a href="/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="hover:text-candlelight-600 transition-colors"><?= htmlspecialchars($module['course_title']) ?></a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <a href="/clsn-lms/admin/quiz-builder.php" class="hover:text-candlelight-600 transition-colors">Quiz Builder</a>
+    <a href="/admin/quiz-builder.php" class="hover:text-candlelight-600 transition-colors">Quiz Builder</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <span class="text-gray-800 font-medium">Module <?= $module['module_number'] ?> Quiz</span>
 </nav>

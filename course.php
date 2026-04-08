@@ -5,7 +5,7 @@ include_once './includes/functions.php';
 
 $slug   = trim($_GET['slug'] ?? '');
 $course = $slug ? getCourseBySlug($conn, $slug) : null;
-if (!$course) { header('Location: /clsn-lms/courses.php'); exit; }
+if (!$course) { header('Location: /courses.php'); exit; }
 
 $userId   = isLoggedIn() ? currentUserId() : 0;
 $enrolled = $userId ? isEnrolled($conn, $userId, $course['id']) : false;
@@ -59,7 +59,7 @@ include './includes/header-dash.php';
 
 <!-- Back link -->
 <div class="mb-4">
-    <a href="/clsn-lms/courses.php" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-navy-900 font-semibold transition-colors">
+    <a href="/courses.php" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-navy-900 font-semibold transition-colors">
         <i class="fas fa-arrow-left"></i> Back to Courses
     </a>
 </div>
@@ -85,15 +85,15 @@ include './includes/header-dash.php';
                 <?php if ($enrolled): ?>
                 <div class="flex flex-wrap gap-3 mb-4">
                     <?php if ($continueModule): ?>
-                    <a href="/clsn-lms/module.php?id=<?= $continueModule['id'] ?>" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg">
+                    <a href="/module.php?id=<?= $continueModule['id'] ?>" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg">
                         <i class="fas fa-play-circle"></i> Continue Learning
                     </a>
                     <?php else: ?>
-                    <a href="/clsn-lms/certificate.php" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg">
+                    <a href="/certificate.php" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg">
                         <i class="fas fa-award"></i> View Certificate
                     </a>
                     <?php endif; ?>
-                    <a href="/clsn-lms/dashboard.php" class="inline-flex items-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl transition-all border border-white/20">
+                    <a href="/dashboard.php" class="inline-flex items-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl transition-all border border-white/20">
                         <i class="fas fa-tachometer-alt"></i> My Dashboard
                     </a>
                 </div>
@@ -110,7 +110,7 @@ include './includes/header-dash.php';
                 <?php else: ?>
                 <div class="flex flex-wrap gap-3">
                     <?php if (isLoggedIn()): ?>
-                    <form action="/clsn-lms/enroll.php" method="POST">
+                    <form action="/enroll.php" method="POST">
                         <?= csrfField() ?>
                         <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
                         <button type="submit" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-candlelight-500/40 hover:-translate-y-0.5">
@@ -118,10 +118,10 @@ include './includes/header-dash.php';
                         </button>
                     </form>
                     <?php else: ?>
-                    <a href="/clsn-lms/register.php" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg">
+                    <a href="/register.php" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg">
                         <i class="fas fa-rocket"></i> Get Started (Free)
                     </a>
-                    <a href="/clsn-lms/login.php" class="inline-flex items-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl transition-all border border-white/20">
+                    <a href="/login.php" class="inline-flex items-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl transition-all border border-white/20">
                         <i class="fas fa-sign-in-alt"></i> Sign In
                     </a>
                     <?php endif; ?>
@@ -135,7 +135,7 @@ include './includes/header-dash.php';
                     <?php
                     $heroThumbSrc = '';
                     if (!empty($course['thumbnail']) && file_exists(__DIR__ . '/uploads/thumbnails/' . basename($course['thumbnail']))) {
-                        $heroThumbSrc = '/clsn-lms/uploads/thumbnails/' . htmlspecialchars(basename($course['thumbnail']));
+                        $heroThumbSrc = '/uploads/thumbnails/' . htmlspecialchars(basename($course['thumbnail']));
                     } elseif (!empty($course['youtube_url'])) {
                         preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $course['youtube_url'], $hYtm);
                         if (!empty($hYtm[1])) {
@@ -262,7 +262,7 @@ include './includes/header-dash.php';
                                 </div>
 
                                 <?php if ($enrolled && $unlocked): ?>
-                                <a href="/clsn-lms/module.php?id=<?= $mod['id'] ?>" class="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 <?= $done ? 'bg-green-100 text-green-700' : 'bg-candlelight-500 text-white' ?> rounded-xl text-xs font-semibold hover:opacity-90 transition-all">
+                                <a href="/module.php?id=<?= $mod['id'] ?>" class="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 <?= $done ? 'bg-green-100 text-green-700' : 'bg-candlelight-500 text-white' ?> rounded-xl text-xs font-semibold hover:opacity-90 transition-all">
                                     <?= $done ? '<i class="fas fa-redo"></i> Review' : '<i class="fas fa-play"></i> Start' ?>
                                 </a>
                                 <?php elseif (!$enrolled): ?>
@@ -305,7 +305,7 @@ include './includes/header-dash.php';
                             <div class="text-3xl font-bold text-navy-900 mb-1"><?= $course['is_free'] ? 'Free' : 'Paid' ?></div>
                             <p class="text-gray-500 text-sm mb-4">No credit card required</p>
                             <?php if (isLoggedIn()): ?>
-                            <form action="/clsn-lms/enroll.php" method="POST">
+                            <form action="/enroll.php" method="POST">
                                 <?= csrfField() ?>
                                 <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
                                 <button type="submit" class="btn-lms-primary w-full">
@@ -313,7 +313,7 @@ include './includes/header-dash.php';
                                 </button>
                             </form>
                             <?php else: ?>
-                            <a href="/clsn-lms/register.php" class="btn-lms-primary w-full text-center block">
+                            <a href="/register.php" class="btn-lms-primary w-full text-center block">
                                 <i class="fas fa-rocket"></i> Get Started Free
                             </a>
                             <?php endif; ?>
@@ -326,4 +326,4 @@ include './includes/header-dash.php';
 </div>
 
 <?php include './includes/footer-dash.php'; ?>
-<script src="/clsn-lms/js/main.js"></script>
+<script src="/js/main.js"></script>

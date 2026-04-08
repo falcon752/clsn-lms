@@ -19,7 +19,7 @@ $dashPageTitle = $dashPageTitle ?? 'Dashboard';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Playfair+Display:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="/clsn-lms/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -39,7 +39,7 @@ $dashPageTitle = $dashPageTitle ?? 'Dashboard';
         }
     }
     </script>
-    <link rel="stylesheet" href="/clsn-lms/css/custom.css">
+    <link rel="stylesheet" href="/css/custom.css">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-display { font-family: 'Playfair Display', serif; }
@@ -62,8 +62,8 @@ $dashPageTitle = $dashPageTitle ?? 'Dashboard';
 
         <!-- Brand -->
         <div class="px-6 py-5 border-b border-white/10 flex items-center justify-between">
-            <a href="/clsn-lms/index.php" class="flex items-center gap-3">
-                <img src="/clsn-lms/images/logo-white.svg" alt="Logo" class="w-9 h-9 object-contain">
+            <a href="/index.php" class="flex items-center gap-3">
+                <img src="/images/logo-white.svg" alt="Logo" class="w-9 h-9 object-contain">
                 <div>
                     <div class="font-display font-bold text-base leading-tight">Candlelight</div>
                     <div class="text-xs text-candlelight-400">Learning Portal</div>
@@ -79,13 +79,13 @@ $dashPageTitle = $dashPageTitle ?? 'Dashboard';
             <?php
             $currentPage = basename($_SERVER['PHP_SELF']);
             $navLinks = [
-                ['href' => '/clsn-lms/dashboard.php',    'icon' => 'fa-tachometer-alt', 'label' => 'Dashboard',     'page' => 'dashboard.php'],
-                ['href' => '/clsn-lms/courses.php',       'icon' => 'fa-graduation-cap', 'label' => 'Browse Courses', 'page' => 'courses.php'],
-                ['href' => '/clsn-lms/certificate.php',   'icon' => 'fa-certificate',    'label' => 'My Certificates','page' => 'certificate.php'],
-                ['href' => '/clsn-lms/profile.php',       'icon' => 'fa-user-circle',    'label' => 'My Profile',     'page' => 'profile.php'],
+                ['href' => '/dashboard.php',    'icon' => 'fa-tachometer-alt', 'label' => 'Dashboard',     'page' => 'dashboard.php'],
+                ['href' => '/courses.php',       'icon' => 'fa-graduation-cap', 'label' => 'Browse Courses', 'page' => 'courses.php'],
+                ['href' => '/certificate.php',   'icon' => 'fa-certificate',    'label' => 'My Certificates','page' => 'certificate.php'],
+                ['href' => '/profile.php',       'icon' => 'fa-user-circle',    'label' => 'My Profile',     'page' => 'profile.php'],
             ];
             if (isAdmin()) {
-                $navLinks[] = ['href' => '/clsn-lms/admin/index.php', 'icon' => 'fa-cog', 'label' => 'Admin Panel', 'page' => 'admin'];
+                $navLinks[] = ['href' => '/admin/index.php', 'icon' => 'fa-cog', 'label' => 'Admin Panel', 'page' => 'admin'];
             }
             foreach ($navLinks as $link):
                 $isActive = strpos($currentPage, $link['page']) !== false || ($link['page'] === 'admin' && strpos($_SERVER['PHP_SELF'], '/admin/') !== false);
@@ -108,7 +108,7 @@ $dashPageTitle = $dashPageTitle ?? 'Dashboard';
                     <div class="text-xs text-gray-400 truncate"><?= htmlspecialchars($dashUser['email']) ?></div>
                 </div>
             </div>
-            <a href="/clsn-lms/logout.php" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-400 hover:text-red-400 hover:bg-white/5 transition-all text-sm">
+            <a href="/logout.php" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-400 hover:text-red-400 hover:bg-white/5 transition-all text-sm">
                 <i class="fas fa-sign-out-alt w-5 text-center"></i>
                 <span>Logout</span>
             </a>
@@ -127,16 +127,16 @@ $dashPageTitle = $dashPageTitle ?? 'Dashboard';
                 <button id="sidebar-toggle" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors">
                     <i class="fas fa-bars text-gray-600"></i>
                 </button>
-                <img src="/clsn-lms/images/logo-candlelight.svg" alt="Logo" class="w-8 h-8 object-contain flex-shrink-0">
+                <img src="/images/logo-candlelight.svg" alt="Logo" class="w-8 h-8 object-contain flex-shrink-0">
                 <div>
                     <h1 class="font-display font-bold text-xl text-navy-900"><?= htmlspecialchars($dashPageTitle) ?></h1>
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <a href="/clsn-lms/courses.php" class="hidden sm:flex items-center gap-2 px-4 py-2 bg-candlelight-50 text-candlelight-700 rounded-xl text-sm font-semibold hover:bg-candlelight-100 transition-colors">
+                <a href="/courses.php" class="hidden sm:flex items-center gap-2 px-4 py-2 bg-candlelight-50 text-candlelight-700 rounded-xl text-sm font-semibold hover:bg-candlelight-100 transition-colors">
                     <i class="fas fa-plus-circle"></i> Enroll in a Course
                 </a>
-                <a href="/clsn-lms/profile.php" class="w-9 h-9 rounded-full bg-candlelight-500 flex items-center justify-center text-white font-bold text-sm hover:bg-candlelight-600 transition-colors">
+                <a href="/profile.php" class="w-9 h-9 rounded-full bg-candlelight-500 flex items-center justify-center text-white font-bold text-sm hover:bg-candlelight-600 transition-colors">
                     <?= strtoupper(substr($dashUser['first_name'], 0, 1)) ?>
                 </a>
             </div>

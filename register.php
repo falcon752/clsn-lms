@@ -2,7 +2,7 @@
 include_once './includes/db.php';
 include_once './includes/auth.php';
 
-if (isLoggedIn()) { header('Location: /clsn-lms/dashboard.php'); exit; }
+if (isLoggedIn()) { header('Location: /dashboard.php'); exit; }
 
 $error   = '';
 $success = '';
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Login the user
                     $u = ['id' => $newId, 'first_name' => $first, 'last_name' => $last, 'email' => $email, 'role' => 'student'];
                     loginUser($u);
-                    header('Location: /clsn-lms/dashboard.php?welcome=1');
+                    header('Location: /dashboard.php?welcome=1');
                     exit;
                 } else {
                     $error = 'Registration failed. Please try again.';
@@ -129,7 +129,7 @@ include './includes/header-public.php';
                     <input type="checkbox" id="terms" name="terms" required
                         class="mt-1 w-4 h-4 accent-candlelight-500 cursor-pointer flex-shrink-0">
                     <label for="terms" class="text-sm text-gray-600 cursor-pointer">
-                        I agree to the <a href="/clsn-lms/terms.php" class="text-candlelight-600 hover:underline">Terms of Use</a> and <a href="/clsn-lms/privacy.php" class="text-candlelight-600 hover:underline">Privacy Policy</a>.
+                        I agree to the <a href="/terms.php" class="text-candlelight-600 hover:underline">Terms of Use</a> and <a href="/privacy.php" class="text-candlelight-600 hover:underline">Privacy Policy</a>.
                     </label>
                 </div>
 
@@ -146,7 +146,7 @@ include './includes/header-public.php';
 
             <p class="text-center text-gray-500 text-sm mt-6">
                 Already have an account?
-                <a href="/clsn-lms/login.php" class="text-candlelight-600 font-semibold hover:text-candlelight-700 transition-colors">Sign in →</a>
+                <a href="/login.php" class="text-candlelight-600 font-semibold hover:text-candlelight-700 transition-colors">Sign in →</a>
             </p>
         </div>
     </div>
@@ -161,4 +161,4 @@ document.getElementById('toggle-pass')?.addEventListener('click', function() {
     else                       { f.type = 'password'; i.className = 'fas fa-eye'; }
 });
 </script>
-<script src="/clsn-lms/js/main.js"></script>
+<script src="/js/main.js"></script>

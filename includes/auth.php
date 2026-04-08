@@ -29,7 +29,7 @@ function isAdmin(): bool {
 
 function requireLogin(string $redirect = ''): void {
     if (!isLoggedIn()) {
-        $target = $redirect ?: (defined('BASE_URL') ? BASE_URL . '/login.php' : '/clsn-lms/login.php');
+        $target = $redirect ?: (defined('BASE_URL') ? BASE_URL . '/login.php' : '/login.php');
         $back   = urlencode($_SERVER['REQUEST_URI'] ?? '');
         header("Location: {$target}?redirect={$back}");
         exit;
@@ -47,7 +47,7 @@ function requireAdmin(): void {
 function requireStudent(): void {
     requireLogin();
     if (isAdmin()) {
-        header('Location: /clsn-lms/admin/');
+        header('Location: /admin/');
         exit;
     }
 }

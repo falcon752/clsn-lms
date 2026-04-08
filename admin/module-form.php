@@ -15,7 +15,7 @@ if ($isNew) {
     $cStmt->execute();
     $courseRow = $cStmt->get_result()->fetch_assoc();
     $cStmt->close();
-    if (!$courseRow) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+    if (!$courseRow) { header('Location: /admin/courses.php'); exit; }
 
     // Next module number
     $r = $conn->prepare("SELECT COALESCE(MAX(module_number),0)+1 AS next_num FROM lms_modules WHERE course_id=?");
@@ -38,13 +38,13 @@ if ($isNew) {
         'is_active'        => 1,
     ];
 } else {
-    if (!$moduleId) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+    if (!$moduleId) { header('Location: /admin/courses.php'); exit; }
     $stmt = $conn->prepare("SELECT m.*, c.title AS course_title, c.id AS course_id FROM lms_modules m JOIN lms_courses c ON c.id=m.course_id WHERE m.id=?");
     $stmt->bind_param('i', $moduleId);
     $stmt->execute();
     $module = $stmt->get_result()->fetch_assoc();
     $stmt->close();
-    if (!$module) { header('Location: /clsn-lms/admin/courses.php'); exit; }
+    if (!$module) { header('Location: /admin/courses.php'); exit; }
 }
 
 $msg = '';
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_module'])) {
                     // Update total_modules count
                     $conn->query("UPDATE lms_courses SET total_modules=(SELECT COUNT(*) FROM lms_modules WHERE course_id={$module['course_id']}) WHERE id={$module['course_id']}");
                     $stmt->close();
-                    header('Location: /clsn-lms/admin/modules.php?course_id=' . $module['course_id'] . '&added=1');
+                    header('Location: /admin/modules.php?course_id=' . $module['course_id'] . '&added=1');
                     exit;
                 } else {
                     $err = 'Database error: ' . $conn->error;
@@ -161,11 +161,11 @@ include './includes/header.php';
 ?>
 
 <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
-    <a href="/clsn-lms/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
+    <a href="/admin/courses.php" class="hover:text-candlelight-600 transition-colors">Courses</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <a href="/clsn-lms/admin/courses.php" class="hover:text-candlelight-600 transition-colors"><?= htmlspecialchars($module['course_title']) ?></a>
+    <a href="/admin/courses.php" class="hover:text-candlelight-600 transition-colors"><?= htmlspecialchars($module['course_title']) ?></a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <a href="/clsn-lms/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="hover:text-candlelight-600 transition-colors">Modules</a>
+    <a href="/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="hover:text-candlelight-600 transition-colors">Modules</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <span class="text-gray-800 font-medium"><?= $isNew ? 'New Module' : 'Edit Module ' . $module['module_number'] ?></span>
 </nav>
@@ -224,11 +224,11 @@ include './includes/header.php';
 
         <div class="flex items-center gap-3">
             <button type="submit" class="btn-lms-primary"><i class="fas fa-save"></i> <?= $isNew ? 'Create Module' : 'Save Changes' ?></button>
-            <a href="/clsn-lms/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="btn-lms-secondary">
+            <a href="/admin/modules.php?course_id=<?= $module['course_id'] ?>" class="btn-lms-secondary">
                 <i class="fas fa-arrow-left"></i> Back to Modules
             </a>
             <?php if (!$isNew): ?>
-            <a href="/clsn-lms/admin/quiz-builder.php?module_id=<?= $moduleId ?>" class="btn-lms-secondary">
+            <a href="/admin/quiz-builder.php?module_id=<?= $moduleId ?>" class="btn-lms-secondary">
                 <i class="fas fa-pencil-alt"></i> Edit Quiz
             </a>
             <?php endif; ?>
@@ -264,7 +264,7 @@ $pStmt->close();
                 <p class="text-sm font-semibold text-gray-800 truncate"><?= htmlspecialchars($pdf['title']) ?></p>
                 <p class="text-xs text-gray-400"><?= htmlspecialchars($pdf['file_size'] ?? '') ?> &middot; <?= htmlspecialchars(pathinfo($pdf['file_path'], PATHINFO_EXTENSION)) ?></p>
             </div>
-            <a href="/clsn-lms/uploads/pdfs/<?= htmlspecialchars(basename($pdf['file_path'])) ?>" target="_blank"
+            <a href="/uploads/pdfs/<?= htmlspecialchars(basename($pdf['file_path'])) ?>" target="_blank"
                class="px-3 py-1.5 text-xs font-semibold bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors">
                 <i class="fas fa-eye mr-1"></i> Preview
             </a>

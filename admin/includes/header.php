@@ -14,7 +14,7 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($adminPageTitle) ?> | CLSN LMS Admin</title>
     <meta name="robots" content="noindex, nofollow">
-    <link rel="icon" type="image/x-icon" href="/clsn-lms/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -36,7 +36,7 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
         }
     }
     </script>
-    <link rel="stylesheet" href="/clsn-lms/css/custom.css">
+    <link rel="stylesheet" href="/css/custom.css">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-display { font-family: 'Playfair Display', serif; }
@@ -56,8 +56,8 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
     <!-- Sidebar -->
     <aside id="admin-sidebar" class="fixed lg:static inset-y-0 left-0 w-64 bg-navy-900 text-white flex flex-col z-50 lg:z-auto">
         <div class="px-6 py-5 border-b border-white/10 flex items-center justify-between">
-            <a href="/clsn-lms/admin/index.php" class="flex items-center gap-3">
-                <img src="/clsn-lms/images/logo-white.svg" alt="Logo" class="w-9 h-9 object-contain">
+            <a href="/admin/index.php" class="flex items-center gap-3">
+                <img src="/images/logo-white.svg" alt="Logo" class="w-9 h-9 object-contain">
                 <div>
                     <div class="font-display font-bold text-base leading-tight">Candlelight LMS</div>
                     <div class="text-xs text-candlelight-400 font-semibold tracking-wide mt-0.5">Admin Panel</div>
@@ -72,12 +72,12 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
             <?php
             $cp = basename($_SERVER['PHP_SELF']);
             $sections = [
-                ['href'=>'/clsn-lms/admin/index.php',        'icon'=>'fa-tachometer-alt','label'=>'Dashboard',      'match'=>'index.php'],
-                ['href'=>'/clsn-lms/admin/users.php',         'icon'=>'fa-users',          'label'=>'Users',          'match'=>'users.php'],
-                ['href'=>'/clsn-lms/admin/courses.php',       'icon'=>'fa-graduation-cap', 'label'=>'Courses',        'match'=>'courses.php|course-form.php'],
-                ['href'=>'/clsn-lms/admin/modules.php',       'icon'=>'fa-layer-group',    'label'=>'Modules',        'match'=>'modules.php|module-form.php'],
-                ['href'=>'/clsn-lms/admin/quiz-builder.php',  'icon'=>'fa-question-circle','label'=>'Quiz Builder',   'match'=>'quiz-builder.php'],
-                ['href'=>'/clsn-lms/admin/qa-manager.php',    'icon'=>'fa-comments',       'label'=>'Q&A Manager',    'match'=>'qa-manager.php'],
+                ['href'=>'/admin/index.php',        'icon'=>'fa-tachometer-alt','label'=>'Dashboard',      'match'=>'index.php'],
+                ['href'=>'/admin/users.php',         'icon'=>'fa-users',          'label'=>'Users',          'match'=>'users.php'],
+                ['href'=>'/admin/courses.php',       'icon'=>'fa-graduation-cap', 'label'=>'Courses',        'match'=>'courses.php|course-form.php'],
+                ['href'=>'/admin/modules.php',       'icon'=>'fa-layer-group',    'label'=>'Modules',        'match'=>'modules.php|module-form.php'],
+                ['href'=>'/admin/quiz-builder.php',  'icon'=>'fa-question-circle','label'=>'Quiz Builder',   'match'=>'quiz-builder.php'],
+                ['href'=>'/admin/qa-manager.php',    'icon'=>'fa-comments',       'label'=>'Q&A Manager',    'match'=>'qa-manager.php'],
             ];
             foreach ($sections as $s):
                 $active = in_array($cp, explode('|', $s['match']));
@@ -99,7 +99,7 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
                     <div class="text-xs text-candlelight-400">Administrator</div>
                 </div>
             </div>
-            <a href="/clsn-lms/logout.php" class="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-400 hover:text-red-400 hover:bg-white/5 transition-all text-sm">
+            <a href="/logout.php" class="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-400 hover:text-red-400 hover:bg-white/5 transition-all text-sm">
                 <i class="fas fa-sign-out-alt w-5 text-center"></i> <span>Logout</span>
             </a>
         </div>
@@ -114,7 +114,7 @@ $adminPageTitle = $adminPageTitle ?? 'Admin Panel';
             <button id="admin-sidebar-toggle" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100">
                 <i class="fas fa-bars text-gray-600"></i>
             </button>
-            <img src="/clsn-lms/images/logo-candlelight.svg" alt="Logo" class="w-8 h-8 object-contain flex-shrink-0">
+            <img src="/images/logo-candlelight.svg" alt="Logo" class="w-8 h-8 object-contain flex-shrink-0">
             <h1 class="font-display font-bold text-xl text-navy-900"><?= htmlspecialchars($adminPageTitle) ?></h1>
         </header>
 

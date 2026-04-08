@@ -54,7 +54,7 @@ include './includes/header.php';
     <div class="lms-card">
         <div class="p-5 border-b border-gray-100 flex items-center justify-between">
             <h3 class="font-display font-bold text-navy-900">Recent Registrations</h3>
-            <a href="/clsn-lms/admin/users.php" class="text-xs text-candlelight-600 font-semibold hover:underline">View All</a>
+            <a href="/admin/users.php" class="text-xs text-candlelight-600 font-semibold hover:underline">View All</a>
         </div>
         <div class="divide-y divide-gray-100">
             <?php foreach ($recentUsers as $u): ?>
@@ -80,12 +80,12 @@ include './includes/header.php';
         <h3 class="font-display font-bold text-navy-900 mb-5">Quick Actions</h3>
         <div class="grid grid-cols-2 gap-3">
             <?php foreach ([
-                ['href'=>'/clsn-lms/admin/courses.php',      'icon'=>'fas fa-graduation-cap','label'=>'Manage Courses',    'cls'=>'bg-navy-50 text-navy-700 hover:bg-navy-100'],
-                ['href'=>'/clsn-lms/admin/modules.php',       'icon'=>'fas fa-layer-group',   'label'=>'Manage Modules',    'cls'=>'bg-blue-50 text-blue-700 hover:bg-blue-100'],
-                ['href'=>'/clsn-lms/admin/quiz-builder.php',  'icon'=>'fas fa-pencil-alt',    'label'=>'Quiz Builder',      'cls'=>'bg-candlelight-50 text-candlelight-700 hover:bg-candlelight-100'],
-                ['href'=>'/clsn-lms/admin/users.php',         'icon'=>'fas fa-users',         'label'=>'View Students',     'cls'=>'bg-green-50 text-green-700 hover:bg-green-100'],
-                ['href'=>'/clsn-lms/admin/qa-manager.php',    'icon'=>'fas fa-comments',      'label'=>'Q&A ('.($unanswered ? "<span class='text-red-500'>{$unanswered} new</span>" : '0 new').')', 'cls'=>'bg-purple-50 text-purple-700 hover:bg-purple-100'],
-                ['href'=>'/clsn-lms/courses.php',             'icon'=>'fas fa-eye',           'label'=>'View Public Site',  'cls'=>'bg-gray-50 text-gray-700 hover:bg-gray-100'],
+                ['href'=>'/admin/courses.php',      'icon'=>'fas fa-graduation-cap','label'=>'Manage Courses',    'cls'=>'bg-navy-50 text-navy-700 hover:bg-navy-100'],
+                ['href'=>'/admin/modules.php',       'icon'=>'fas fa-layer-group',   'label'=>'Manage Modules',    'cls'=>'bg-blue-50 text-blue-700 hover:bg-blue-100'],
+                ['href'=>'/admin/quiz-builder.php',  'icon'=>'fas fa-pencil-alt',    'label'=>'Quiz Builder',      'cls'=>'bg-candlelight-50 text-candlelight-700 hover:bg-candlelight-100'],
+                ['href'=>'/admin/users.php',         'icon'=>'fas fa-users',         'label'=>'View Students',     'cls'=>'bg-green-50 text-green-700 hover:bg-green-100'],
+                ['href'=>'/admin/qa-manager.php',    'icon'=>'fas fa-comments',      'label'=>'Q&A ('.($unanswered ? "<span class='text-red-500'>{$unanswered} new</span>" : '0 new').')', 'cls'=>'bg-purple-50 text-purple-700 hover:bg-purple-100'],
+                ['href'=>'/courses.php',             'icon'=>'fas fa-eye',           'label'=>'View Public Site',  'cls'=>'bg-gray-50 text-gray-700 hover:bg-gray-100'],
             ] as $a): ?>
             <a href="<?= $a['href'] ?>" class="flex flex-col items-center gap-2 p-4 rounded-xl <?= $a['cls'] ?> transition-colors text-center font-semibold text-sm border border-transparent hover:border-current/10">
                 <i class="<?= $a['icon'] ?> text-xl"></i>

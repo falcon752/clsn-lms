@@ -26,7 +26,7 @@ if ($uid) {
     $stmt->close();
     // Only owner can view
     if (!$certView || $certView['user_id'] ?? null !== $userId) {
-        if (!$certView) { header('Location: /clsn-lms/certificate.php'); exit; }
+        if (!$certView) { header('Location: /certificate.php'); exit; }
     }
 }
 
@@ -51,10 +51,10 @@ include './includes/header-dash.php';
 <!-- ── Single Certificate Print View ──────────────────────────────────── -->
 <div class="max-w-4xl mx-auto mb-6 no-print">
     <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
-        <a href="/clsn-lms/certificate.php" class="flex items-center gap-2 text-gray-500 hover:text-candlelight-600 text-sm font-semibold transition-colors">
+        <a href="/certificate.php" class="flex items-center gap-2 text-gray-500 hover:text-candlelight-600 text-sm font-semibold transition-colors">
             <i class="fas fa-arrow-left"></i> Back to My Certificates
         </a>
-        <a href="/clsn-lms/certificate-print.php?uid=<?= urlencode($certView['certificate_uid']) ?>"
+        <a href="/certificate-print.php?uid=<?= urlencode($certView['certificate_uid']) ?>"
            target="_blank"
            class="btn-lms-primary text-sm">
             <i class="fas fa-download"></i> Save as PDF
@@ -75,7 +75,7 @@ include './includes/header-dash.php';
                     <p class="cert-presented-to">This certificate is proudly presented to</p>
                 </div>
                 <div class="cert-logo-col">
-                    <img src="/clsn-lms/images/logo-candlelight.svg" alt="Candlelight Foundation">
+                    <img src="/images/logo-candlelight.svg" alt="Candlelight Foundation">
                 </div>
             </div>
 
@@ -102,7 +102,7 @@ include './includes/header-dash.php';
             <!-- FOOTER: Seal + Signature -->
             <div class="cert-footer-row">
                 <div class="cert-seal-wrap">
-                    <img src="/clsn-lms/images/broache.png" alt="Certificate Seal">
+                    <img src="/images/broache.png" alt="Certificate Seal">
                 </div>
 
                 <div class="cert-sig-block" style="padding-bottom:4px; gap: clamp(18px,4vw,48px);">
@@ -157,7 +157,7 @@ window.addEventListener('resize', scaleCert);
     </div>
     <h3 class="font-display text-xl font-bold text-navy-900 mb-2">No Certificates Yet</h3>
     <p class="text-gray-500 mb-6">Complete all modules in a course to earn your certificate of completion.</p>
-    <a href="/clsn-lms/courses.php" class="btn-lms-primary inline-flex mx-auto">
+    <a href="/courses.php" class="btn-lms-primary inline-flex mx-auto">
         <i class="fas fa-graduation-cap"></i> Browse Courses
     </a>
 </div>
@@ -182,11 +182,11 @@ window.addEventListener('resize', scaleCert);
                 ID: <?= htmlspecialchars($cert['certificate_uid']) ?>
             </div>
             <div class="flex gap-2">
-                <a href="/clsn-lms/certificate.php?uid=<?= urlencode($cert['certificate_uid']) ?>"
+                <a href="/certificate.php?uid=<?= urlencode($cert['certificate_uid']) ?>"
                    class="flex-1 btn-lms-primary text-center text-sm py-2.5">
                     <i class="fas fa-eye"></i> View &amp; Download
                 </a>
-                <a href="/clsn-lms/course.php?slug=<?= urlencode($cert['course_slug']) ?>"
+                <a href="/course.php?slug=<?= urlencode($cert['course_slug']) ?>"
                    class="px-3 py-2.5 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-50 transition-colors text-sm">
                     <i class="fas fa-book"></i>
                 </a>
@@ -199,4 +199,4 @@ window.addEventListener('resize', scaleCert);
 <?php endif; ?>
 
 <?php include './includes/footer-dash.php'; ?>
-<script src="/clsn-lms/js/main.js"></script>
+<script src="/js/main.js"></script>

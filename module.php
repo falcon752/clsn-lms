@@ -7,7 +7,7 @@ requireStudent();
 
 $moduleId = (int)($_GET['id'] ?? 0);
 $module   = $moduleId ? getModule($conn, $moduleId) : null;
-if (!$module) { header('Location: /clsn-lms/courses.php'); exit; }
+if (!$module) { header('Location: /courses.php'); exit; }
 
 $userId   = currentUserId();
 $courseId = (int)$module['course_id'];
@@ -15,7 +15,7 @@ $course   = getCourse($conn, $courseId);
 
 // Must be enrolled
 if (!isEnrolled($conn, $userId, $courseId)) {
-    header("Location: /clsn-lms/course.php?slug={$module['course_slug']}");
+    header("Location: /course.php?slug={$module['course_slug']}");
     exit;
 }
 
@@ -27,7 +27,7 @@ $quizPassed     = $quiz ? hasPassed($conn, $userId, $quiz['id']) : false;
 $quizAttempts   = $quiz ? getQuizAttemptCount($conn, $userId, $quiz['id']) : 0;
 $unlocked       = isModuleUnlocked($conn, $userId, $module, $allModules);
 
-if (!$unlocked) { header("Location: /clsn-lms/course.php?slug={$module['course_slug']}"); exit; }
+if (!$unlocked) { header("Location: /course.php?slug={$module['course_slug']}"); exit; }
 
 // Q&A for this module
 $qaStmt = $conn->prepare("
@@ -64,9 +64,9 @@ include './includes/header-dash.php';
 
 <!-- Breadcrumb -->
 <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6 flex-wrap">
-    <a href="/clsn-lms/dashboard.php" class="hover:text-candlelight-600 transition-colors">Dashboard</a>
+    <a href="/dashboard.php" class="hover:text-candlelight-600 transition-colors">Dashboard</a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
-    <a href="/clsn-lms/course.php?slug=<?= urlencode($module['course_slug']) ?>" class="hover:text-candlelight-600 transition-colors"><?= htmlspecialchars($module['course_title']) ?></a>
+    <a href="/course.php?slug=<?= urlencode($module['course_slug']) ?>" class="hover:text-candlelight-600 transition-colors"><?= htmlspecialchars($module['course_title']) ?></a>
     <i class="fas fa-chevron-right text-xs text-gray-300"></i>
     <span class="text-gray-800 font-medium">Module <?= $module['module_number'] ?></span>
 </nav>
@@ -100,7 +100,7 @@ include './includes/header-dash.php';
                     $cls      = $isActive ? 'active' : ($isDone ? 'completed' : ($isLocked ? 'locked' : ''));
                 ?>
                 <?php if (!$isLocked): ?>
-                <a href="/clsn-lms/module.php?id=<?= $m['id'] ?>" class="module-nav-item <?= $cls ?>">
+                <a href="/module.php?id=<?= $m['id'] ?>" class="module-nav-item <?= $cls ?>">
                 <?php else: ?>
                 <div class="module-nav-item <?= $cls ?>">
                 <?php endif; ?>
@@ -191,7 +191,7 @@ include './includes/header-dash.php';
                 <?php elseif ($module['video_type'] === 'file' && !empty($module['video_url'])): ?>
                 <div class="video-wrapper">
                     <video controls class="w-full h-full" id="module-video">
-                        <source src="/clsn-lms/uploads/videos/<?= htmlspecialchars(basename($module['video_url'])) ?>" type="video/mp4">
+                        <source src="/uploads/videos/<?= htmlspecialchars(basename($module['video_url'])) ?>" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -269,7 +269,7 @@ include './includes/header-dash.php';
                 <h3 class="font-semibold text-gray-700 mb-4">Downloadable Resources</h3>
                 <div class="grid sm:grid-cols-2 gap-3">
                     <?php foreach ($pdfs as $pdf): ?>
-                    <a href="/clsn-lms/uploads/pdfs/<?= htmlspecialchars(basename($pdf['file_path'])) ?>"
+                    <a href="/uploads/pdfs/<?= htmlspecialchars(basename($pdf['file_path'])) ?>"
                        download
                        class="pdf-card group">
                         <div class="pdf-card-icon"><i class="fas fa-file-pdf"></i></div>
@@ -346,11 +346,11 @@ include './includes/header-dash.php';
                     <p class="text-gray-500 mb-6">You've already passed this module's quiz. Keep going!</p>
                     <?php if ($nextModule): ?>
                     <?php $nextUnlocked = isModuleUnlocked($conn, $userId, $nextModule, $allModules); ?>
-                    <a href="/clsn-lms/module.php?id=<?= $nextModule['id'] ?>" class="btn-lms-primary inline-flex mx-auto">
+                    <a href="/module.php?id=<?= $nextModule['id'] ?>" class="btn-lms-primary inline-flex mx-auto">
                         <i class="fas fa-arrow-right"></i> Next Module
                     </a>
                     <?php else: ?>
-                    <a href="/clsn-lms/certificate.php" class="btn-lms-primary inline-flex mx-auto">
+                    <a href="/certificate.php" class="btn-lms-primary inline-flex mx-auto">
                         <i class="fas fa-award"></i> Get Your Certificate
                     </a>
                     <?php endif; ?>
@@ -372,7 +372,7 @@ include './includes/header-dash.php';
                     You've used all <?= $quiz['max_attempts'] ?> attempts. Please contact support to reset your quiz.
                 </div>
                 <?php else: ?>
-                <a href="/clsn-lms/quiz.php?module_id=<?= $moduleId ?>" class="btn-lms-primary inline-flex">
+                <a href="/quiz.php?module_id=<?= $moduleId ?>" class="btn-lms-primary inline-flex">
                     <i class="fas fa-pencil-alt"></i> Start Quiz Now
                 </a>
                 <?php endif; ?>
@@ -384,7 +384,7 @@ include './includes/header-dash.php';
         <!-- Navigation -->
         <div class="flex items-center justify-between gap-4">
             <?php if ($prevModule): ?>
-            <a href="/clsn-lms/module.php?id=<?= $prevModule['id'] ?>" class="flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-2xl text-sm font-semibold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all">
+            <a href="/module.php?id=<?= $prevModule['id'] ?>" class="flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-2xl text-sm font-semibold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all">
                 <i class="fas fa-chevron-left text-xs"></i> <span class="hidden sm:inline"><?= htmlspecialchars($prevModule['title']) ?></span><span class="sm:hidden">Previous</span>
             </a>
             <?php else: ?><div></div><?php endif; ?>
@@ -392,7 +392,7 @@ include './includes/header-dash.php';
             <?php if ($nextModule): ?>
             <?php $nextUnlocked = isModuleUnlocked($conn, $userId, $nextModule, $allModules); ?>
             <?php if ($nextUnlocked): ?>
-            <a href="/clsn-lms/module.php?id=<?= $nextModule['id'] ?>" class="flex items-center gap-2 px-5 py-3 bg-candlelight-500 hover:bg-candlelight-600 rounded-2xl text-sm font-semibold text-white transition-all shadow-md">
+            <a href="/module.php?id=<?= $nextModule['id'] ?>" class="flex items-center gap-2 px-5 py-3 bg-candlelight-500 hover:bg-candlelight-600 rounded-2xl text-sm font-semibold text-white transition-all shadow-md">
                 <span class="hidden sm:inline"><?= htmlspecialchars($nextModule['title']) ?></span><span class="sm:hidden">Next</span> <i class="fas fa-chevron-right text-xs"></i>
             </a>
             <?php else: ?>
@@ -401,7 +401,7 @@ include './includes/header-dash.php';
             </span>
             <?php endif; ?>
             <?php elseif (!empty($moduleProgress['is_completed'])): ?>
-            <a href="/clsn-lms/certificate.php" class="flex items-center gap-2 px-5 py-3 bg-candlelight-500 hover:bg-candlelight-600 rounded-2xl text-sm font-semibold text-white transition-all shadow-md">
+            <a href="/certificate.php" class="flex items-center gap-2 px-5 py-3 bg-candlelight-500 hover:bg-candlelight-600 rounded-2xl text-sm font-semibold text-white transition-all shadow-md">
                 <i class="fas fa-award"></i> Get Certificate
             </a>
             <?php endif; ?>
@@ -411,4 +411,4 @@ include './includes/header-dash.php';
 </div><!-- /grid -->
 
 <?php include './includes/footer-dash.php'; ?>
-<script src="/clsn-lms/js/main.js"></script>
+<script src="/js/main.js"></script>

@@ -57,7 +57,7 @@ if (isLoggedIn()) {
             <?php
             $thumbSrc = '';
             if (!empty($course['thumbnail']) && file_exists(__DIR__ . '/uploads/thumbnails/' . basename($course['thumbnail']))) {
-                $thumbSrc = '/clsn-lms/uploads/thumbnails/' . htmlspecialchars(basename($course['thumbnail']));
+                $thumbSrc = '/uploads/thumbnails/' . htmlspecialchars(basename($course['thumbnail']));
             } elseif (!empty($course['youtube_url'])) {
                 preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $course['youtube_url'], $ytm);
                 if (!empty($ytm[1])) {
@@ -107,20 +107,20 @@ if (isLoggedIn()) {
                 </div>
                 <div class="progress-bar-wrap"><div class="progress-bar-fill" data-percent="<?= $course['progress']['percent'] ?>"></div></div>
             </div>
-            <a href="/clsn-lms/course.php?slug=<?= urlencode($course['slug']) ?>" class="btn-lms-primary text-center text-sm">
+            <a href="/course.php?slug=<?= urlencode($course['slug']) ?>" class="btn-lms-primary text-center text-sm">
                 <i class="fas fa-play-circle"></i> Continue Learning
             </a>
             <?php else: ?>
             <div class="flex gap-3">
-                <a href="/clsn-lms/course.php?slug=<?= urlencode($course['slug']) ?>" class="flex-1 btn-lms-secondary text-center text-sm py-2.5">View Course</a>
+                <a href="/course.php?slug=<?= urlencode($course['slug']) ?>" class="flex-1 btn-lms-secondary text-center text-sm py-2.5">View Course</a>
                 <?php if (isLoggedIn()): ?>
-                <form action="/clsn-lms/enroll.php" method="POST" class="flex-1">
+                <form action="/enroll.php" method="POST" class="flex-1">
                     <?= csrfField() ?>
                     <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
                     <button type="submit" class="btn-lms-primary w-full text-sm py-2.5"><i class="fas fa-plus-circle"></i> Enroll Free</button>
                 </form>
                 <?php else: ?>
-                <a href="/clsn-lms/register.php" class="flex-1 btn-lms-primary text-center text-sm py-2.5"><i class="fas fa-plus-circle"></i> Enroll Free</a>
+                <a href="/register.php" class="flex-1 btn-lms-primary text-center text-sm py-2.5"><i class="fas fa-plus-circle"></i> Enroll Free</a>
                 <?php endif; ?>
             </div>
             <?php endif; ?>
@@ -136,7 +136,7 @@ if (isLoggedIn()) {
     <div class="max-w-2xl mx-auto px-4">
         <h2 class="font-display text-3xl font-bold mb-3">Ready to begin your journey?</h2>
         <p class="text-gray-300 mb-8">Create a free account and get instant access to all courses.</p>
-        <a href="/clsn-lms/register.php" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-candlelight-500/30 hover:-translate-y-1">
+        <a href="/register.php" class="inline-flex items-center gap-2 px-8 py-4 bg-candlelight-500 hover:bg-candlelight-600 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-candlelight-500/30 hover:-translate-y-1">
             <i class="fas fa-rocket"></i> Get Started (It's Free)
         </a>
     </div>
@@ -150,4 +150,4 @@ if (isLoggedIn()) {
     include './includes/footer-public.php';
 }
 ?>
-<script src="/clsn-lms/js/main.js"></script>
+<script src="/js/main.js"></script>

@@ -78,7 +78,7 @@ include './includes/header-dash.php';
 <div class="mb-10">
     <div class="flex items-center justify-between mb-6">
         <h2 class="font-display text-xl font-bold text-navy-900">My Courses</h2>
-        <a href="/clsn-lms/courses.php" class="text-candlelight-600 text-sm font-semibold hover:text-candlelight-700 transition-colors flex items-center gap-1">
+        <a href="/courses.php" class="text-candlelight-600 text-sm font-semibold hover:text-candlelight-700 transition-colors flex items-center gap-1">
             Browse All Courses <i class="fas fa-arrow-right text-xs"></i>
         </a>
     </div>
@@ -90,7 +90,7 @@ include './includes/header-dash.php';
         </div>
         <h3 class="font-display font-bold text-navy-900 text-xl mb-2">Start Learning Today</h3>
         <p class="text-gray-500 mb-6">You haven't enrolled in any courses yet. Browse our free courses and get started!</p>
-        <a href="/clsn-lms/courses.php" class="btn-lms-primary inline-flex mx-auto">
+        <a href="/courses.php" class="btn-lms-primary inline-flex mx-auto">
             <i class="fas fa-compass"></i> Explore Courses
         </a>
     </div>
@@ -101,7 +101,7 @@ include './includes/header-dash.php';
         $p = $enrollment['progress'];
         $dThumbSrc = '';
         if (!empty($enrollment['thumbnail']) && file_exists(__DIR__ . '/uploads/thumbnails/' . basename($enrollment['thumbnail']))) {
-            $dThumbSrc = '/clsn-lms/uploads/thumbnails/' . htmlspecialchars(basename($enrollment['thumbnail']));
+            $dThumbSrc = '/uploads/thumbnails/' . htmlspecialchars(basename($enrollment['thumbnail']));
         } elseif (!empty($enrollment['youtube_url'])) {
             preg_match('#(?:v=|youtu\.be/|embed/)([a-zA-Z0-9_-]{11})#', $enrollment['youtube_url'], $dYtm);
             if (!empty($dYtm[1])) {
@@ -140,15 +140,15 @@ include './includes/header-dash.php';
 
             <div class="flex gap-2 mt-auto">
                 <?php if ($p['percent'] >= 100): ?>
-                <a href="/clsn-lms/certificate.php" class="flex-1 btn-lms-secondary text-center text-sm py-2.5">
+                <a href="/certificate.php" class="flex-1 btn-lms-secondary text-center text-sm py-2.5">
                     <i class="fas fa-certificate text-candlelight-500"></i> View Certificate
                 </a>
                 <?php else: ?>
-                <a href="/clsn-lms/course.php?slug=<?= urlencode($enrollment['slug']) ?>" class="flex-1 btn-lms-primary text-center text-sm py-2.5">
+                <a href="/course.php?slug=<?= urlencode($enrollment['slug']) ?>" class="flex-1 btn-lms-primary text-center text-sm py-2.5">
                     <i class="fas fa-play-circle"></i> Continue
                 </a>
                 <?php endif; ?>
-                <a href="/clsn-lms/course.php?slug=<?= urlencode($enrollment['slug']) ?>" class="px-3 py-2.5 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-50 transition-colors text-sm">
+                <a href="/course.php?slug=<?= urlencode($enrollment['slug']) ?>" class="px-3 py-2.5 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-50 transition-colors text-sm">
                     <i class="fas fa-list"></i>
                 </a>
             </div>
@@ -179,4 +179,4 @@ include './includes/header-dash.php';
 </div>
 
 <?php include './includes/footer-dash.php'; ?>
-<script src="/clsn-lms/js/main.js"></script>
+<script src="/js/main.js"></script>

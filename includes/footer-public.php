@@ -8,7 +8,7 @@
             <!-- Brand -->
             <div>
                 <div class="flex items-center gap-3 mb-5">
-                    <img src="/clsn-lms/images/logo-white.svg" alt="Candlelight" class="w-12 h-12 object-contain">
+                    <img src="/images/logo-white.svg" alt="Candlelight" class="w-12 h-12 object-contain">
                     <div>
                         <div class="font-display font-bold text-lg">Candlelight LMS</div>
                         <div class="text-xs text-gray-400">Learning Portal</div>
@@ -20,8 +20,8 @@
             <div>
                 <h4 class="font-display font-bold text-lg mb-5">Quick Links</h4>
                 <ul class="space-y-3 text-sm">
-                    <li><a href="/clsn-lms/courses.php"   class="text-gray-400 hover:text-candlelight-400 transition-colors">Browse Courses</a></li>
-                    <li><a href="/clsn-lms/dashboard.php" class="text-gray-400 hover:text-candlelight-400 transition-colors">My Dashboard</a></li>
+                    <li><a href="/courses.php"   class="text-gray-400 hover:text-candlelight-400 transition-colors">Browse Courses</a></li>
+                    <li><a href="/dashboard.php" class="text-gray-400 hover:text-candlelight-400 transition-colors">My Dashboard</a></li>
                     <li><a href="https://candlelightspecialneeds.org/about-us" target="_blank" class="text-gray-400 hover:text-candlelight-400 transition-colors">About Us</a></li>
                     <li><a href="https://candlelightspecialneeds.org/contact"  target="_blank" class="text-gray-400 hover:text-candlelight-400 transition-colors">Contact</a></li>
                 </ul>

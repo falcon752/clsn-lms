@@ -11,7 +11,7 @@ requireStudent();
 $userId = currentUserId();
 $uid    = trim($_GET['uid'] ?? '');
 
-if (!$uid) { header('Location: /clsn-lms/certificate.php'); exit; }
+if (!$uid) { header('Location: /certificate.php'); exit; }
 
 $stmt = $conn->prepare("
     SELECT c.*, co.title AS course_title,
@@ -27,7 +27,7 @@ $cert = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
 if (!$cert || (int)$cert['user_id'] !== $userId) {
-    header('Location: /clsn-lms/certificate.php'); exit;
+    header('Location: /certificate.php'); exit;
 }
 ?><!DOCTYPE html>
 <html lang="en">
@@ -40,21 +40,21 @@ if (!$cert || (int)$cert['user_id'] !== $userId) {
 <style>
 @font-face {
     font-family: 'ChunkFive';
-    src: url('/clsn-lms/fonts/ChunkFive-Regular.woff2') format('woff2'),
-         url('/clsn-lms/fonts/ChunkFive-Regular.woff')  format('woff'),
-         url('/clsn-lms/fonts/ChunkFive-Regular.ttf')   format('truetype');
+    src: url('/fonts/ChunkFive-Regular.woff2') format('woff2'),
+         url('/fonts/ChunkFive-Regular.woff')  format('woff'),
+         url('/fonts/ChunkFive-Regular.ttf')   format('truetype');
     font-weight: normal; font-style: normal; font-display: block;
 }
 @font-face {
     font-family: 'Garet';
-    src: url('/clsn-lms/fonts/Garet-Heavy.woff2') format('woff2'),
-         url('/clsn-lms/fonts/Garet-Heavy.ttf')   format('truetype');
+    src: url('/fonts/Garet-Heavy.woff2') format('woff2'),
+         url('/fonts/Garet-Heavy.ttf')   format('truetype');
     font-weight: 800; font-style: normal; font-display: block;
 }
-/* TODO: Place AmsterdamOne-Regular.ttf in /clsn-lms/fonts/ then uncomment:
+/* TODO: Place AmsterdamOne-Regular.ttf in /fonts/ then uncomment:
 @font-face {
     font-family: 'Amsterdam One';
-    src: url('/clsn-lms/fonts/AmsterdamOne-Regular.ttf') format('truetype');
+    src: url('/fonts/AmsterdamOne-Regular.ttf') format('truetype');
     font-weight: normal; font-style: normal; font-display: block;
 }
 */
@@ -101,7 +101,7 @@ html, body {
     width:  1122px;
     height: 794px;
     position: relative;
-    background: url('/clsn-lms/images/certificate-bg.png') center / cover no-repeat;
+    background: url('/images/certificate-bg.png') center / cover no-repeat;
     overflow: hidden;
     box-shadow: 0 8px 40px rgba(0,0,0,0.18);
 }
@@ -289,7 +289,7 @@ html, body {
                 <p class="cert-presented-to">This certificate is proudly presented to</p>
             </div>
             <div class="cert-logo-col">
-                <img src="/clsn-lms/images/logo-candlelight.svg" alt="Candlelight Foundation" crossorigin="anonymous">
+                <img src="/images/logo-candlelight.svg" alt="Candlelight Foundation" crossorigin="anonymous">
             </div>
         </div>
 
@@ -316,7 +316,7 @@ html, body {
         <!-- FOOTER -->
         <div class="cert-footer-row">
             <div class="cert-seal-wrap">
-                <img src="/clsn-lms/images/broache.png" alt="Certificate Seal" crossorigin="anonymous">
+                <img src="/images/broache.png" alt="Certificate Seal" crossorigin="anonymous">
             </div>
             <div class="cert-sig-block">
                 <div style="text-align:center;">
