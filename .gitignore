@@ -1,5 +1,6 @@
 # Environment / config
 includes/db.php
+router.php
 .env
 .env.*
 
