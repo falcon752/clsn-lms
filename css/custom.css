@@ -119,150 +119,235 @@
 .quiz-option.wrong-ans    { border-color: #dc2626 !important; background: #fef2f2 !important; }
 
 /* ── Certificate ────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+.cert-print-area { max-width: 960px; margin: 0 auto; }
+
 .cert-paper {
-    background: #FFFDF7;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 9px;
-    border: 3px solid #B8962A;
     position: relative;
-    box-shadow: 0 25px 80px rgba(0,0,0,0.2),
-                inset 0 0 0 6px #FFFDF7,
-                inset 0 0 0 8px #D0A84A;
-}
-.cert-body-panel {
-    background: #FFFDF7;
-    background-image: linear-gradient(160deg, rgba(255,167,38,0.05) 0%, transparent 55%, rgba(26,35,126,0.03) 100%);
-    border: 1px solid #C8A84A;
-    padding: 50px 72px 44px;
-    position: relative;
+    width: 100%;
+    aspect-ratio: 1.414 / 1; /* A4 landscape ratio */
+    background: url('/clsn-lms/images/certificate-bg.png') center / cover no-repeat;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
     overflow: hidden;
-    text-align: center;
 }
-/* Watermark */
-.cert-body-panel::before {
-    content: '';
+
+/* Entire inner content absolutely placed so it overlays the bg image */
+.cert-inner {
     position: absolute;
     inset: 0;
-    background: url('/clsn-lms/images/logo-candlelight.svg') center / 320px no-repeat;
-    opacity: 0.035;
-    pointer-events: none;
-}
-/* Corner ornaments */
-.cert-corner { position: absolute; width: 48px; height: 48px; }
-.cert-corner-tl { top: 16px;    left: 16px;  border-top:    2px solid #B8962A; border-left:   2px solid #B8962A; }
-.cert-corner-tr { top: 16px;    right: 16px; border-top:    2px solid #B8962A; border-right:  2px solid #B8962A; }
-.cert-corner-bl { bottom: 16px; left: 16px;  border-bottom: 2px solid #B8962A; border-left:   2px solid #B8962A; }
-.cert-corner-br { bottom: 16px; right: 16px; border-bottom: 2px solid #B8962A; border-right:  2px solid #B8962A; }
-/* Header */
-.cert-logo-img {
-    height: 60px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto 10px;
-}
-.cert-org-label {
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: #1A237E;
-    margin-bottom: 22px;
-}
-/* Title band */
-.cert-title-band {
     display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 28px;
+    flex-direction: column;
+    padding: 5% 7% 4%;
 }
-.cert-title-band .cb-line   { flex: 1; height: 1px; background: linear-gradient(to right, transparent, #C8A84A); }
-.cert-title-band .cb-line-r { background: linear-gradient(to left,  transparent, #C8A84A); }
-.cert-title-band .cb-diamond { width: 7px; height: 7px; background: #C8A84A; transform: rotate(45deg); flex-shrink: 0; }
-.cert-title-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    font-style: italic;
-    color: #7B5714;
+
+/* Top row: title block left + logo right */
+.cert-top-row {
+    position: relative;
+    margin-bottom: 0.5%;
+}
+
+.cert-title-block {
+    width: 100%;
+    text-align: center;
+}
+
+.cert-big-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4.8rem);
+    font-weight: 900;
     letter-spacing: 0.04em;
-    white-space: nowrap;
-}
-/* Body */
-.cert-presents-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
+    color: #1B6B7B;
     text-transform: uppercase;
-    color: #9CA3AF;
-    margin-bottom: 14px;
+    line-height: 1;
+    margin: 0;
 }
-.cert-name-text {
+
+.cert-subtitle {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(0.95rem, 2.1vw, 1.35rem);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #C2185B;
+    margin: 2px 0 6px;
+}
+
+.cert-presented-to {
     font-family: 'Playfair Display', serif;
-    font-size: 3rem;
+    font-style: italic;
+    font-size: clamp(0.9rem, 1.6vw, 1.25rem);
+    color: #444;
+    margin: 0;
+}
+
+/* Logo top-right */
+.cert-logo-col {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: center;
+    margin-left: 0;
+}
+.cert-logo-col img {
+    width: clamp(95px, 11vw, 140px);
+    height: auto;
+    display: block;
+}
+
+/* Recipient name */
+.cert-name-row {
+    margin: 0 auto 0.4%;
+    border-bottom: 1.5px solid #555;
+    padding: 0 12px 4px;
+    display: inline-block;
+    min-width: 42%;
+    max-width: 72%;
+}
+.cert-name-cursive {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(3rem, 5.6vw, 4.8rem);
     font-weight: 700;
     color: #1A237E;
     line-height: 1.1;
-    margin-bottom: 8px;
+    display: block;
 }
-.cert-name-rule {
-    width: 200px;
-    height: 2px;
-    background: linear-gradient(to right, transparent, #C8A84A, transparent);
-    margin: 0 auto 20px;
-}
-.cert-completed-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #9CA3AF;
-    margin-bottom: 10px;
-}
-.cert-course-text {
+
+/* Recognition */
+.cert-recognition {
     font-family: 'Playfair Display', serif;
-    font-size: 1.55rem;
-    font-weight: 700;
-    color: #B8962A;
-    margin-bottom: 8px;
+    font-style: italic;
+    font-size: clamp(0.95rem, 1.6vw, 1.25rem);
+    color: #444;
+    margin: 0 0 3px;
+}
+
+/* Course title */
+.cert-course-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 2.3vw, 2rem);
+    color: #C2185B;
+    margin: 0 0 4px;
     line-height: 1.3;
 }
-.cert-date-label {
-    font-size: 0.67rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #B8BCC6;
+
+/* Program description */
+.cert-program-desc {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(0.88rem, 1.35vw, 1.05rem);
+    color: #555;
+    line-height: 1.45;
+    max-width: 84%;
+    margin: 0 auto 6px;
+    text-align: center;
 }
-/* Footer */
+
+/* Date line */
+.cert-date-row {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.05rem, 1.55vw, 1.3rem);
+    color: #222;
+    margin: 0;
+    text-align: center;
+}
+.cert-date-row span {
+    display: inline-block;
+    width: clamp(170px, 21vw, 250px);
+    border-bottom: 1.5px solid #333;
+    margin-left: 6px;
+}
+
+/* Footer: seal + sig */
 .cert-footer-row {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    margin-top: 40px;
     gap: 16px;
+    padding-top: 6px;
+    margin-top: auto;
 }
-.cert-sig { flex: 1; text-align: center; }
-.cert-sig-line { width: 100%; height: 1px; background: #C8A84A; margin-bottom: 9px; }
-.cert-sig-name { font-weight: 700; font-size: 0.75rem; color: #1A237E; margin: 0; }
-.cert-sig-role { font-size: 0.62rem; color: #9CA3AF; margin: 2px 0 0; letter-spacing: 0.08em; text-transform: uppercase; }
-.cert-seal-col {
+
+.cert-seal-wrap {
     flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
-    text-align: center;
+    position: relative;
+    width: clamp(92px, 11vw, 130px);
+    height: clamp(92px, 11vw, 130px);
 }
-.cert-seal-ring {
-    width: 88px; height: 88px;
+.cert-seal-wrap img { width: 100%; height: 100%; object-fit: contain; }
+/* Fallback seal if no image */
+.cert-seal-fallback {
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at 38% 38%, #FFF9E0, #D4A017);
     border-radius: 50%;
-    border: 2.5px solid #C8A84A;
-    background: radial-gradient(circle at 35% 35%, #FFF9E0, #FFEEA8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 0 5px #FFFDF7, 0 0 0 7.5px #C8A84A;
+    border: 3px solid #B8860B;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 6px rgba(184,134,11,0.2);
 }
-.cert-seal-ring i    { color: #9C7800; font-size: 2rem; }
-.cert-seal-uid       { font-family: monospace; font-size: 0.52rem; color: #B0B8C4; max-width: 120px; word-break: break-all; line-height: 1.5; }
-.cert-website-badge  { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: #C8A84A; }
+.cert-seal-fallback i { color: #7B5000; font-size: 2.2rem; }
+
+.cert-sig-block {
+    flex: 1;
+    max-width: 44%;
+}
+.cert-sig-name-text {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1rem, 1.55vw, 1.25rem);
+    color: #222;
+    margin: 0 0 1px;
+}
+.cert-sig-role-text {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    color: #555;
+    margin: 0;
+}
+.cert-sig-img {
+    height: clamp(28px, 4vw, 48px);
+    display: block;
+    margin-bottom: 2px;
+    filter: contrast(0.85);
+}
+/* No actual sig image — show a line */
+.cert-sig-line-h {
+    width: clamp(145px, 19vw, 230px);
+    height: 1.5px;
+    background: #333;
+    margin: 0 auto 6px;
+}
+
+.cert-sig-scribble {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2rem, 3.7vw, 3.3rem);
+    color: #111;
+    line-height: 1;
+    margin: 0 0 -6px;
+    opacity: 0.9;
+}
+
+.cert-uid-corner {
+    position: absolute;
+    right: 3.5%;
+    bottom: 2.8%;
+    font-family: monospace;
+    font-size: 0.46rem;
+    color: rgba(0,0,0,0.28);
+    text-align: right;
+    line-height: 1.45;
+}
+
+/* UID watermark */
+.cert-uid-bar {
+    font-family: monospace;
+    font-size: 0.48rem;
+    color: rgba(0,0,0,0.3);
+    text-align: center;
+    margin-top: auto;
+    padding-top: 2px;
+}
 
 /* ── Course split-pane scroll columns ───────── */
 .course-col-scroll::-webkit-scrollbar       { width: 5px; }
@@ -377,7 +462,7 @@
     .cert-print-area { position: fixed; top: 0; left: 0; width: 100%; }
     .no-print        { display: none !important; }
     .cert-paper      { box-shadow: none !important; }
-    @page            { size: landscape; margin: 1cm; }
+    @page            { size: A4 landscape; margin: 0; }
 }
 
 /* ── Responsive ──────────────────────────────── */

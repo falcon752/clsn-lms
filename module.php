@@ -215,6 +215,7 @@ include './includes/header-dash.php';
                     <button id="mark-watched-btn"
                         data-module-id="<?= $moduleId ?>"
                         data-course-id="<?= $courseId ?>"
+                        data-csrf="<?= htmlspecialchars(csrfToken()) ?>"
                         class="inline-flex items-center gap-2 px-5 py-2.5 bg-candlelight-500 hover:bg-candlelight-600 text-white font-semibold rounded-xl text-sm transition-all">
                         <i class="fas fa-eye"></i> Mark as Watched
                     </button>

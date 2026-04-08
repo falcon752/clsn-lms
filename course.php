@@ -33,8 +33,9 @@ if ($enrolled) {
 
 $welcome      = isset($_GET['enrolled']) && $_GET['enrolled'] === '1';
 $courseReset  = isset($_GET['reset'])    && $_GET['reset']    === '1';
-$pageTitle    = htmlspecialchars($course['title']) . ' | Candlelight LMS';
-include './includes/header-public.php';
+requireLogin();
+$dashPageTitle = htmlspecialchars($course['title']);
+include './includes/header-dash.php';
 ?>
 
 <?php if ($welcome): ?>
@@ -56,16 +57,17 @@ include './includes/header-public.php';
 <script>setTimeout(() => { document.getElementById('reset-toast')?.remove(); }, 10000);</script>
 <?php endif; ?>
 
-<!-- Hero Banner -->
-<section class="pt-32 pb-12 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 text-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <nav class="flex items-center gap-2 text-sm text-gray-400 mb-6">
-            <a href="/clsn-lms/courses.php" class="hover:text-candlelight-400 transition-colors">Courses</a>
-            <i class="fas fa-chevron-right text-xs"></i>
-            <span class="text-gray-200"><?= htmlspecialchars($course['title']) ?></span>
-        </nav>
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
+<!-- Back link -->
+<div class="mb-4">
+    <a href="/clsn-lms/courses.php" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-navy-900 font-semibold transition-colors">
+        <i class="fas fa-arrow-left"></i> Back to Courses
+    </a>
+</div>
+
+<!-- Hero Card -->
+<div class="rounded-2xl bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 text-white p-8 lg:p-12 mb-6">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
                 <div class="flex flex-wrap gap-2 mb-4">
                     <?php if ($course['is_free']): ?><span class="px-3 py-1 bg-green-500/20 text-green-300 border border-green-500/30 text-xs font-semibold rounded-full">FREE</span><?php endif; ?>
                     <span class="px-3 py-1 bg-candlelight-500/20 text-candlelight-300 border border-candlelight-500/30 text-xs font-semibold rounded-full"><?= htmlspecialchars($course['level']) ?></span>
@@ -92,7 +94,7 @@ include './includes/header-public.php';
                     </a>
                     <?php endif; ?>
                     <a href="/clsn-lms/dashboard.php" class="inline-flex items-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl transition-all border border-white/20">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                        <i class="fas fa-tachometer-alt"></i> My Dashboard
                     </a>
                 </div>
                 <!-- Progress -->
@@ -172,15 +174,13 @@ include './includes/header-public.php';
                 </div><!-- /stats-card -->
             </div>
         </div>
-    </div>
-</section>
+</div><!-- /hero card -->
 
 <!-- Course Content -->
-<section class="bg-white py-16 lg:py-0">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:h-full">
-        <div class="grid lg:grid-cols-3 gap-12">
-            <!-- Module List -->
-            <div class="lg:col-span-2 lg:h-[calc(100vh-96px)] lg:overflow-y-auto lg:py-16 lg:pr-3 course-col-scroll">
+<div>
+    <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Module List -->
+        <div class="lg:col-span-2">
                 <?php if (!empty($course['description'])): ?>
                 <div class="mb-10">
                     <h2 class="font-display text-2xl font-bold text-navy-900 mb-4">About This Course</h2>
@@ -281,9 +281,9 @@ include './includes/header-public.php';
                 </div>
             </div>
 
-            <!-- Sidebar -->
-            <div class="lg:col-span-1 lg:h-[calc(100vh-96px)] lg:overflow-y-auto lg:py-16 course-col-scroll">
-                <div class="space-y-4">
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+            <div class="sticky top-6 space-y-4">
                     <!-- What's Included -->
                     <div class="lms-card p-6">
                         <h3 class="font-display font-bold text-navy-900 mb-4">What's Included</h3>
@@ -320,11 +320,10 @@ include './includes/header-public.php';
                         </div>
                     </div>
                     <?php endif; ?>
-                </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<?php include './includes/footer-public.php'; ?>
+<?php include './includes/footer-dash.php'; ?>
 <script src="/clsn-lms/js/main.js"></script>

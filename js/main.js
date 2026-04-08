@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
         watchBtn.addEventListener('click', function () {
             var moduleId  = this.getAttribute('data-module-id');
             var courseId  = this.getAttribute('data-course-id');
+            var csrf      = this.getAttribute('data-csrf');
             var btn       = this;
             btn.disabled  = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
@@ -72,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch('/clsn-lms/ajax/mark-watched.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'module_id=' + encodeURIComponent(moduleId) + '&course_id=' + encodeURIComponent(courseId)
+                body: 'module_id=' + encodeURIComponent(moduleId) + '&course_id=' + encodeURIComponent(courseId) + '&csrf_token=' + encodeURIComponent(csrf)
             })
             .then(function (r) { return r.json(); })
             .then(function (data) {

@@ -63,62 +63,63 @@ include './includes/header-dash.php';
 
 <div class="cert-print-area max-w-5xl mx-auto">
     <div class="cert-paper">
-        <div class="cert-body-panel">
+        <div class="cert-inner">
 
-            <!-- Corner ornaments -->
-            <div class="cert-corner cert-corner-tl"></div>
-            <div class="cert-corner cert-corner-tr"></div>
-            <div class="cert-corner cert-corner-bl"></div>
-            <div class="cert-corner cert-corner-br"></div>
-
-            <!-- Header: Logo + Org name -->
-            <div class="mb-1">
-                <img src="/clsn-lms/images/logo-candlelight.svg" class="cert-logo-img" alt="Candlelight Foundation">
-                <div class="cert-org-label">Candlelight Foundation</div>
-            </div>
-
-            <!-- Ornamental title band -->
-            <div class="cert-title-band">
-                <div class="cb-line"></div>
-                <div class="cb-diamond"></div>
-                <span class="cert-title-text">Certificate of Completion</span>
-                <div class="cb-diamond"></div>
-                <div class="cb-line cb-line-r"></div>
-            </div>
-
-            <!-- Body -->
-            <div>
-                <p class="cert-presents-label">This is to certify that</p>
-                <h2 class="cert-name-text"><?= htmlspecialchars($certView['first_name'] . ' ' . $certView['last_name']) ?></h2>
-                <div class="cert-name-rule"></div>
-                <p class="cert-completed-label">Has Successfully Completed the Course</p>
-                <h3 class="cert-course-text"><?= htmlspecialchars($certView['course_title']) ?></h3>
-                <p class="cert-date-label">Issued: <?= formatDate($certView['issued_at']) ?></p>
-            </div>
-
-            <!-- Footer: Sig | Seal | Sig -->
-            <div class="cert-footer-row">
-                <div class="cert-sig">
-                    <div class="cert-sig-line"></div>
-                    <p class="cert-sig-name">Candlelight Foundation</p>
-                    <p class="cert-sig-role">Director of Education</p>
+            <!-- TOP ROW: centered title + logo at right -->
+            <div class="cert-top-row">
+                <div class="cert-title-block">
+                    <h1 class="cert-big-title">Certificate</h1>
+                    <div class="cert-subtitle">of Completion</div>
+                    <p class="cert-presented-to">This certificate is proudly presented to</p>
                 </div>
-                <div class="cert-seal-col">
-                    <div class="cert-seal-ring">
+                <div class="cert-logo-col">
+                    <img src="/clsn-lms/images/logo-candlelight.svg" alt="Candlelight Foundation">
+                </div>
+            </div>
+
+            <!-- RECIPIENT NAME -->
+            <div class="text-center">
+                <div class="cert-name-row">
+                    <span class="cert-name-cursive"><?= htmlspecialchars($certView['first_name'] . ' ' . $certView['last_name']) ?></span>
+                </div>
+            </div>
+
+            <!-- RECOGNITION + COURSE -->
+            <p class="cert-recognition" style="margin-top:4px; text-align:center;">In recognition for completing the</p>
+            <p class="cert-course-name" style="text-align:center;"><?= htmlspecialchars($certView['course_title']) ?></p>
+
+            <!-- PROGRAM DESCRIPTION (sample style) -->
+            <p class="cert-program-desc">
+                This training program is based on the Registered Technician Task list and designed to meet the 40-hour training
+                requirement for the RBT credential. This program is offered independent of the BACB.
+            </p>
+
+            <!-- DATE -->
+            <p class="cert-date-row">Date of Completion:<span><?= date('F j, Y', strtotime($certView['issued_at'])) ?></span></p>
+
+            <!-- FOOTER: Seal + Signature -->
+            <div class="cert-footer-row">
+                <div class="cert-seal-wrap">
+                    <div class="cert-seal-fallback">
                         <i class="fas fa-award"></i>
                     </div>
-                    <div class="cert-seal-uid"><?= htmlspecialchars($certView['certificate_uid']) ?></div>
-                    <div class="cert-website-badge">candlelightspecialneeds.org</div>
                 </div>
-                <div class="cert-sig">
-                    <div class="cert-sig-line"></div>
-                    <p class="cert-sig-name">Training Coordinator</p>
-                    <p class="cert-sig-role">Candlelight LMS</p>
+
+                <div class="cert-sig-block" style="padding-bottom:4px; text-align:center;">
+                    <p class="cert-sig-scribble">E. Ojinnaka</p>
+                    <div class="cert-sig-line-h"></div>
+                    <p class="cert-sig-name-text">Emmanuella Ojinnaka <span style="font-weight:400;font-size:0.9em;">BCCS, MEd.</span></p>
+                    <p class="cert-sig-role-text">Clinical Director</p>
                 </div>
             </div>
 
-        </div>
-    </div>
+            <div class="cert-uid-corner">
+                ID: <?= htmlspecialchars($certView['certificate_uid']) ?><br>
+                candlelightspecialneeds.org
+            </div>
+
+        </div><!-- /cert-inner -->
+    </div><!-- /cert-paper -->
 </div>
 
 <?php else: ?>
