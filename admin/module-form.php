@@ -15,7 +15,7 @@ if ($isNew) {
     $cStmt->execute();
     $courseRow = $cStmt->get_result()->fetch_assoc();
     $cStmt->close();
-    if (!$courseRow) { header('Location: /admin/courses.php'); exit; }
+    if (!$courseRow) { header('Location: /admin/courses'); exit; }
 
     // Next module number
     $r = $conn->prepare("SELECT COALESCE(MAX(module_number),0)+1 AS next_num FROM lms_modules WHERE course_id=?");
@@ -38,13 +38,13 @@ if ($isNew) {
         'is_active'        => 1,
     ];
 } else {
-    if (!$moduleId) { header('Location: /admin/courses.php'); exit; }
+    if (!$moduleId) { header('Location: /admin/courses'); exit; }
     $stmt = $conn->prepare("SELECT m.*, c.title AS course_title, c.id AS course_id FROM lms_modules m JOIN lms_courses c ON c.id=m.course_id WHERE m.id=?");
     $stmt->bind_param('i', $moduleId);
     $stmt->execute();
     $module = $stmt->get_result()->fetch_assoc();
     $stmt->close();
-    if (!$module) { header('Location: /admin/courses.php'); exit; }
+    if (!$module) { header('Location: /admin/courses'); exit; }
 }
 
 $msg = '';
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_module'])) {
                     // Update total_modules count
                     $conn->query("UPDATE lms_courses SET total_modules=(SELECT COUNT(*) FROM lms_modules WHERE course_id={$module['course_id']}) WHERE id={$module['course_id']}");
                     $stmt->close();
-                    header('Location: /admin/modules.php?course_id=' . $module['course_id'] . '&added=1');
+                    header('Location: /admin/modules?course_id=' . $module['course_id'] . '&added=1');
                     exit;
                 } else {
                     $err = 'Database error: ' . $conn->error;

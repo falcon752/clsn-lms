@@ -92,7 +92,7 @@ $mq->bind_param('i', $moduleId);
 $mq->execute();
 $module = $mq->get_result()->fetch_assoc();
 $mq->close();
-if (!$module) { header('Location: /admin/quiz-builder.php'); exit; }
+if (!$module) { header('Location: /admin/quiz-builder'); exit; }
 
 // Get or create quiz
 $quiz = $conn->prepare("SELECT * FROM lms_quizzes WHERE module_id=?");

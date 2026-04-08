@@ -14,7 +14,7 @@ if (!$isOverview) {
     $cq->execute();
     $course = $cq->get_result()->fetch_assoc();
     $cq->close();
-    if (!$course) { header('Location: /admin/modules.php'); exit; }
+    if (!$course) { header('Location: /admin/modules'); exit; }
 }
 
 $msg = '';

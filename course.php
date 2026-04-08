@@ -5,7 +5,7 @@ include_once './includes/functions.php';
 
 $slug   = trim($_GET['slug'] ?? '');
 $course = $slug ? getCourseBySlug($conn, $slug) : null;
-if (!$course) { header('Location: /courses.php'); exit; }
+if (!$course) { header('Location: /courses'); exit; }
 
 $userId   = isLoggedIn() ? currentUserId() : 0;
 $enrolled = $userId ? isEnrolled($conn, $userId, $course['id']) : false;

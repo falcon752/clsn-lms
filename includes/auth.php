@@ -39,7 +39,7 @@ function requireLogin(string $redirect = ''): void {
 function requireAdmin(): void {
     requireLogin();
     if (!isAdmin()) {
-        header('Location: ' . (defined('BASE_URL') ? BASE_URL : '/clsn-lms') . '/dashboard.php');
+        header('Location: ' . (defined('BASE_URL') ? BASE_URL : '/clsn-lms') . '/dashboard');
         exit;
     }
 }

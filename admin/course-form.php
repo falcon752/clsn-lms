@@ -27,7 +27,7 @@ if ($isEdit) {
     $stmt->execute();
     $fetched = $stmt->get_result()->fetch_assoc();
     $stmt->close();
-    if (!$fetched) { header('Location: /admin/courses.php'); exit; }
+    if (!$fetched) { header('Location: /admin/courses'); exit; }
     $course = $fetched;
 }
 
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($stmt->execute()) {
                         $newId = $conn->insert_id;
                         $stmt->close();
-                        header('Location: /admin/modules.php?course_id=' . $newId . '&created=1');
+                        header('Location: /admin/modules?course_id=' . $newId . '&created=1');
                         exit;
                     } else {
                         $err = 'Database error: ' . $conn->error;

@@ -2,7 +2,7 @@
 include_once './includes/db.php';
 include_once './includes/auth.php';
 
-if (isLoggedIn()) { header('Location: /dashboard.php'); exit; }
+if (isLoggedIn()) { header('Location: /dashboard'); exit; }
 
 $error = '';
 $success = '';
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($redirect && strpos($redirect, '/') === 0) {
                     header("Location: $redirect");
                 } else {
-                    header('Location: /dashboard.php');
+                    header('Location: /dashboard');
                 }
                 exit;
             }

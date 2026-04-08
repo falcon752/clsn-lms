@@ -26,7 +26,7 @@ if ($uid) {
     $stmt->close();
     // Only owner can view
     if (!$certView || $certView['user_id'] ?? null !== $userId) {
-        if (!$certView) { header('Location: /certificate.php'); exit; }
+        if (!$certView) { header('Location: /certificate'); exit; }
     }
 }
 

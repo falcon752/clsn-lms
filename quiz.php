@@ -6,10 +6,10 @@ include_once './includes/functions.php';
 requireStudent();
 
 $moduleId = (int)($_GET['module_id'] ?? 0);
-if (!$moduleId) { header('Location: /dashboard.php'); exit; }
+if (!$moduleId) { header('Location: /dashboard'); exit; }
 
 $module = getModule($conn, $moduleId);
-if (!$module) { header('Location: /dashboard.php'); exit; }
+if (!$module) { header('Location: /dashboard'); exit; }
 
 $userId   = currentUserId();
 $courseId = (int)$module['course_id'];
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     if (!isset($_POST['csrf_token']) || !verifyCsrf($_POST['csrf_token'])) {
         $error = 'Security check failed. Please try again.';
     } elseif (!$canAttempt) {
-        header('Location: /quiz.php?module_id=' . $moduleId);
+        header('Location: /quiz?module_id=' . $moduleId);
         exit;
     } else {
         $correct = 0;
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
         } elseif ($wasGraceAttempt && !$passed) {
             // Grace attempt also failed — wipe all progress so the user restarts the course
             resetCourseProgress($conn, $userId, $courseId);
-            header('Location: /course.php?slug=' . urlencode($module['course_slug']) . '&reset=1');
+            header('Location: /course?slug=' . urlencode($module['course_slug']) . '&reset=1');
             exit;
         }
 

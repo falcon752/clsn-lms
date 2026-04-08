@@ -2,7 +2,7 @@
 include_once './includes/db.php';
 include_once './includes/auth.php';
 
-if (isLoggedIn()) { header('Location: /dashboard.php'); exit; }
+if (isLoggedIn()) { header('Location: /dashboard'); exit; }
 
 $error   = '';
 $success = '';
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Login the user
                     $u = ['id' => $newId, 'first_name' => $first, 'last_name' => $last, 'email' => $email, 'role' => 'student'];
                     loginUser($u);
-                    header('Location: /dashboard.php?welcome=1');
+                    header('Location: /dashboard?welcome=1');
                     exit;
                 } else {
                     $error = 'Registration failed. Please try again.';

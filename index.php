@@ -3,7 +3,7 @@ include_once './includes/db.php';
 include_once './includes/auth.php';
 
 if (isLoggedIn()) {
-    header('Location: /dashboard.php');
+    header('Location: /dashboard');
     exit;
 }
 

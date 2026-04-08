@@ -7,7 +7,7 @@ requireStudent();
 
 $moduleId = (int)($_GET['id'] ?? 0);
 $module   = $moduleId ? getModule($conn, $moduleId) : null;
-if (!$module) { header('Location: /courses.php'); exit; }
+if (!$module) { header('Location: /courses'); exit; }
 
 $userId   = currentUserId();
 $courseId = (int)$module['course_id'];

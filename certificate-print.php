@@ -11,7 +11,7 @@ requireStudent();
 $userId = currentUserId();
 $uid    = trim($_GET['uid'] ?? '');
 
-if (!$uid) { header('Location: /certificate.php'); exit; }
+if (!$uid) { header('Location: /certificate'); exit; }
 
 $stmt = $conn->prepare("
     SELECT c.*, co.title AS course_title,
@@ -27,7 +27,7 @@ $cert = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
 if (!$cert || (int)$cert['user_id'] !== $userId) {
-    header('Location: /certificate.php'); exit;
+    header('Location: /certificate'); exit;
 }
 ?><!DOCTYPE html>
 <html lang="en">
