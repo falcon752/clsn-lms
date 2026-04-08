@@ -190,10 +190,15 @@ include './includes/header.php';
             <a href="/clsn-lms/admin/quiz-builder.php?module_id=<?= $m['id'] ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-candlelight-100 text-candlelight-700 rounded-xl text-xs font-semibold hover:bg-candlelight-200 transition-colors">
                 <i class="fas fa-pencil-alt"></i> Quiz
             </a>
-            <form method="POST" onsubmit="return confirm('Delete this module? This will also remove its quiz and progress data.')">
+            <form method="POST">
                 <?= csrfField() ?>
                 <input type="hidden" name="module_id" value="<?= $m['id'] ?>">
-                <button type="submit" name="delete_module" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-semibold hover:bg-red-100 transition-colors">
+                <button type="submit" name="delete_module"
+                    data-confirm="Delete this module? This will also remove its quiz and progress data."
+                    data-confirm-title="Delete Module?"
+                    data-confirm-label="Yes, Delete"
+                    data-confirm-icon='<i class="fas fa-trash"></i>'
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-semibold hover:bg-red-100 transition-colors">
                     <i class="fas fa-trash"></i>
                 </button>
             </form>

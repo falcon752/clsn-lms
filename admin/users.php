@@ -134,8 +134,9 @@ include './includes/header.php';
 <script>
 const CSRF = '<?= csrfToken() ?>';
 
+// ── AJAX helper ─────────────────────────────────────────────────
 async function manageUser(payload) {
-    const res  = await fetch('/clsn-lms/ajax/manage-user.php', {
+    const res = await fetch('/clsn-lms/ajax/manage-user.php', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: new URLSearchParams({...payload, csrf_token: CSRF})
@@ -143,22 +144,36 @@ async function manageUser(payload) {
     return res.json();
 }
 
+// ── Toggle role ─────────────────────────────────────────────────
 async function toggleRole(btn, userId, currentRole) {
+    const promoting = currentRole !== 'admin';
+    const name      = btn.closest('tr').querySelector('.font-semibold.text-gray-800').textContent.trim();
+
+    const confirmed = await showModal({
+        icon:         promoting ? '<i class="fas fa-user-shield"></i>' : '<i class="fas fa-user-minus"></i>',
+        iconClass:    promoting ? 'bg-purple-100 text-purple-600' : 'bg-orange-100 text-orange-600',
+        title:        promoting ? `Promote ${name}?` : `Demote ${name}?`,
+        body:         promoting
+                        ? `${name} will become an Admin and gain access to the admin dashboard.`
+                        : `${name} will be changed back to a regular User and lose admin access.`,
+        confirmLabel: promoting ? 'Yes, Promote' : 'Yes, Demote',
+        confirmClass: promoting ? 'bg-purple-600 hover:bg-purple-700' : 'bg-orange-500 hover:bg-orange-600',
+    });
+    if (!confirmed) return;
+
     btn.disabled = true;
     const data = await manageUser({action: 'toggle_role', user_id: userId});
-    if (!data.ok) { alert(data.msg); btn.disabled = false; return; }
+    if (!data.ok) { showModal({ title: 'Error', body: data.msg, confirmLabel: 'OK', confirmClass: 'bg-gray-600 hover:bg-gray-700', icon: '<i class="fas fa-exclamation-circle"></i>', iconClass: 'bg-red-100 text-red-600' }); btn.disabled = false; return; }
 
-    const newRole    = data.new_role;
-    const isAdmin    = newRole === 'admin';
-    const row        = btn.closest('tr');
-    const badge      = row.querySelector('.role-badge');
+    const newRole = data.new_role;
+    const isAdmin = newRole === 'admin';
+    const row     = btn.closest('tr');
+    const badge   = row.querySelector('.role-badge');
 
-    // Update badge
     badge.textContent = isAdmin ? 'Admin' : 'User';
     badge.className   = 'role-badge inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ' +
         (isAdmin ? 'bg-purple-100 text-purple-700' : 'bg-navy-100 text-navy-700');
 
-    // Update button
     btn.className = btn.className.replace(/border-(purple|navy)-300 text-(purple|navy)-700 hover:bg-(purple|navy)-50/g, '') +
         (isAdmin ? ' border-purple-300 text-purple-700 hover:bg-purple-50' : ' border-navy-300 text-navy-700 hover:bg-navy-50');
     btn.innerHTML = `<i class="fas ${isAdmin ? 'fa-user-minus' : 'fa-user-shield'}"></i> ${isAdmin ? 'Demote' : 'Promote'}`;
@@ -167,11 +182,21 @@ async function toggleRole(btn, userId, currentRole) {
     btn.disabled  = false;
 }
 
+// ── Delete user ─────────────────────────────────────────────────
 async function deleteUser(btn, userId, name) {
-    if (!confirm(`Delete account for "${name}"? This cannot be undone.`)) return;
+    const confirmed = await showModal({
+        icon:         '<i class="fas fa-trash"></i>',
+        iconClass:    'bg-red-100 text-red-600',
+        title:        `Delete ${name}?`,
+        body:         'This will permanently remove their account, enrollments, and certificates. This cannot be undone.',
+        confirmLabel: 'Yes, Delete',
+        confirmClass: 'bg-red-600 hover:bg-red-700',
+    });
+    if (!confirmed) return;
+
     btn.disabled = true;
     const data = await manageUser({action: 'delete_user', user_id: userId});
-    if (!data.ok) { alert(data.msg); btn.disabled = false; return; }
+    if (!data.ok) { showModal({ title: 'Error', body: data.msg, confirmLabel: 'OK', confirmClass: 'bg-gray-600 hover:bg-gray-700', icon: '<i class="fas fa-exclamation-circle"></i>', iconClass: 'bg-red-100 text-red-600' }); btn.disabled = false; return; }
     btn.closest('tr').remove();
 }
 </script>

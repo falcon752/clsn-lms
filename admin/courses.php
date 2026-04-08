@@ -92,10 +92,15 @@ include './includes/header.php';
             <a href="/clsn-lms/course.php?slug=<?= urlencode($c['slug']) ?>" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gray-100 text-gray-600 rounded-xl text-xs font-semibold hover:bg-gray-200 transition-colors">
                 <i class="fas fa-eye"></i> Preview
             </a>
-            <form method="POST" onsubmit="return confirm('Delete this course and ALL its modules? This cannot be undone.')">
+            <form method="POST">
                 <?= csrfField() ?>
                 <input type="hidden" name="course_id" value="<?= $c['id'] ?>">
-                <button type="submit" name="delete_course" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-semibold hover:bg-red-100 transition-colors">
+                <button type="submit" name="delete_course"
+                    data-confirm="Delete this course and ALL its modules? This cannot be undone."
+                    data-confirm-title="Delete Course?"
+                    data-confirm-label="Yes, Delete"
+                    data-confirm-icon='<i class="fas fa-trash"></i>'
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-semibold hover:bg-red-100 transition-colors">
                     <i class="fas fa-trash"></i> Delete
                 </button>
             </form>

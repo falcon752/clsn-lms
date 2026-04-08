@@ -268,11 +268,16 @@ $pStmt->close();
                class="px-3 py-1.5 text-xs font-semibold bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors">
                 <i class="fas fa-eye mr-1"></i> Preview
             </a>
-            <form method="POST" onsubmit="return confirm('Delete this resource?')">
+            <form method="POST">
                 <?= csrfField() ?>
                 <input type="hidden" name="delete_pdf" value="1">
                 <input type="hidden" name="pdf_id" value="<?= $pdf['id'] ?>">
-                <button type="submit" class="px-3 py-1.5 text-xs font-semibold bg-red-50 border border-red-200 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
+                <button type="submit"
+                    data-confirm="Delete this resource? This cannot be undone."
+                    data-confirm-title="Delete Resource?"
+                    data-confirm-label="Yes, Delete"
+                    data-confirm-icon='<i class="fas fa-trash"></i>'
+                    class="px-3 py-1.5 text-xs font-semibold bg-red-50 border border-red-200 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
                     <i class="fas fa-trash"></i>
                 </button>
             </form>

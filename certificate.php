@@ -54,11 +54,13 @@ include './includes/header-dash.php';
         <a href="/clsn-lms/certificate.php" class="flex items-center gap-2 text-gray-500 hover:text-candlelight-600 text-sm font-semibold transition-colors">
             <i class="fas fa-arrow-left"></i> Back to My Certificates
         </a>
-        <button onclick="window.print()" class="btn-lms-primary text-sm">
+        <a href="/clsn-lms/certificate-print.php?uid=<?= urlencode($certView['certificate_uid']) ?>"
+           target="_blank"
+           class="btn-lms-primary text-sm">
             <i class="fas fa-download"></i> Save as PDF
-        </button>
+        </a>
     </div>
-    <p class="text-sm text-gray-400 text-center mb-4">Preview below: click "Save as PDF" and then "Save as PDF" in the print dialog.</p>
+    <p class="text-sm text-gray-400 text-center mb-4">Click "Save as PDF" — a print dialog will open. Choose "Save as PDF" as the destination.</p>
 </div>
 
 <div class="cert-print-area max-w-5xl mx-auto">
@@ -127,6 +129,20 @@ include './includes/header-dash.php';
         </div><!-- /cert-inner -->
     </div><!-- /cert-paper -->
 </div>
+
+<script>
+// Scale the fixed-size cert to always fit its container, on any screen size
+function scaleCert() {
+    const area  = document.querySelector('.cert-print-area');
+    const paper = document.querySelector('.cert-paper');
+    if (!area || !paper) return;
+    const scale = area.offsetWidth / 960;
+    paper.style.transform = 'scale(' + scale + ')';
+    area.style.height     = Math.round(679 * scale) + 'px';
+}
+scaleCert();
+window.addEventListener('resize', scaleCert);
+</script>
 
 <?php else: ?>
 <!-- ── Certificate List ────────────────────────────────────────────────── -->

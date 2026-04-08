@@ -111,7 +111,12 @@ include './includes/header.php';
                 <form method="POST" class="inline">
                     <?= csrfField() ?><input type="hidden" name="delete_qa" value="1">
                     <input type="hidden" name="qa_id" value="<?= $qa['id'] ?>">
-                    <button type="submit" onclick="return confirm('Delete this Q&A?')" class="text-red-300 hover:text-red-500 text-xs transition-colors">
+                    <button type="submit"
+                        data-confirm="Delete this Q&amp;A? This cannot be undone."
+                        data-confirm-title="Delete Q&amp;A?"
+                        data-confirm-label="Yes, Delete"
+                        data-confirm-icon='<i class="fas fa-trash"></i>'
+                        class="text-red-300 hover:text-red-500 text-xs transition-colors">
                         <i class="fas fa-trash"></i>
                     </button>
                 </form>
